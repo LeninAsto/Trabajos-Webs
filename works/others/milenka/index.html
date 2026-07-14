@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Exposición interactiva del Plan Personal de Motivación Académica" />
+  <title>Plan Personal de Motivación Académica</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400..700,0..1,0&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --primary: #6750a4;
+      --on-primary: #ffffff;
+      --primary-container: #eaddff;
+      --on-primary-container: #21005d;
+      --secondary: #625b71;
+      --secondary-container: #e8def8;
+      --on-secondary-container: #1d192b;
+      --tertiary: #7d5260;
+      --tertiary-container: #ffd8e4;
+      --on-tertiary-container: #31111d;
+      --surface: #fdf8ff;
+      --surface-container: #f3edf7;
+      --surface-container-high: #ece6f0;
+      --surface-container-highest: #e6e0e9;
+      --surface-bright: #fdf8ff;
+      --surface-variant: #e7e0ec;
+      --on-surface: #1d1b20;
+      --on-surface-variant: #49454f;
+      --outline: #79747e;
+      --outline-variant: #cac4d0;
+      --shadow: rgba(31, 26, 43, .18);
+      --scrim: rgba(0, 0, 0, .46);
+      --success: #2f6b3e;
+      --success-container: #b9f2c5;
+      --warning: #8a5100;
+      --warning-container: #ffddb5;
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --motion: cubic-bezier(.2, 0, 0, 1);
+    }
+
+    html[data-theme="dark"] {
+      color-scheme: dark;
+      --primary: #d0bcff;
+      --on-primary: #381e72;
+      --primary-container: #4f378b;
+      --on-primary-container: #eaddff;
+      --secondary: #ccc2dc;
+      --secondary-container: #4a4458;
+      --on-secondary-container: #e8def8;
+      --tertiary: #efb8c8;
+      --tertiary-container: #633b48;
+      --on-tertiary-container: #ffd8e4;
+      --surface: #141218;
+      --surface-container: #211f26;
+      --surface-container-high: #2b2930;
+      --surface-container-highest: #36343b;
+      --surface-bright: #3b383e;
+      --surface-variant: #49454f;
+      --on-surface: #e6e0e9;
+      --on-surface-variant: #cac4d0;
+      --outline: #938f99;
+      --outline-variant: #49454f;
+      --shadow: rgba(0, 0, 0, .42);
+      --scrim: rgba(0, 0, 0, .7);
+      --success: #9bd5aa;
+      --success-container: #185229;
+      --warning: #ffb95f;
+      --warning-container: #653b00;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      overflow: hidden;
+      background: var(--surface);
+      color: var(--on-surface);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    button { font: inherit; }
+
+    .app {
+      position: relative;
+      width: 100vw;
+      height: 100dvh;
+      min-height: 560px;
+      background:
+        radial-gradient(circle at 12% 12%, color-mix(in srgb, var(--primary-container) 68%, transparent) 0 12%, transparent 34%),
+        radial-gradient(circle at 92% 88%, color-mix(in srgb, var(--tertiary-container) 54%, transparent) 0 10%, transparent 32%),
+        var(--surface);
+      isolation: isolate;
+    }
+
+    .app::before,
+    .app::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      border-radius: 999px;
+      filter: blur(1px);
+      opacity: .8;
+      pointer-events: none;
+    }
+
+    .app::before {
+      width: 280px;
+      height: 280px;
+      left: -110px;
+      bottom: -120px;
+      background: var(--primary-container);
+    }
+
+    .app::after {
+      width: 210px;
+      height: 210px;
+      right: -80px;
+      top: -70px;
+      background: var(--tertiary-container);
+    }
+
+    .topbar {
+      position: fixed;
+      z-index: 30;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px clamp(16px, 3vw, 38px);
+      pointer-events: none;
+    }
+
+    .brand,
+    .top-actions { pointer-events: auto; }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      padding: 8px 14px 8px 9px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--surface-container) 90%, transparent);
+      box-shadow: 0 8px 24px var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      color: var(--on-primary);
+      background: var(--primary);
+      box-shadow: 0 6px 14px color-mix(in srgb, var(--primary) 38%, transparent);
+    }
+
+    .brand-copy { min-width: 0; }
+    .brand-title {
+      font-size: .88rem;
+      font-weight: 800;
+      line-height: 1.15;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .brand-subtitle {
+      margin-top: 2px;
+      font-size: .72rem;
+      color: var(--on-surface-variant);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-button,
+    .nav-button {
+      border: 0;
+      color: var(--on-surface-variant);
+      background: color-mix(in srgb, var(--surface-container) 92%, transparent);
+      box-shadow: 0 7px 20px var(--shadow);
+      cursor: pointer;
+      transition: transform 180ms var(--motion), background 180ms var(--motion), color 180ms var(--motion), opacity 180ms var(--motion);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .icon-button {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      backdrop-filter: blur(18px);
+    }
+
+    .icon-button:hover,
+    .nav-button:hover { background: var(--secondary-container); color: var(--on-secondary-container); transform: translateY(-2px); }
+    .icon-button:active,
+    .nav-button:active { transform: scale(.96); }
+    .icon-button:focus-visible,
+    .nav-button:focus-visible,
+    .overview-card:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
+
+    svg { width: 23px; height: 23px; fill: currentColor; }
+
+    .slides {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 94px clamp(22px, 6vw, 96px) 108px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(8%) scale(.975);
+      transition: opacity 380ms var(--motion), transform 520ms var(--motion), visibility 0s linear 520ms;
+      pointer-events: none;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(0) scale(1);
+      transition-delay: 0s;
+      pointer-events: auto;
+    }
+
+    .slide.before { transform: translateX(-8%) scale(.975); }
+
+    .slide-shell {
+      width: min(1160px, 100%);
+      max-height: calc(100dvh - 202px);
+      overflow: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--outline-variant) transparent;
+      border-radius: var(--radius-xl);
+      border: 1px solid color-mix(in srgb, var(--outline-variant) 75%, transparent);
+      background: color-mix(in srgb, var(--surface-container) 94%, transparent);
+      box-shadow: 0 22px 60px var(--shadow);
+      backdrop-filter: blur(24px);
+    }
+
+    .slide-content {
+      position: relative;
+      padding: clamp(28px, 5vw, 64px);
+      overflow: hidden;
+    }
+
+    .slide-content::after {
+      content: attr(data-number);
+      position: absolute;
+      right: clamp(18px, 4vw, 54px);
+      bottom: -36px;
+      font-size: clamp(9rem, 22vw, 19rem);
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: -.08em;
+      color: color-mix(in srgb, var(--primary) 8%, transparent);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      padding: 8px 13px;
+      border-radius: 999px;
+      color: var(--on-primary-container);
+      background: var(--primary-container);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, p { margin-top: 0; }
+    h1 {
+      max-width: 900px;
+      margin-bottom: 24px;
+      font-size: clamp(2.55rem, 7vw, 6.7rem);
+      line-height: .96;
+      letter-spacing: -.065em;
+      font-weight: 900;
+    }
+
+    h2 {
+      max-width: 850px;
+      margin-bottom: clamp(24px, 4vw, 42px);
+      font-size: clamp(2rem, 4.5vw, 4.25rem);
+      line-height: 1.04;
+      letter-spacing: -.045em;
+      font-weight: 880;
+    }
+
+    .lead {
+      max-width: 900px;
+      margin-bottom: 0;
+      color: var(--on-surface-variant);
+      font-size: clamp(1.08rem, 2vw, 1.5rem);
+      line-height: 1.65;
+      text-wrap: pretty;
+    }
+
+    .cover .slide-shell {
+      color: var(--on-primary-container);
+      border-color: transparent;
+      background:
+        linear-gradient(135deg, color-mix(in srgb, var(--primary-container) 96%, white) 0%, var(--primary-container) 56%, color-mix(in srgb, var(--tertiary-container) 60%, var(--primary-container)) 100%);
+    }
+
+    html[data-theme="dark"] .cover .slide-shell {
+      color: var(--on-primary-container);
+      background: linear-gradient(135deg, var(--primary-container), color-mix(in srgb, var(--tertiary-container) 44%, var(--primary-container)));
+    }
+
+    .cover .slide-content {
+      min-height: min(650px, calc(100dvh - 204px));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .cover .lead { color: color-mix(in srgb, var(--on-primary-container) 76%, transparent); }
+
+    .cover-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 34px;
+    }
+
+    .filled-button,
+    .tonal-button {
+      min-height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 22px;
+      border: 0;
+      border-radius: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 180ms var(--motion), filter 180ms var(--motion);
+    }
+
+    .filled-button {
+      color: var(--on-primary);
+      background: var(--primary);
+      box-shadow: 0 8px 18px color-mix(in srgb, var(--primary) 32%, transparent);
+    }
+
+    .tonal-button {
+      color: var(--on-secondary-container);
+      background: var(--secondary-container);
+    }
+
+    .filled-button:hover,
+    .tonal-button:hover { transform: translateY(-2px); filter: brightness(1.03); }
+    .filled-button:active,
+    .tonal-button:active { transform: scale(.98); }
+
+    .hero-symbol {
+      position: absolute;
+      right: clamp(22px, 7vw, 90px);
+      top: 50%;
+      width: clamp(150px, 24vw, 330px);
+      aspect-ratio: 1;
+      transform: translateY(-48%) rotate(7deg);
+      display: grid;
+      place-items: center;
+      border-radius: 38% 62% 58% 42% / 45% 38% 62% 55%;
+      color: var(--on-primary);
+      background: var(--primary);
+      box-shadow: 0 30px 64px color-mix(in srgb, var(--primary) 34%, transparent);
+      opacity: .18;
+    }
+
+    .hero-symbol svg { width: 48%; height: 48%; }
+
+    .cover-copy { position: relative; z-index: 2; max-width: 72%; }
+
+    .quote-card {
+      position: relative;
+      z-index: 1;
+      max-width: 920px;
+      padding: clamp(24px, 4vw, 42px);
+      border-radius: var(--radius-lg);
+      color: var(--on-primary-container);
+      background: var(--primary-container);
+      font-size: clamp(1.18rem, 2.4vw, 1.7rem);
+      line-height: 1.58;
+      font-weight: 650;
+    }
+
+    .quote-card::before {
+      content: "“";
+      position: absolute;
+      left: 18px;
+      top: -24px;
+      font-size: 6rem;
+      line-height: 1;
+      color: color-mix(in srgb, var(--primary) 35%, transparent);
+    }
+
+    .cards {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .cards.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .card {
+      min-height: 118px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--outline-variant);
+      background: var(--surface-bright);
+      box-shadow: 0 5px 14px color-mix(in srgb, var(--shadow) 58%, transparent);
+    }
+
+    .card-icon {
+      flex: 0 0 auto;
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      color: var(--on-primary-container);
+      background: var(--primary-container);
+    }
+
+    .card:nth-child(2n) .card-icon {
+      color: var(--on-tertiary-container);
+      background: var(--tertiary-container);
+    }
+
+    .card strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 1.02rem;
+      line-height: 1.25;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--on-surface-variant);
+      line-height: 1.5;
+    }
+
+    .single-tool {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 96px minmax(0, 1fr);
+      align-items: center;
+      gap: clamp(22px, 4vw, 46px);
+      padding: clamp(26px, 5vw, 54px);
+      border-radius: var(--radius-lg);
+      color: var(--on-primary-container);
+      background: var(--primary-container);
+    }
+
+    .tool-logo {
+      width: 96px;
+      height: 96px;
+      display: grid;
+      place-items: center;
+      border-radius: 30px;
+      color: var(--on-primary);
+      background: var(--primary);
+      box-shadow: 0 14px 26px color-mix(in srgb, var(--primary) 35%, transparent);
+      font-size: 2.2rem;
+      font-weight: 900;
+    }
+
+    .single-tool h3 { margin: 0 0 7px; font-size: clamp(1.8rem, 4vw, 3rem); }
+    .single-tool p { margin: 0; font-size: clamp(1rem, 2vw, 1.25rem); line-height: 1.55; }
+
+    .timeline {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 14px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: minmax(120px, .65fr) minmax(240px, 1.5fr) minmax(220px, 1.2fr);
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .timeline-cell {
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: var(--surface-bright);
+      border: 1px solid var(--outline-variant);
+      line-height: 1.45;
+    }
+
+    .timeline-item.header .timeline-cell {
+      color: var(--on-secondary-container);
+      background: var(--secondary-container);
+      border-color: transparent;
+      font-weight: 850;
+    }
+
+    .timeline-cell.frequency {
+      font-weight: 850;
+      color: var(--on-primary-container);
+      background: var(--primary-container);
+      border-color: transparent;
+    }
+
+    .check-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: var(--success);
+      background: var(--success-container);
+      font-size: .82rem;
+      font-weight: 800;
+    }
+
+    .bottom-controls {
+      position: fixed;
+      z-index: 30;
+      left: 50%;
+      bottom: 18px;
+      width: min(760px, calc(100vw - 28px));
+      transform: translateX(-50%);
+      display: grid;
+      grid-template-columns: auto minmax(160px, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 24px;
+      background: color-mix(in srgb, var(--surface-container-high) 94%, transparent);
+      box-shadow: 0 14px 36px var(--shadow);
+      backdrop-filter: blur(22px);
+    }
+
+    .nav-button {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+    }
+
+    .nav-button:disabled { opacity: .35; cursor: not-allowed; transform: none; }
+
+    .progress-zone {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .slide-counter {
+      min-width: 48px;
+      font-size: .82rem;
+      font-weight: 800;
+      color: var(--on-surface-variant);
+      text-align: center;
+    }
+
+    .progress-track {
+      height: 8px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: var(--surface-container-highest);
+      cursor: pointer;
+    }
+
+    .progress-fill {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--primary);
+      transition: width 320ms var(--motion);
+    }
+
+    .slide-label {
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      color: var(--on-surface-variant);
+      font-size: .78rem;
+    }
+
+    .overview {
+      position: fixed;
+      z-index: 50;
+      inset: 0;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      padding: 22px clamp(18px, 4vw, 56px) 34px;
+      background: color-mix(in srgb, var(--surface) 94%, transparent);
+      backdrop-filter: blur(28px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 240ms var(--motion), visibility 0s linear 240ms;
+    }
+
+    .overview.open {
+      opacity: 1;
+      visibility: visible;
+      transition-delay: 0s;
+    }
+
+    .overview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .overview-title h2 { margin: 0; font-size: clamp(1.7rem, 3vw, 2.6rem); }
+    .overview-title p { margin: 4px 0 0; color: var(--on-surface-variant); }
+
+    .overview-grid {
+      min-height: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      overflow: auto;
+      padding: 4px 4px 30px;
+    }
+
+    .overview-card {
+      position: relative;
+      min-height: 180px;
+      overflow: hidden;
+      padding: 22px;
+      border: 1px solid var(--outline-variant);
+      border-radius: var(--radius-lg);
+      color: var(--on-surface);
+      background: var(--surface-container);
+      text-align: left;
+      cursor: pointer;
+      transition: transform 180ms var(--motion), border-color 180ms var(--motion), background 180ms var(--motion);
+    }
+
+    .overview-card:hover { transform: translateY(-4px); background: var(--surface-container-high); }
+    .overview-card.current { border: 3px solid var(--primary); }
+    .overview-number {
+      display: inline-grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      margin-bottom: 16px;
+      border-radius: 12px;
+      color: var(--on-primary-container);
+      background: var(--primary-container);
+      font-weight: 900;
+    }
+    .overview-card h3 { margin: 0 0 8px; font-size: 1.12rem; line-height: 1.22; }
+    .overview-card p { margin: 0; color: var(--on-surface-variant); font-size: .88rem; line-height: 1.45; }
+
+    .help {
+      position: fixed;
+      z-index: 60;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      background: var(--scrim);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 200ms var(--motion), visibility 0s linear 200ms;
+    }
+
+    .help.open { opacity: 1; visibility: visible; transition-delay: 0s; }
+    .help-card {
+      width: min(520px, 100%);
+      padding: 28px;
+      border-radius: var(--radius-xl);
+      background: var(--surface-container);
+      box-shadow: 0 24px 70px rgba(0,0,0,.35);
+    }
+    .help-card h2 { margin-bottom: 20px; font-size: 1.8rem; }
+    .shortcuts { display: grid; gap: 10px; }
+    .shortcut-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; color: var(--on-surface-variant); }
+    kbd {
+      min-width: 36px;
+      padding: 6px 9px;
+      border-radius: 9px;
+      border: 1px solid var(--outline-variant);
+      background: var(--surface-container-highest);
+      color: var(--on-surface);
+      font: 700 .78rem ui-monospace, SFMono-Regular, Menlo, monospace;
+      text-align: center;
+      box-shadow: inset 0 -2px 0 var(--outline-variant);
+    }
+
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
+    @media (max-width: 850px) {
+      .cover-copy { max-width: 100%; }
+      .hero-symbol { opacity: .08; right: -30px; }
+      .cards,
+      .cards.three { grid-template-columns: 1fr 1fr; }
+      .timeline-item { grid-template-columns: 1fr; gap: 8px; }
+      .timeline-item.header { display: none; }
+      .timeline-cell { position: relative; padding-top: 40px; }
+      .timeline-cell::before {
+        position: absolute;
+        top: 14px;
+        left: 18px;
+        color: var(--on-surface-variant);
+        font-size: .72rem;
+        font-weight: 850;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+      }
+      .timeline-cell.frequency { padding-top: 18px; }
+      .timeline-cell.frequency::before { content: none; }
+      .timeline-item .timeline-cell:nth-child(2)::before { content: "Actividad"; }
+      .timeline-item .timeline-cell:nth-child(3)::before { content: "Seguimiento"; }
+    }
+
+    @media (max-width: 620px) {
+      .app { min-height: 520px; }
+      .topbar { height: 64px; padding: 10px 12px; }
+      .brand { max-width: calc(100vw - 176px); padding: 7px 11px 7px 7px; }
+      .brand-mark { width: 36px; height: 36px; border-radius: 12px; }
+      .brand-subtitle { display: none; }
+      .icon-button { width: 44px; height: 44px; border-radius: 15px; }
+      #helpButton { display: none; }
+      .slide { padding: 76px 12px 96px; }
+      .slide-shell { max-height: calc(100dvh - 172px); border-radius: 26px; }
+      .slide-content { padding: 25px 22px 34px; }
+      .cover .slide-content { min-height: calc(100dvh - 174px); }
+      h1 { font-size: clamp(2.45rem, 14vw, 4.2rem); }
+      h2 { font-size: clamp(1.75rem, 9vw, 2.7rem); }
+      .cards,
+      .cards.three { grid-template-columns: 1fr; }
+      .card { min-height: auto; }
+      .single-tool { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+      .bottom-controls { bottom: 10px; grid-template-columns: auto 1fr auto; border-radius: 22px; }
+      .slide-label { display: none; }
+      .progress-zone { grid-template-columns: auto 1fr; }
+      .progress-zone .slide-label { display: none; }
+      .overview { padding: 16px 12px 22px; }
+      .overview-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 1ms !important; animation-duration: 1ms !important; }
+    }
+
+    @media print {
+      html, body { overflow: visible; background: white; }
+      .app { height: auto; background: white; }
+      .topbar, .bottom-controls, .overview, .help { display: none !important; }
+      .slides { position: static; overflow: visible; }
+      .slide {
+        position: relative;
+        inset: auto;
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+        display: block;
+        min-height: 100vh;
+        padding: 24px;
+        page-break-after: always;
+      }
+      .slide-shell { max-height: none; box-shadow: none; backdrop-filter: none; }
+    }
+
+
+    /* Diseño decorativo inspirado en plantillas de diapositivas */
+    .material-symbols-rounded {
+      font-family: "Material Symbols Rounded";
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: "liga";
+      -webkit-font-smoothing: antialiased;
+      font-feature-settings: "liga";
+    }
+
+    .slide {
+      --slide-accent: var(--primary);
+      --slide-soft: var(--primary-container);
+      --slide-ink: var(--on-primary-container);
+    }
+
+    .slide:nth-child(2) { --slide-accent: #49664d; --slide-soft: #d9ead8; --slide-ink: #102f17; }
+    .slide:nth-child(3) { --slide-accent: #7b5d1f; --slide-soft: #f7e2ad; --slide-ink: #2b2108; }
+    .slide:nth-child(4) { --slide-accent: #296579; --slide-soft: #c7e8f3; --slide-ink: #062c38; }
+    .slide:nth-child(5) { --slide-accent: #8a4a64; --slide-soft: #f8d7e4; --slide-ink: #3c1222; }
+    .slide:nth-child(6) { --slide-accent: #6652a4; --slide-soft: #e9ddff; --slide-ink: #23134e; }
+    .slide:nth-child(7) { --slide-accent: #bd4f27; --slide-soft: #ffddcf; --slide-ink: #431303; }
+    .slide:nth-child(8) { --slide-accent: #2d6787; --slide-soft: #d3eafa; --slide-ink: #082c42; }
+    .slide:nth-child(9) { --slide-accent: #49713e; --slide-soft: #d9edcf; --slide-ink: #15340f; }
+
+    html[data-theme="dark"] .slide {
+      --slide-soft: color-mix(in srgb, var(--slide-accent) 28%, var(--surface-container-high));
+      --slide-ink: var(--on-surface);
+    }
+
+    .slide-shell {
+      position: relative;
+      background:
+        linear-gradient(150deg, color-mix(in srgb, var(--slide-soft) 22%, var(--surface-container)) 0%, var(--surface-container) 48%),
+        var(--surface-container);
+    }
+
+    .slide-shell::before {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      width: 180px;
+      height: 126px;
+      top: -42px;
+      right: 8%;
+      border: 1px solid color-mix(in srgb, var(--slide-accent) 18%, transparent);
+      border-radius: 28px;
+      background: color-mix(in srgb, var(--slide-soft) 84%, var(--surface));
+      transform: rotate(8deg);
+      box-shadow: 0 14px 26px color-mix(in srgb, var(--shadow) 45%, transparent);
+      pointer-events: none;
+    }
+
+    .slide-shell::after {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      left: 28px;
+      bottom: 24px;
+      width: 112px;
+      height: 46px;
+      opacity: .34;
+      background-image: radial-gradient(circle, var(--slide-accent) 2px, transparent 2.5px);
+      background-size: 14px 14px;
+      pointer-events: none;
+    }
+
+    .slide-content { isolation: isolate; }
+    .slide-content > :not(.slide-decor) { position: relative; z-index: 2; }
+
+    .slide-decor {
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      overflow: hidden;
+      border-radius: inherit;
+      pointer-events: none;
+    }
+
+    .decor-icon {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      color: var(--slide-accent);
+      background: color-mix(in srgb, var(--slide-soft) 82%, transparent);
+      border: 1px solid color-mix(in srgb, var(--slide-accent) 18%, transparent);
+      box-shadow: 0 10px 25px color-mix(in srgb, var(--shadow) 38%, transparent);
+    }
+
+    .decor-icon.main {
+      width: clamp(92px, 13vw, 150px);
+      height: clamp(92px, 13vw, 150px);
+      right: clamp(18px, 4vw, 54px);
+      top: clamp(22px, 4vw, 48px);
+      border-radius: 42% 58% 64% 36% / 46% 39% 61% 54%;
+      transform: rotate(9deg);
+      opacity: .24;
+    }
+
+    .decor-icon.main .material-symbols-rounded { font-size: clamp(48px, 7vw, 84px); font-variation-settings: "FILL" 1, "wght" 500; }
+
+    .decor-icon.leaf-a,
+    .decor-icon.leaf-b {
+      width: 58px;
+      height: 82px;
+      border: 0;
+      box-shadow: none;
+      border-radius: 80% 15% 80% 18%;
+      opacity: .25;
+    }
+
+    .decor-icon.leaf-a {
+      left: -12px;
+      top: 26%;
+      transform: rotate(-32deg);
+    }
+
+    .decor-icon.leaf-b {
+      right: 15%;
+      bottom: -22px;
+      transform: rotate(142deg) scale(.78);
+    }
+
+    .decor-icon.leaf-a .material-symbols-rounded,
+    .decor-icon.leaf-b .material-symbols-rounded { font-size: 46px; font-variation-settings: "FILL" 1; }
+
+    .slide:nth-child(even) .decor-icon.main { right: auto; left: 43%; top: -38px; transform: rotate(-9deg); }
+    .slide:nth-child(3n) .decor-icon.leaf-a { top: 62%; transform: rotate(18deg); }
+    .slide:nth-child(4n) .decor-icon.leaf-b { right: 4%; bottom: 8%; }
+
+    .slide:not(.cover) .eyebrow {
+      color: var(--slide-ink);
+      background: var(--slide-soft);
+    }
+
+    .slide:not(.cover) h2::after {
+      content: "";
+      display: block;
+      width: 82px;
+      height: 7px;
+      margin-top: 18px;
+      border-radius: 999px;
+      background: var(--slide-accent);
+      opacity: .9;
+    }
+
+    .slide:not(.cover) .card-icon,
+    .slide:not(.cover) .timeline-cell.frequency {
+      color: var(--slide-ink);
+      background: var(--slide-soft);
+    }
+
+    .slide:not(.cover) .card:nth-child(2n) .card-icon {
+      color: var(--slide-ink);
+      background: color-mix(in srgb, var(--slide-soft) 65%, var(--tertiary-container));
+    }
+
+    .tools-grid {
+      position: relative;
+      z-index: 3;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(14px, 2vw, 22px);
+    }
+
+    .tool-card {
+      min-height: 250px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 24px;
+      padding: clamp(22px, 3vw, 34px);
+      border: 1px solid color-mix(in srgb, var(--slide-accent) 20%, var(--outline-variant));
+      border-radius: 28px;
+      background: color-mix(in srgb, var(--surface-bright) 94%, var(--slide-soft));
+      box-shadow: 0 14px 30px color-mix(in srgb, var(--shadow) 50%, transparent);
+      transition: transform 180ms var(--motion), box-shadow 180ms var(--motion);
+    }
+
+    .tool-card:hover {
+      transform: translateY(-6px) rotate(-.4deg);
+      box-shadow: 0 22px 38px color-mix(in srgb, var(--shadow) 68%, transparent);
+    }
+
+    .tool-card:nth-child(2) { transform: translateY(14px); }
+    .tool-card:nth-child(2):hover { transform: translateY(8px) rotate(.4deg); }
+
+    .tool-icon {
+      width: 72px;
+      height: 72px;
+      display: grid;
+      place-items: center;
+      border-radius: 23px;
+      color: var(--on-primary);
+      background: var(--slide-accent);
+      box-shadow: 0 12px 24px color-mix(in srgb, var(--slide-accent) 32%, transparent);
+    }
+
+    .tool-icon .material-symbols-rounded { font-size: 38px; font-variation-settings: "FILL" 1, "wght" 600; }
+    .tool-card h3 { margin: 0 0 9px; font-size: clamp(1.45rem, 2.8vw, 2.2rem); }
+    .tool-card p { margin: 0; color: var(--on-surface-variant); line-height: 1.55; }
+    .tool-tag {
+      align-self: flex-start;
+      padding: 7px 11px;
+      border-radius: 999px;
+      color: var(--slide-ink);
+      background: var(--slide-soft);
+      font-size: .76rem;
+      font-weight: 850;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .cover .slide-shell::before,
+    .cover .slide-shell::after { display: none; }
+    .cover .slide-decor { opacity: .72; }
+    .cover .decor-icon.main { opacity: .2; right: 5%; top: 18%; width: clamp(150px, 24vw, 330px); height: clamp(150px, 24vw, 330px); }
+    .cover .decor-icon.main .material-symbols-rounded { font-size: clamp(76px, 12vw, 150px); }
+
+    @media (max-width: 850px) {
+      .tools-grid { grid-template-columns: 1fr 1fr; }
+      .tool-card:last-child { grid-column: 1 / -1; min-height: 190px; }
+      .decor-icon.main { opacity: .14; }
+    }
+
+    @media (max-width: 620px) {
+      .tools-grid { grid-template-columns: 1fr; }
+      .tool-card,
+      .tool-card:nth-child(2),
+      .tool-card:nth-child(2):hover { min-height: auto; transform: none; }
+      .tool-card:last-child { grid-column: auto; }
+      .slide-shell::before { width: 118px; height: 84px; right: -24px; }
+      .slide-shell::after { display: none; }
+      .decor-icon.main { right: -24px; top: 68px; }
+      .slide:nth-child(even) .decor-icon.main { left: auto; right: -20px; top: 76px; }
+    }
+
+  </style>
+</head>
+<body>
+  <main class="app" id="app">
+    <header class="topbar" aria-label="Barra superior">
+      <div class="brand" aria-label="Plan personal de motivación académica">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 3 1 9l4 2.18v6L12 21l7-3.82v-6L21 10.09V17h2V9L12 3Zm0 2.27L18.74 9 12 12.73 5.26 9 12 5.27ZM7 12.27l5 2.73 5-2.73v3.73l-5 2.73-5-2.73v-3.73Z"/></svg>
+        </div>
+        <div class="brand-copy">
+          <div class="brand-title">Motivación académica</div>
+          <div class="brand-subtitle">Exposición interactiva</div>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button class="icon-button" id="helpButton" type="button" aria-label="Ver atajos" title="Atajos de teclado">
+          <svg viewBox="0 0 24 24"><path d="M11 18h2v-2h-2v2Zm1-16A10 10 0 1 0 12 22 10 10 0 0 0 12 2Zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm0-14a4 4 0 0 0-4 4h2a2 2 0 1 1 3.24 1.56C12.3 12.25 11 13.12 11 15h2c0-.91.62-1.33 1.47-1.94A4 4 0 0 0 12 6Z"/></svg>
+        </button>
+        <button class="icon-button" id="themeButton" type="button" aria-label="Cambiar tema" title="Cambiar tema">
+          <svg id="themeIcon" viewBox="0 0 24 24"><path d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12Zm0-10a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM11 1h2v3h-2V1Zm0 19h2v3h-2v-3ZM1 11h3v2H1v-2Zm19 0h3v2h-3v-2ZM4.22 2.81 6.34 4.93 4.93 6.34 2.81 4.22l1.41-1.41Zm12.44 14.85 2.12 2.12-1.41 1.41-2.12-2.12 1.41-1.41Zm2.12-14.85 1.41 1.41-2.12 2.12-1.41-1.41 2.12-2.12ZM4.93 17.66l1.41 1.41-2.12 2.12-1.41-1.41 2.12-2.12Z"/></svg>
+        </button>
+        <button class="icon-button" id="overviewButton" type="button" aria-label="Abrir vista general" title="Vista general (O)">
+          <svg viewBox="0 0 24 24"><path d="M3 3h8v8H3V3Zm2 2v4h4V5H5Zm8-2h8v8h-8V3Zm2 2v4h4V5h-4ZM3 13h8v8H3v-8Zm2 2v4h4v-4H5Zm8-2h8v8h-8v-8Zm2 2v4h4v-4h-4Z"/></svg>
+        </button>
+        <button class="icon-button" id="fullscreenButton" type="button" aria-label="Pantalla completa" title="Pantalla completa (F)">
+          <svg id="fullscreenIcon" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3Zm-2-4h2V7h3V5H5v5Zm12 7h-3v2h5v-5h-2v3Zm-3-12v2h3v3h2V5h-5Z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="slides" id="slides" aria-live="polite">
+      <section class="slide cover active" data-title="Portada" aria-label="Portada">
+        <div class="slide-shell">
+          <div class="slide-content" data-number="">
+            <div class="cover-copy">
+              <span class="eyebrow">Formación Docente</span>
+              <h1>Plan Personal de Motivación Académica</h1>
+              <p class="lead">Metas, fortalezas y estrategias para avanzar con constancia durante mi formación profesional.</p>
+              <div class="cover-actions">
+                <button class="filled-button" type="button" data-go="1">
+                  Comenzar exposición
+                  <svg viewBox="0 0 24 24"><path d="m13.17 12-4.58-4.59L10 6l6 6-6 6-1.41-1.41L13.17 12Z"/></svg>
+                </button>
+                <button class="tonal-button" type="button" data-open-overview>
+                  Ver contenido
+                  <svg viewBox="0 0 24 24"><path d="M3 3h8v8H3V3Zm10 0h8v8h-8V3ZM3 13h8v8H3v-8Zm10 0h8v8h-8v-8Z"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="hero-symbol" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M9 21h6v-1H9v1Zm3-20a7 7 0 0 0-4 12.74V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-3.26A7 7 0 0 0 12 1Zm2.85 11.1-.85.52V17h-4v-4.38l-.85-.52A5 5 0 1 1 14.85 12.1Z"/></svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="Mi principal meta académica" aria-label="Diapositiva 1: Mi principal meta académica">
+        <div class="slide-shell">
+          <div class="slide-content" data-number="1">
+            <span class="eyebrow">01 · Meta académica</span>
+            <h2>Mi principal meta académica</h2>
+            <div class="quote-card">
+              Culminar satisfactoriamente mi formación docente con un buen rendimiento académico, fortaleciendo mis competencias pedagógicas y desarrollando las habilidades necesarias para brindar una enseñanza de calidad que contribuya al aprendizaje y desarrollo integral de mis futuros estudiantes.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="¿Qué me motiva?" aria-label="Diapositiva 2: Qué me motiva a estudiar Formación Docente">
+        <div class="slide-shell">
+          <div class="slide-content" data-number="2">
+            <span class="eyebrow">02 · Motivación</span>
+            <h2>¿Qué me motiva a estudiar Formación Docente?</h2>
+            <div class="quote-card">
+              Me motiva la oportunidad de formar a los estudiantes, promover el hábito de lectura y escritura, y contribuir a su desarrollo integral mediante una enseñanza de calidad.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="Fortalezas" aria-label="Diapositiva 3: Fortalezas que favorecen mi aprendizaje">
+        <div class="slide-shell">
+          <div class="slide-content" data-number="3">
+            <span class="eyebrow">03 · Fortalezas</span>
+            <h2>Fortalezas que favorecen mi aprendizaje</h2>
+            <div class="cards three">
+              <article class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2Z"/></svg></div><div><strong>Responsabilidad y compromiso</strong><p>Cumplir con seriedad las actividades académicas.</p></div></article>
+              <article class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10.01 10.01 0 0 0 12 2Zm1 17.93V18h-2v1.93A8.01 8.01 0 0 1 4.07 13H6v-2H4.07A8.01 8.01 0 0 1 11 4.07V6h2V4.07A8.01 8.01 0 0 1 19.93 11H18v2h1.93A8.01 8.01 0 0 1 13 19.93ZM12 8a4 4 0 1 0 4 4 4 4 0 0 0-4-4Z"/></svg></div><div><strong>Perseverancia</strong><p>Mantener el esfuerzo hasta cumplir mis objetivos.</p></div></article>
+              <article class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 3 1 9l4 2.18v6L12 21l7-3.82v-6L21 10.09V17h2V9L12 3Zm0 9.73L5.26 9 12 5.27 18.74 9 12 12.73Z"/></svg></div><div><strong>Interés por aprender</strong><p>Buscar nuevos conocimientos y mejorar continuamente.</p></div></article>
+              <article class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-4 12.74V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.26A7 7 0 0 0 12 2Zm2.85 11.1-.85.52V17h-4v-3.38l-.85-.52a5 5 0 1 1 5.7 0ZM9 21h6v1H9v-1Z"/></svg></div><div><strong>Creatividad</strong><p>Encontrar formas dinámicas de enseñar y aprender.</p></div></article>
+              <article class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3Zm-8 0c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3Zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 14.17 10.33 13 8 13Zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5Z"/></svg></div><div><strong>Trabajo en equipo</strong><p>Colaborar, escuchar y aportar con respeto.</p></div></article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="Aspectos por mejorar" aria-label="Diapositiva 4: Aspectos que debo mejorar">
+        <div class="slide-shell">
+          <div class="slide-content" data-number="4">
+            <span class="eyebrow">04 · Mejora personal</span>
+            <h2>Aspectos que debo mejorar</h2>
+            <div class="cards">
+              <article class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><path d="M15 1H9v2h6V1Zm-4 13h2V8h-2v6Zm8.03-6.61 1.42-1.42a11.1 11.1 0 0 0-1.42-1.42l-1.42 1.42A9 9 0 1 0 21 13a8.94 8.94 0 0 0-1.97-5.61ZM12 20a7 7 0 1 1 7-7 7.01 7.01 0 0 1-7 7Z"/></svg></div><div><strong>Organizar mejor mi tiempo</strong><p>Distribuir las actividades con anticipación.</p></div></article>
+              <article class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 3a4 4 0 0 0-4 4v5a4 4 0 0 0 8 0V7a4 4 0 0 0-4-4Zm2 9a2 2 0 0 1-4 0V7a2 2 0 0 1 4 0v5Zm5-1h-2v1a5 5 0 0 1-10 0v-1H5v1a7 7 0 0 0 6 6.92V22h2v-3.08A7 7 0 0 0 19 12v-1Z"/></svg></div><div><strong>Seguridad al exponer</strong><p>Practicar para comunicar mis ideas con confianza.</p></div></article>
+              <article class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10.01 10.01 0 0 0 12 2Zm1 11h-2V7h2v6Zm0 4h-2v-2h2v2Z"/></svg></div><div><strong>Evitar dejar tareas al final</strong><p>Empezar a tiempo y reducir la presión innecesaria.</p></div></article>
+              <article class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h6v2H8v2h8v-2h-3v-2h6a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Zm0 11H5V5h14v9Z"/></svg></div><div><strong>Herramientas digitales</strong><p>Mejorar su manejo para apoyar mis trabajos académicos.</p></div></article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="Estrategias de automotivación" aria-label="Diapositiva 5: Estrategias de automotivación">
+        <div class="slide-shell">
+          <div class="slide-content" data-number="5">
+            <span class="eyebrow">05 · Automotivación</span>
+            <h2>Estrategias de automotivación que aplicaré</h2>
+            <div class="cards three">
+              <article class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z"/></svg></div><div><strong>Metas alcanzables</strong><p>Definir objetivos claros y posibles de cumplir.</p></div></article>
+              <article class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm1 15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8h16v8Zm0-10H4V7a1 1 0 0 1 1-1h1v2h2V6h8v2h2V6h1a1 1 0 0 1 1 1v2Z"/></svg></div><div><strong>Horario de estudio</strong><p>Reservar momentos específicos para estudiar.</p></div></article>
+              <article class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10.01 10.01 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8 8.01 8.01 0 0 1-8 8Zm4-9H8v2h8v-2Zm-5-3H9v2h2V8Zm4 0h-2v2h2V8Z"/></svg></div><div><strong>Actitud positiva</strong><p>Afrontar los desafíos como oportunidades de mejora.</p></div></article>
+              <article class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><path d="m12 2 3 6 6.5.94-4.75 4.63L17.88 20 12 16.9 6.12 20l1.13-6.43L2.5 8.94 9 8l3-6Z"/></svg></div><div><strong>Valorar mis avances</strong><p>Reconocer cada progreso, incluso los pequeños.</p></div></article>
+              <article class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><path d="M3 13h2.07A7.01 7.01 0 0 0 12 19a7 7 0 1 0-6.93-8H3a9 9 0 1 1 2.64 6.36L3 20v-7Zm8-6h2v5.41l3.3 3.3-1.42 1.41L11 13.24V7Z"/></svg></div><div><strong>Evaluar mi progreso</strong><p>Revisar periódicamente resultados y ajustar lo necesario.</p></div></article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="Herramientas digitales" aria-label="Diapositiva 6: Herramientas digitales">
+        <div class="slide-shell">
+          <div class="slide-content" data-number="6">
+            <span class="eyebrow">06 · Recursos</span>
+            <h2>Herramientas digitales que utilizaré</h2>
+            <div class="tools-grid" aria-label="Tecnologías utilizadas en esta exposición web">
+              <article class="tool-card">
+                <div class="tool-icon" aria-hidden="true"><span class="material-symbols-rounded">code_blocks</span></div>
+                <div>
+                  <span class="tool-tag">Estructura</span>
+                  <h3>HTML5</h3>
+                  <p>Permite organizar el contenido de cada diapositiva y construir la estructura principal de esta exposición web.</p>
+                </div>
+              </article>
+              <article class="tool-card">
+                <div class="tool-icon" aria-hidden="true"><span class="material-symbols-rounded">palette</span></div>
+                <div>
+                  <span class="tool-tag">Diseño</span>
+                  <h3>CSS3</h3>
+                  <p>Se utiliza para aplicar el estilo Material Design 3, los colores, las formas decorativas y la adaptación a distintas pantallas.</p>
+                </div>
+              </article>
+              <article class="tool-card">
+                <div class="tool-icon" aria-hidden="true"><span class="material-symbols-rounded">bolt</span></div>
+                <div>
+                  <span class="tool-tag">Interacción</span>
+                  <h3>JavaScript</h3>
+                  <p>Hace posibles los controles, el cambio de diapositivas, el modo oscuro, la vista general y la pantalla completa.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="Cronograma personal" aria-label="Diapositiva 7: Cronograma personal de seguimiento">
+        <div class="slide-shell">
+          <div class="slide-content" data-number="7">
+            <span class="eyebrow">07 · Seguimiento</span>
+            <h2>Cronograma personal de seguimiento</h2>
+            <div class="timeline" role="table" aria-label="Cronograma personal">
+              <div class="timeline-item header" role="row">
+                <div class="timeline-cell" role="columnheader">Frecuencia</div>
+                <div class="timeline-cell" role="columnheader">Actividad</div>
+                <div class="timeline-cell" role="columnheader">Seguimiento</div>
+              </div>
+              <div class="timeline-item" role="row">
+                <div class="timeline-cell frequency" role="cell">Diariamente</div>
+                <div class="timeline-cell" role="cell">Estudiar 2 horas y revisar los apuntes.</div>
+                <div class="timeline-cell" role="cell"><span class="check-pill">✓ Cumplido / ✗ Pendiente</span></div>
+              </div>
+              <div class="timeline-item" role="row">
+                <div class="timeline-cell frequency" role="cell">Semanalmente</div>
+                <div class="timeline-cell" role="cell">Entregar tareas y repasar los temas vistos.</div>
+                <div class="timeline-cell" role="cell">Revisar si cumplí todas las actividades.</div>
+              </div>
+              <div class="timeline-item" role="row">
+                <div class="timeline-cell frequency" role="cell">Mensualmente</div>
+                <div class="timeline-cell" role="cell">Evaluar mis avances académicos y establecer nuevas metas.</div>
+                <div class="timeline-cell" role="cell">Comparar mis resultados y realizar mejoras.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-title="Indicadores de progreso" aria-label="Diapositiva 8: Indicadores para evaluar mi progreso">
+        <div class="slide-shell">
+          <div class="slide-content" data-number="8">
+            <span class="eyebrow">08 · Evaluación</span>
+            <h2>Indicadores para evaluar mi progreso</h2>
+            <div class="cards three">
+              <article class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><path d="M19 3h-4.18A3 3 0 0 0 9.18 3H5a2 2 0 0 0-2 2v16h18V5a2 2 0 0 0-2-2Zm-7 0a1 1 0 1 1-1 1 1 1 0 0 1 1-1Zm7 16H5V5h2v2h10V5h2v14Zm-9.29-3.29-2.42-2.42 1.42-1.42L10 13.17l4.29-4.29 1.42 1.42-6 6Z"/></svg></div><div><strong>Tareas a tiempo</strong><p>Cumplo con las fechas establecidas.</p></div></article>
+              <article class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 0-5 5c0 2.38 1.67 4.36 3.9 4.87L9 22l3-2 3 2-1.9-10.13A5 5 0 0 0 12 2Zm0 8a3 3 0 1 1 3-3 3 3 0 0 1-3 3Z"/></svg></div><div><strong>Participación activa</strong><p>Intervengo y aporto durante las clases.</p></div></article>
+              <article class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><path d="M3 18h2V8H3v10Zm4 0h2V4H7v14Zm4 0h2v-7h-2v7Zm4 0h2V6h-2v12Zm4 0h2V2h-2v16ZM2 20h20v2H2v-2Z"/></svg></div><div><strong>Mejores calificaciones</strong><p>Observo una evolución favorable en mis resultados.</p></div></article>
+              <article class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h6v2H8v2h8v-2h-3v-2h6a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Zm0 11H5V5h14v9Z"/></svg></div><div><strong>Uso de herramientas digitales</strong><p>Las incorporo en mis actividades académicas.</p></div></article>
+              <article class="card"><div class="card-icon"><svg viewBox="0 0 24 24"><path d="M20 11h-8V3h2v4.59l5.29-5.3 1.42 1.42L15.41 9H20v2ZM5 5h6v2H5v12h12v-6h2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"/></svg></div><div><strong>Metas por ciclo</strong><p>Alcanzo los objetivos propuestos en cada etapa.</p></div></article>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <nav class="bottom-controls" aria-label="Controles de presentación">
+      <button class="nav-button" id="prevButton" type="button" aria-label="Diapositiva anterior" title="Anterior (←)">
+        <svg viewBox="0 0 24 24"><path d="m14.41 6-6 6 6 6L16 16.59 11.41 12 16 7.41 14.41 6Z"/></svg>
+      </button>
+      <div class="progress-zone">
+        <div class="slide-counter" id="slideCounter">1 / 9</div>
+        <div class="progress-track" id="progressTrack" role="slider" aria-label="Progreso de la presentación" aria-valuemin="1" aria-valuemax="9" aria-valuenow="1" tabindex="0">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="slide-label" id="slideLabel">Portada</div>
+      </div>
+      <button class="nav-button" id="nextButton" type="button" aria-label="Siguiente diapositiva" title="Siguiente (→)">
+        <svg viewBox="0 0 24 24"><path d="m9.59 18 6-6-6-6L8 7.41 12.59 12 8 16.59 9.59 18Z"/></svg>
+      </button>
+    </nav>
+
+    <section class="overview" id="overview" aria-hidden="true" aria-label="Vista general de diapositivas">
+      <div class="overview-header">
+        <div class="overview-title">
+          <h2>Vista general</h2>
+          <p>Selecciona una diapositiva para abrirla.</p>
+        </div>
+        <button class="icon-button" id="closeOverview" type="button" aria-label="Cerrar vista general">
+          <svg viewBox="0 0 24 24"><path d="M18.3 5.71 12 12l6.3 6.29-1.41 1.42L10.59 13.41 4.29 19.71 2.88 18.3 9.17 12 2.88 5.7 4.29 4.29l6.3 6.3 6.3-6.3 1.41 1.42Z"/></svg>
+        </button>
+      </div>
+      <div class="overview-grid" id="overviewGrid"></div>
+    </section>
+
+    <section class="help" id="help" aria-hidden="true" aria-label="Atajos de teclado">
+      <div class="help-card" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:14px;">
+          <h2 id="helpTitle">Atajos</h2>
+          <button class="icon-button" id="closeHelp" type="button" aria-label="Cerrar ayuda">
+            <svg viewBox="0 0 24 24"><path d="M18.3 5.71 12 12l6.3 6.29-1.41 1.42L10.59 13.41 4.29 19.71 2.88 18.3 9.17 12 2.88 5.7 4.29 4.29l6.3 6.3 6.3-6.3 1.41 1.42Z"/></svg>
+          </button>
+        </div>
+        <div class="shortcuts">
+          <div class="shortcut-row"><span>Anterior / siguiente</span><span><kbd>←</kbd> <kbd>→</kbd></span></div>
+          <div class="shortcut-row"><span>Primera / última</span><span><kbd>Home</kbd> <kbd>End</kbd></span></div>
+          <div class="shortcut-row"><span>Vista general</span><kbd>O</kbd></div>
+          <div class="shortcut-row"><span>Pantalla completa</span><kbd>F</kbd></div>
+          <div class="shortcut-row"><span>Cerrar ventana</span><kbd>Esc</kbd></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const slides = [...document.querySelectorAll('.slide')];
+      const prevButton = document.getElementById('prevButton');
+      const nextButton = document.getElementById('nextButton');
+      const slideCounter = document.getElementById('slideCounter');
+      const slideLabel = document.getElementById('slideLabel');
+      const progressFill = document.getElementById('progressFill');
+      const progressTrack = document.getElementById('progressTrack');
+      const overview = document.getElementById('overview');
+      const overviewGrid = document.getElementById('overviewGrid');
+      const overviewButton = document.getElementById('overviewButton');
+      const closeOverview = document.getElementById('closeOverview');
+      const fullscreenButton = document.getElementById('fullscreenButton');
+      const themeButton = document.getElementById('themeButton');
+      const helpButton = document.getElementById('helpButton');
+      const help = document.getElementById('help');
+      const closeHelp = document.getElementById('closeHelp');
+      const root = document.documentElement;
+      let current = 0;
+      let touchStartX = null;
+      let touchStartY = null;
+
+      const summaries = [
+        'Presentación del plan personal.',
+        'Objetivo central de la formación académica.',
+        'Razones para estudiar Formación Docente.',
+        'Cualidades que apoyan el aprendizaje.',
+        'Habilidades y hábitos que se deben fortalecer.',
+        'Acciones para mantener la motivación.',
+        'Tecnologías utilizadas para construir la exposición.',
+        'Rutina diaria, semanal y mensual.',
+        'Señales concretas para medir los avances.'
+      ];
+
+      function clamp(value, min, max) {
+        return Math.min(Math.max(value, min), max);
+      }
+
+      function updateSlides(index, pushHash = true) {
+        current = clamp(index, 0, slides.length - 1);
+        slides.forEach((slide, i) => {
+          slide.classList.toggle('active', i === current);
+          slide.classList.toggle('before', i < current);
+          slide.setAttribute('aria-hidden', i === current ? 'false' : 'true');
+        });
+
+        const humanIndex = current + 1;
+        slideCounter.textContent = `${humanIndex} / ${slides.length}`;
+        slideLabel.textContent = slides[current].dataset.title;
+        progressFill.style.width = `${(humanIndex / slides.length) * 100}%`;
+        progressTrack.setAttribute('aria-valuenow', humanIndex);
+        prevButton.disabled = current === 0;
+        nextButton.disabled = current === slides.length - 1;
+
+        [...overviewGrid.children].forEach((card, i) => card.classList.toggle('current', i === current));
+
+        if (pushHash && !overview.classList.contains('open')) {
+          history.replaceState(null, '', `#${humanIndex}`);
+        }
+        localStorage.setItem('motivacion-slide', String(current));
+      }
+
+      function go(delta) {
+        updateSlides(current + delta);
+      }
+
+      function setOverview(open) {
+        overview.classList.toggle('open', open);
+        overview.setAttribute('aria-hidden', String(!open));
+        if (open) {
+          history.replaceState(null, '', '#overview');
+          requestAnimationFrame(() => overviewGrid.querySelector('.current')?.focus());
+        } else {
+          history.replaceState(null, '', `#${current + 1}`);
+          overviewButton.focus({ preventScroll: true });
+        }
+      }
+
+      function setHelp(open) {
+        help.classList.toggle('open', open);
+        help.setAttribute('aria-hidden', String(!open));
+        if (open) closeHelp.focus();
+        else helpButton.focus({ preventScroll: true });
+      }
+
+      function addSlideDecorations() {
+        const icons = ['school', 'flag', 'volunteer_activism', 'workspace_premium', 'construction', 'self_improvement', 'developer_mode', 'calendar_month', 'monitoring'];
+        slides.forEach((slide, index) => {
+          const content = slide.querySelector('.slide-content');
+          if (!content || content.querySelector('.slide-decor')) return;
+          const decoration = document.createElement('div');
+          decoration.className = 'slide-decor';
+          decoration.setAttribute('aria-hidden', 'true');
+          decoration.innerHTML = `
+            <span class="decor-icon main"><span class="material-symbols-rounded">${icons[index]}</span></span>
+            <span class="decor-icon leaf-a"><span class="material-symbols-rounded">eco</span></span>
+            <span class="decor-icon leaf-b"><span class="material-symbols-rounded">eco</span></span>
+          `;
+          content.prepend(decoration);
+        });
+      }
+
+      function buildOverview() {
+        slides.forEach((slide, index) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'overview-card';
+          button.innerHTML = `
+            <span class="overview-number">${index + 1}</span>
+            <h3>${slide.dataset.title}</h3>
+            <p>${summaries[index]}</p>
+          `;
+          button.addEventListener('click', () => {
+            updateSlides(index, false);
+            setOverview(false);
+          });
+          overviewGrid.appendChild(button);
+        });
+      }
+
+      function applyTheme(theme) {
+        root.dataset.theme = theme;
+        localStorage.setItem('motivacion-theme', theme);
+        themeButton.setAttribute('aria-label', theme === 'dark' ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro');
+      }
+
+      async function toggleFullscreen() {
+        try {
+          if (!document.fullscreenElement) await document.documentElement.requestFullscreen();
+          else await document.exitFullscreen();
+        } catch (error) {
+          console.warn('No se pudo cambiar el modo de pantalla completa.', error);
+        }
+      }
+
+      addSlideDecorations();
+      buildOverview();
+
+      const savedTheme = localStorage.getItem('motivacion-theme');
+      const systemDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
+      applyTheme(savedTheme || (systemDark ? 'dark' : 'light'));
+
+      const hash = location.hash.toLowerCase();
+      const hashNumber = Number(hash.replace('#', ''));
+      const savedSlide = Number(localStorage.getItem('motivacion-slide'));
+      const initialSlide = Number.isInteger(hashNumber) && hashNumber >= 1 && hashNumber <= slides.length
+        ? hashNumber - 1
+        : Number.isInteger(savedSlide) ? savedSlide : 0;
+      updateSlides(initialSlide, hash !== '#overview');
+      if (hash === '#overview' || new URLSearchParams(location.search).has('overview')) setOverview(true);
+
+      prevButton.addEventListener('click', () => go(-1));
+      nextButton.addEventListener('click', () => go(1));
+      overviewButton.addEventListener('click', () => setOverview(true));
+      closeOverview.addEventListener('click', () => setOverview(false));
+      fullscreenButton.addEventListener('click', toggleFullscreen);
+      themeButton.addEventListener('click', () => applyTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'));
+      helpButton.addEventListener('click', () => setHelp(true));
+      closeHelp.addEventListener('click', () => setHelp(false));
+
+      document.querySelectorAll('[data-go]').forEach(button => {
+        button.addEventListener('click', () => updateSlides(Number(button.dataset.go)));
+      });
+      document.querySelectorAll('[data-open-overview]').forEach(button => {
+        button.addEventListener('click', () => setOverview(true));
+      });
+
+      progressTrack.addEventListener('click', event => {
+        const rect = progressTrack.getBoundingClientRect();
+        const ratio = clamp((event.clientX - rect.left) / rect.width, 0, 1);
+        updateSlides(Math.round(ratio * (slides.length - 1)));
+      });
+
+      progressTrack.addEventListener('keydown', event => {
+        if (event.key === 'ArrowLeft') { event.preventDefault(); go(-1); }
+        if (event.key === 'ArrowRight') { event.preventDefault(); go(1); }
+        if (event.key === 'Home') { event.preventDefault(); updateSlides(0); }
+        if (event.key === 'End') { event.preventDefault(); updateSlides(slides.length - 1); }
+      });
+
+      document.addEventListener('keydown', event => {
+        const tag = event.target.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+
+        if (event.key === 'Escape') {
+          if (help.classList.contains('open')) return setHelp(false);
+          if (overview.classList.contains('open')) return setOverview(false);
+        }
+        if (help.classList.contains('open')) return;
+        if (overview.classList.contains('open')) {
+          if (event.key.toLowerCase() === 'o') setOverview(false);
+          return;
+        }
+
+        if (['ArrowRight', 'PageDown', ' ', 'Enter'].includes(event.key)) { event.preventDefault(); go(1); }
+        if (['ArrowLeft', 'PageUp', 'Backspace'].includes(event.key)) { event.preventDefault(); go(-1); }
+        if (event.key === 'Home') { event.preventDefault(); updateSlides(0); }
+        if (event.key === 'End') { event.preventDefault(); updateSlides(slides.length - 1); }
+        if (event.key.toLowerCase() === 'o') { event.preventDefault(); setOverview(true); }
+        if (event.key.toLowerCase() === 'f') { event.preventDefault(); toggleFullscreen(); }
+        if (event.key === '?') { event.preventDefault(); setHelp(true); }
+      });
+
+      document.addEventListener('touchstart', event => {
+        const touch = event.changedTouches[0];
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
+      }, { passive: true });
+
+      document.addEventListener('touchend', event => {
+        if (touchStartX === null || overview.classList.contains('open') || help.classList.contains('open')) return;
+        const touch = event.changedTouches[0];
+        const deltaX = touch.clientX - touchStartX;
+        const deltaY = touch.clientY - touchStartY;
+        if (Math.abs(deltaX) > 70 && Math.abs(deltaX) > Math.abs(deltaY) * 1.35) go(deltaX < 0 ? 1 : -1);
+        touchStartX = touchStartY = null;
+      }, { passive: true });
+
+      overview.addEventListener('click', event => {
+        if (event.target === overview) setOverview(false);
+      });
+      help.addEventListener('click', event => {
+        if (event.target === help) setHelp(false);
+      });
+
+      window.addEventListener('hashchange', () => {
+        if (location.hash === '#overview') return setOverview(true);
+        const n = Number(location.hash.slice(1));
+        if (Number.isInteger(n) && n >= 1 && n <= slides.length) updateSlides(n - 1, false);
+      });
+    })();
+  </script>
+</body>
+</html>
