@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comunicacion: definicion, factores y elementos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700;800;900&family=Roboto:wght@400;500;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24..48,500..700,0..1,0&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #006b5f;
+      --on-primary: #ffffff;
+      --primary-container: #75f7df;
+      --on-primary-container: #00201c;
+      --secondary: #4a635f;
+      --secondary-container: #cce8e1;
+      --tertiary: #456179;
+      --tertiary-container: #cce5ff;
+      --accent: #8f4b00;
+      --accent-container: #ffdcc1;
+      --surface: #fafdf9;
+      --surface-container: #edf3ef;
+      --surface-high: #e2e9e5;
+      --surface-glass: rgba(250, 253, 249, .86);
+      --outline: #6f7976;
+      --text: #171d1b;
+      --muted: #3f4946;
+      --shadow: 0 22px 55px rgba(0, 50, 44, .18);
+      --radius-xl: 34px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      font-family: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        linear-gradient(120deg, rgba(117, 247, 223, .26), transparent 34%),
+        linear-gradient(300deg, rgba(204, 229, 255, .72), transparent 34%),
+        var(--surface);
+    }
+
+    body {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .topbar,
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 24px;
+      background: var(--surface-glass);
+      border-color: rgba(111, 121, 118, .22);
+      backdrop-filter: blur(18px);
+      z-index: 10;
+    }
+
+    .topbar { border-bottom: 1px solid rgba(111, 121, 118, .22); }
+    .footer { border-top: 1px solid rgba(111, 121, 118, .22); }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: "Google Sans", sans-serif;
+      font-weight: 900;
+    }
+
+    .brand-mark,
+    .icon {
+      display: grid;
+      place-items: center;
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+    }
+
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      border-radius: 17px;
+    }
+
+    .badge {
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: var(--secondary-container);
+      color: #18332f;
+      font-family: "Google Sans", sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .deck {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 26px;
+      animation: appear .24s ease;
+    }
+
+    .slide.active { display: flex; }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(8px) scale(.996); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .panel {
+      position: relative;
+      width: min(1180px, 94vw);
+      height: min(690px, 79vh);
+      padding: 42px;
+      overflow: auto;
+      border: 1px solid rgba(111, 121, 118, .16);
+      border-radius: var(--radius-xl);
+      background: rgba(250, 253, 249, .96);
+      box-shadow: var(--shadow);
+    }
+
+    .panel::after {
+      content: attr(data-symbol);
+      position: absolute;
+      right: 28px;
+      bottom: 10px;
+      z-index: 0;
+      font-family: "Material Symbols Rounded";
+      font-size: 156px;
+      line-height: 1;
+      color: rgba(0, 107, 95, .08);
+      pointer-events: none;
+      font-variation-settings: "FILL" 1, "wght" 700, "GRAD" 0, "opsz" 48;
+    }
+
+    .panel > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(300px, .95fr);
+      gap: 34px;
+      align-items: center;
+      background:
+        radial-gradient(circle at 86% 16%, rgba(255, 220, 193, .9), transparent 29%),
+        radial-gradient(circle at 15% 88%, rgba(117, 247, 223, .34), transparent 36%),
+        rgba(250, 253, 249, .98);
+    }
+
+    .eyebrow {
+      margin-bottom: 12px;
+      color: var(--primary);
+      font-family: "Google Sans", sans-serif;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      font-family: "Google Sans", sans-serif;
+      line-height: 1.04;
+    }
+
+    h1 {
+      max-width: 790px;
+      margin-bottom: 18px;
+      font-size: clamp(44px, 6vw, 78px);
+      font-weight: 900;
+    }
+
+    h2 {
+      margin-bottom: 22px;
+      font-size: clamp(32px, 4.4vw, 56px);
+      font-weight: 900;
+    }
+
+    h3 {
+      margin-bottom: 9px;
+      font-size: 21px;
+      font-weight: 850;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(17px, 1.9vw, 22px);
+      line-height: 1.55;
+    }
+
+    ul {
+      margin: 10px 0 0;
+      padding-left: 20px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.48;
+    }
+
+    .quote {
+      max-width: 820px;
+      margin-top: 26px;
+      padding: 22px 24px;
+      border-radius: var(--radius-lg);
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      font-family: "Google Sans", sans-serif;
+      font-size: 23px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .network {
+      position: relative;
+      min-height: 410px;
+      border-radius: 32px;
+      background:
+        linear-gradient(145deg, rgba(0, 107, 95, .1), rgba(69, 97, 121, .12)),
+        var(--surface-container);
+      border: 1px solid rgba(111, 121, 118, .16);
+      overflow: hidden;
+    }
+
+    .line {
+      position: absolute;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(0, 107, 95, .22);
+      transform-origin: left center;
+    }
+
+    .line.one { width: 220px; left: 160px; top: 120px; transform: rotate(18deg); }
+    .line.two { width: 210px; left: 160px; top: 245px; transform: rotate(-19deg); }
+    .line.three { width: 165px; right: 144px; top: 190px; transform: rotate(90deg); }
+    .line.four { width: 190px; left: 142px; bottom: 103px; transform: rotate(25deg); }
+
+    .node {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      width: 108px;
+      height: 108px;
+      border-radius: 30px;
+      background: #ffffff;
+      color: var(--primary);
+      box-shadow: 0 16px 32px rgba(0, 50, 44, .14);
+    }
+
+    .node .material-symbols-rounded { font-size: 46px; }
+    .node.center { left: 50%; top: 50%; transform: translate(-50%, -50%); background: var(--primary); color: #fff; }
+    .node.a { left: 36px; top: 42px; }
+    .node.b { right: 42px; top: 48px; }
+    .node.c { left: 52px; bottom: 48px; }
+    .node.d { right: 58px; bottom: 58px; background: var(--accent-container); color: #633100; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .card {
+      padding: 22px;
+      border: 1px solid rgba(111, 121, 118, .16);
+      border-radius: var(--radius-lg);
+      background: var(--surface-container);
+    }
+
+    .card p,
+    .card li { font-size: 17px; }
+
+    .icon {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 14px;
+      border-radius: var(--radius-md);
+    }
+
+    .material-symbols-rounded {
+      font-size: 28px;
+      font-variation-settings: "FILL" 1, "wght" 650, "GRAD" 0, "opsz" 32;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .chip {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: var(--secondary-container);
+      color: #18332f;
+      font-family: "Google Sans", sans-serif;
+      font-weight: 800;
+    }
+
+    .presenter {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: var(--accent-container);
+      color: #633100;
+      font-family: "Google Sans", sans-serif;
+      font-size: 14px;
+      font-weight: 850;
+    }
+
+    .dense-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .mini-card {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 14px;
+      border-radius: 20px;
+      background: #ffffff;
+      border: 1px solid rgba(111, 121, 118, .16);
+    }
+
+    .mini-card strong {
+      display: block;
+      margin-bottom: 4px;
+      font-family: "Google Sans", sans-serif;
+      font-size: 17px;
+    }
+
+    .mini-card p { font-size: 15px; }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(92px, 1fr));
+      gap: 10px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .flow-item {
+      min-height: 116px;
+      display: grid;
+      place-items: center;
+      padding: 14px 10px;
+      border-radius: 22px;
+      background: #ffffff;
+      border: 1px solid rgba(111, 121, 118, .16);
+      text-align: center;
+      font-family: "Google Sans", sans-serif;
+      font-weight: 850;
+    }
+
+    .flow-arrow {
+      color: var(--primary);
+      text-align: center;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .factor-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .factor {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 16px;
+      border-radius: 22px;
+      background: #ffffff;
+      border: 1px solid rgba(111, 121, 118, .16);
+    }
+
+    .factor strong {
+      display: block;
+      margin-bottom: 4px;
+      font-family: "Google Sans", sans-serif;
+      font-size: 18px;
+    }
+
+    .factor p { font-size: 16px; }
+
+    .mini-icon {
+      display: grid;
+      place-items: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: var(--tertiary-container);
+      color: #17324a;
+    }
+
+    .footer .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    button {
+      min-height: 44px;
+      border: 0;
+      border-radius: 18px;
+      padding: 10px 16px;
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      font-family: "Google Sans", sans-serif;
+      font-weight: 850;
+      cursor: pointer;
+      transition: transform .18s ease, filter .18s ease;
+    }
+
+    button.primary {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      filter: brightness(.98);
+    }
+
+    .progress {
+      flex: 1;
+      max-width: 420px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--surface-high);
+      overflow: hidden;
+    }
+
+    .progress > div {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--primary);
+      transition: width .25s ease;
+    }
+
+    .counter {
+      min-width: 78px;
+      color: var(--muted);
+      font-family: "Google Sans", sans-serif;
+      font-weight: 850;
+      text-align: right;
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .split,
+      .grid,
+      .grid.three {
+        grid-template-columns: 1fr;
+      }
+
+      .flow,
+      .dense-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-arrow {
+        transform: rotate(90deg);
+      }
+
+      .network { min-height: 310px; }
+      .node { width: 82px; height: 82px; border-radius: 24px; }
+      .node .material-symbols-rounded { font-size: 36px; }
+      .line { display: none; }
+    }
+
+    @media (max-width: 720px) {
+      .topbar,
+      .footer {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 12px 14px;
+      }
+
+      .slide { padding: 14px; }
+      .panel { width: 100%; height: 80vh; padding: 26px; }
+      h1 { font-size: 42px; }
+      h2 { font-size: 32px; }
+      .progress { width: 100%; max-width: 100%; }
+      .counter { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark"><span class="material-symbols-rounded">forum</span></div>
+      <div>Comunicacion</div>
+    </div>
+    <div class="badge">Expo comunicacion</div>
+  </header>
+
+  <main class="deck" id="deck">
+    <section class="slide active">
+      <div class="panel hero" data-symbol="forum">
+        <div>
+          <div class="eyebrow">Exposicion grupal</div>
+          <h1>Comunicacion</h1>
+          <p>
+            Tema: definicion, factores y elementos. La idea es explicar como las personas
+            intercambian informacion, ideas, sentimientos, opiniones o mensajes.
+          </p>
+          <div class="chips">
+          </div>
+        </div>
+        <div class="network" aria-label="Red visual de comunicacion">
+          <div class="line one"></div>
+          <div class="line two"></div>
+          <div class="line three"></div>
+          <div class="line four"></div>
+          <div class="node center"><span class="material-symbols-rounded">forum</span></div>
+          <div class="node a"><span class="material-symbols-rounded">record_voice_over</span></div>
+          <div class="node b"><span class="material-symbols-rounded">hearing</span></div>
+          <div class="node c"><span class="material-symbols-rounded">language</span></div>
+          <div class="node d"><span class="material-symbols-rounded">public</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="panel" data-symbol="menu_book">
+        <div class="eyebrow">Definicion de comunicacion</div>
+        <h2>Que es la comunicacion?</h2>
+        <p>
+          La comunicacion es el proceso mediante el cual dos o mas personas intercambian
+          informacion, ideas, sentimientos, opiniones o mensajes. No solo ocurre cuando
+          hablamos: tambien nos comunicamos mediante gestos, imagenes, sonidos, textos,
+          simbolos e incluso con el silencio.
+        </p>
+        <div class="quote">
+          La comunicacion es un proceso de intercambio de informacion entre un emisor y
+          un receptor mediante un mensaje transmitido a traves de un canal y utilizando
+          un codigo comun.
+        </div>
+        <div class="dense-grid">
+          <div class="mini-card">
+            <div class="mini-icon"><span class="material-symbols-rounded">task_alt</span></div>
+            <div><strong>Objetivo principal</strong><p>Lograr que un mensaje sea transmitido, recibido y comprendido.</p></div>
+          </div>
+          <div class="mini-card">
+            <div class="mini-icon"><span class="material-symbols-rounded">chat</span></div>
+            <div><strong>Ejemplos</strong><p>Una clase, un WhatsApp o una senal de transito tambien son comunicacion.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="panel" data-symbol="tune">
+        <div class="eyebrow">Factores de la comunicacion</div>
+        <h2>Que puede ayudar o dificultar el mensaje?</h2>
+        <p>
+          Los factores son condiciones que influyen en que la comunicacion funcione bien
+          o mal. Afectan la calidad del mensaje y la forma en que el receptor lo interpreta.
+        </p>
+        <div class="dense-grid">
+          <div class="mini-card"><div class="mini-icon"><span class="material-symbols-rounded">public</span></div><div><strong>Contexto</strong><p>Situacion, lugar o momento donde ocurre la comunicacion.</p></div></div>
+          <div class="mini-card"><div class="mini-icon"><span class="material-symbols-rounded">language</span></div><div><strong>Cultura</strong><p>Costumbres, valores y formas de expresion de las personas.</p></div></div>
+          <div class="mini-card"><div class="mini-icon"><span class="material-symbols-rounded">mood</span></div><div><strong>Estado emocional</strong><p>Enojo, miedo, alegria o estres pueden cambiar la interpretacion.</p></div></div>
+          <div class="mini-card"><div class="mini-icon"><span class="material-symbols-rounded">school</span></div><div><strong>Conocimiento previo</strong><p>Mientras mas se conoce el tema, mas facil es entenderlo.</p></div></div>
+          <div class="mini-card"><div class="mini-icon"><span class="material-symbols-rounded">wifi_tethering_error</span></div><div><strong>Ruido</strong><p>Sonidos, mala conexion, distracciones o prejuicios que interfieren.</p></div></div>
+          <div class="mini-card"><div class="mini-icon"><span class="material-symbols-rounded">volume_up</span></div><div><strong>Claridad</strong><p>Si el mensaje es ambiguo o esta mal explicado, genera malentendidos.</p></div></div>
+          <div class="mini-card"><div class="mini-icon"><span class="material-symbols-rounded">diversity_2</span></div><div><strong>Relacion entre personas</strong><p>No hablamos igual con un amigo que con un profesor o desconocido.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="panel" data-symbol="account_tree">
+        <div class="eyebrow">Elementos de la comunicacion</div>
+        <h2>Las piezas del proceso comunicativo</h2>
+        <div class="flow">
+          <div class="flow-item">Emisor</div>
+          <div class="flow-arrow"><span class="material-symbols-rounded">arrow_forward</span></div>
+          <div class="flow-item">Mensaje</div>
+          <div class="flow-arrow"><span class="material-symbols-rounded">arrow_forward</span></div>
+          <div class="flow-item">Canal</div>
+          <div class="flow-arrow"><span class="material-symbols-rounded">arrow_forward</span></div>
+          <div class="flow-item">Receptor</div>
+        </div>
+        <div class="dense-grid">
+          <div class="mini-card"><div class="mini-icon"><span class="material-symbols-rounded">record_voice_over</span></div><div><strong>Emisor</strong><p>Quien crea y transmite el mensaje. Ejemplo: un profesor explicando.</p></div></div>
+          <div class="mini-card"><div class="mini-icon"><span class="material-symbols-rounded">hearing</span></div><div><strong>Receptor</strong><p>Quien recibe e interpreta el mensaje. Ejemplo: los estudiantes.</p></div></div>
+          <div class="mini-card"><div class="mini-icon"><span class="material-symbols-rounded">mail</span></div><div><strong>Mensaje</strong><p>La informacion que se desea transmitir. Ejemplo: una explicacion de clase.</p></div></div>
+          <div class="mini-card"><div class="mini-icon"><span class="material-symbols-rounded">settings_input_antenna</span></div><div><strong>Canal</strong><p>Medio por el cual viaja el mensaje: voz, telefono, internet, hoja o TV.</p></div></div>
+          <div class="mini-card"><div class="mini-icon"><span class="material-symbols-rounded">translate</span></div><div><strong>Codigo</strong><p>Signos o reglas: idioma espanol, senas, simbolos matematicos o emojis.</p></div></div>
+          <div class="mini-card"><div class="mini-icon"><span class="material-symbols-rounded">public</span></div><div><strong>Contexto</strong><p>Situacion donde ocurre: clase, reunion o conversacion familiar.</p></div></div>
+          <div class="mini-card"><div class="mini-icon"><span class="material-symbols-rounded">sync</span></div><div><strong>Feedback</strong><p>Respuesta del receptor para saber si el mensaje fue comprendido.</p></div></div>
+          <div class="mini-card"><div class="mini-icon"><span class="material-symbols-rounded">report</span></div><div><strong>Ruido</strong><p>Interferencia fisica, tecnica o psicologica que altera el mensaje.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="panel hero" data-symbol="check_circle">
+        <div>
+          <div class="eyebrow">Cierre</div>
+          <h2>Idea final</h2>
+          <p>
+            Para que exista comunicacion efectiva no basta con enviar informacion:
+            el receptor debe interpretar correctamente lo que el emisor quiso expresar.
+            Por eso importan los elementos, el contexto, la claridad y la retroalimentacion.
+          </p>
+          <div class="quote">
+            En resumen: comunicar es compartir significado. Hablar sin ser entendido es solo hacer ruido con estilo.
+          </div>
+        </div>
+        <div class="network" aria-label="Resumen visual de comunicacion">
+          <div class="node center"><span class="material-symbols-rounded">check_circle</span></div>
+          <div class="node a"><span class="material-symbols-rounded">speaker_notes</span></div>
+          <div class="node b"><span class="material-symbols-rounded">groups</span></div>
+          <div class="node c"><span class="material-symbols-rounded">sync</span></div>
+          <div class="node d"><span class="material-symbols-rounded">tips_and_updates</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="controls">
+      <button id="first" title="Ir al inicio"><span class="material-symbols-rounded">first_page</span></button>
+      <button id="prev" title="Anterior"><span class="material-symbols-rounded">chevron_left</span></button>
+      <button class="primary" id="next" title="Siguiente"><span class="material-symbols-rounded">chevron_right</span></button>
+      <button id="last" title="Ir al final"><span class="material-symbols-rounded">last_page</span></button>
+    </div>
+    <div class="progress" aria-label="Progreso de diapositivas"><div id="bar"></div></div>
+    <div class="counter" id="counter">1 / 5</div>
+  </footer>
+
+  <script>
+    const slides = [...document.querySelectorAll(".slide")];
+    const counter = document.getElementById("counter");
+    const bar = document.getElementById("bar");
+    let index = 0;
+
+    function showSlide(target) {
+      index = Math.max(0, Math.min(target, slides.length - 1));
+      slides.forEach((slide, position) => {
+        slide.classList.toggle("active", position === index);
+      });
+      counter.textContent = `${index + 1} / ${slides.length}`;
+      bar.style.width = `${((index + 1) / slides.length) * 100}%`;
+    }
+
+    document.getElementById("first").addEventListener("click", () => showSlide(0));
+    document.getElementById("prev").addEventListener("click", () => showSlide(index - 1));
+    document.getElementById("next").addEventListener("click", () => showSlide(index + 1));
+    document.getElementById("last").addEventListener("click", () => showSlide(slides.length - 1));
+
+    document.addEventListener("keydown", (event) => {
+      if (["ArrowRight", "PageDown", " "].includes(event.key)) showSlide(index + 1);
+      if (["ArrowLeft", "PageUp"].includes(event.key)) showSlide(index - 1);
+      if (event.key === "Home") showSlide(0);
+      if (event.key === "End") showSlide(slides.length - 1);
+    });
+
+    showSlide(0);
+  </script>
+</body>
+</html>
