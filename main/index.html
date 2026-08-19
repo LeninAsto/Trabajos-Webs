@@ -6,412 +6,9 @@
   <title>Mis trabajos web</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700;800&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0,0&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #3f6838;
-      --on-primary: #ffffff;
-      --primary-container: #c0efb2;
-      --on-primary-container: #062100;
-      --secondary: #52634d;
-      --secondary-container: #d5e8cc;
-      --tertiary: #38656a;
-      --tertiary-container: #bcebf0;
-      --surface: #fbfdf6;
-      --surface-container: #eff3e9;
-      --surface-container-high: #e8eee1;
-      --surface-container-highest: #e2e8dc;
-      --on-surface: #1a1c18;
-      --on-surface-variant: #44483f;
-      --outline: #74796e;
-      --shadow: rgba(22, 29, 20, .16);
-    }
-
-    * { box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: "Roboto", system-ui, sans-serif;
-      color: var(--on-surface);
-      background:
-        radial-gradient(circle at 14% 10%, rgba(192, 239, 178, .78), transparent 28%),
-        radial-gradient(circle at 88% 18%, rgba(188, 235, 240, .72), transparent 26%),
-        linear-gradient(135deg, #fbfdf6 0%, #eef5ec 46%, #f8fbf2 100%);
-    }
-
-    .material-symbols-rounded {
-      font-family: "Material Symbols Rounded";
-      font-weight: 500;
-      font-style: normal;
-      font-size: 24px;
-      line-height: 1;
-      display: inline-block;
-      white-space: nowrap;
-      direction: ltr;
-      font-feature-settings: "liga";
-      -webkit-font-feature-settings: "liga";
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: rgba(251, 253, 246, .76);
-      border-bottom: 1px solid rgba(116, 121, 110, .22);
-      backdrop-filter: blur(18px);
-    }
-
-    .topbar-inner {
-      width: min(1120px, calc(100% - 32px));
-      min-height: 72px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-      color: var(--on-surface);
-      text-decoration: none;
-      font-family: "Google Sans", "Roboto", sans-serif;
-      font-weight: 800;
-    }
-
-    .brand-icon,
-    .icon-button {
-      width: 44px;
-      height: 44px;
-      border-radius: 16px;
-      display: inline-grid;
-      place-items: center;
-      flex: 0 0 auto;
-    }
-
-    .brand-icon {
-      color: var(--on-primary-container);
-      background: var(--primary-container);
-    }
-
-    .icon-button {
-      border: 0;
-      color: var(--on-surface-variant);
-      background: var(--surface-container-high);
-      text-decoration: none;
-      transition: transform .18s ease, background .18s ease;
-    }
-
-    .icon-button:hover {
-      transform: translateY(-2px);
-      background: var(--secondary-container);
-    }
-
-    .page {
-      width: min(1120px, calc(100% - 32px));
-      margin: 0 auto;
-      padding: 56px 0 72px;
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.08fr) minmax(260px, .92fr);
-      gap: 32px;
-      align-items: center;
-      min-height: calc(100vh - 160px);
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      width: fit-content;
-      padding: 8px 14px;
-      border-radius: 999px;
-      color: var(--on-primary-container);
-      background: var(--primary-container);
-      font-weight: 700;
-    }
-
-    h1,
-    h2,
-    h3 {
-      margin: 0;
-      font-family: "Google Sans", "Roboto", sans-serif;
-      line-height: 1.05;
-    }
-
-    h1 {
-      max-width: 760px;
-      margin-top: 20px;
-      font-size: clamp(2.8rem, 9vw, 6.2rem);
-      letter-spacing: 0;
-    }
-
-    .lead {
-      max-width: 650px;
-      margin: 22px 0 0;
-      color: var(--on-surface-variant);
-      font-size: 1.12rem;
-      line-height: 1.75;
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 30px;
-    }
-
-    .button {
-      min-height: 48px;
-      border: 0;
-      border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px 22px;
-      color: var(--on-surface);
-      background: var(--surface-container-high);
-      font-family: "Google Sans", "Roboto", sans-serif;
-      font-weight: 800;
-      text-decoration: none;
-      box-shadow: none;
-      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
-    }
-
-    .button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 22px rgba(22, 29, 20, .12);
-    }
-
-    .button.filled {
-      color: var(--on-primary);
-      background: var(--primary);
-    }
-
-    .button.tonal {
-      color: var(--on-primary-container);
-      background: var(--secondary-container);
-    }
-
-    .preview {
-      min-height: 440px;
-      border: 1px solid rgba(116, 121, 110, .24);
-      border-radius: 28px;
-      overflow: hidden;
-      background: var(--surface-container);
-      box-shadow: 0 24px 60px var(--shadow);
-    }
-
-    .preview-top {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      min-height: 54px;
-      padding: 0 18px;
-      border-bottom: 1px solid rgba(116, 121, 110, .18);
-      background: rgba(255, 255, 255, .54);
-    }
-
-    .dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 999px;
-      background: var(--outline);
-    }
-
-    .dot.green { background: var(--primary); }
-    .dot.blue { background: var(--tertiary); }
-
-    .preview-body {
-      height: 386px;
-      display: grid;
-      place-items: center;
-      padding: 34px;
-      background:
-        linear-gradient(120deg, rgba(192, 239, 178, .66), transparent 58%),
-        linear-gradient(320deg, rgba(188, 235, 240, .72), transparent 54%),
-        var(--surface-container-high);
-    }
-
-    .preview-panel {
-      width: min(330px, 100%);
-      padding: 24px;
-      border-radius: 24px;
-      color: var(--on-surface);
-      background: rgba(251, 253, 246, .82);
-      border: 1px solid rgba(116, 121, 110, .2);
-      backdrop-filter: blur(14px);
-    }
-
-    .preview-panel .material-symbols-rounded {
-      width: 54px;
-      height: 54px;
-      display: grid;
-      place-items: center;
-      border-radius: 18px;
-      color: var(--on-primary-container);
-      background: var(--primary-container);
-      font-size: 30px;
-      margin-bottom: 18px;
-    }
-
-    .preview-panel p {
-      margin: 12px 0 0;
-      color: var(--on-surface-variant);
-      line-height: 1.6;
-    }
-
-    .section-head {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 18px;
-      margin: 10px 0 18px;
-    }
-
-    .section-head p {
-      max-width: 540px;
-      margin: 0;
-      color: var(--on-surface-variant);
-      line-height: 1.65;
-    }
-
-    .work-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .work-card {
-      min-height: 270px;
-      padding: 22px;
-      border-radius: 24px;
-      border: 1px solid rgba(116, 121, 110, .24);
-      color: var(--on-surface);
-      background: rgba(251, 253, 246, .84);
-      text-decoration: none;
-      box-shadow: 0 12px 28px rgba(22, 29, 20, .08);
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-    }
-
-    .work-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(63, 104, 56, .5);
-      box-shadow: 0 18px 42px rgba(22, 29, 20, .13);
-    }
-
-    .work-icon {
-      width: 58px;
-      height: 58px;
-      border-radius: 20px;
-      display: grid;
-      place-items: center;
-      color: var(--on-primary-container);
-      background: var(--primary-container);
-      font-size: 30px;
-    }
-
-    .work-card p {
-      margin: 0;
-      color: var(--on-surface-variant);
-      line-height: 1.58;
-    }
-
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: auto;
-    }
-
-    .chip {
-      min-height: 32px;
-      border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 11px;
-      color: var(--on-surface-variant);
-      background: var(--surface-container-high);
-      font-size: .9rem;
-      font-weight: 700;
-    }
-
-    .chip .material-symbols-rounded { font-size: 18px; }
-
-    .empty-card {
-      min-height: 270px;
-      padding: 22px;
-      border: 1px dashed rgba(116, 121, 110, .55);
-      border-radius: 24px;
-      color: var(--on-surface-variant);
-      background: rgba(239, 243, 233, .62);
-      display: grid;
-      align-content: center;
-      gap: 10px;
-    }
-
-    .empty-card strong {
-      color: var(--on-surface);
-      font-family: "Google Sans", "Roboto", sans-serif;
-      font-size: 1.2rem;
-    }
-
-    .note {
-      margin-top: 18px;
-      padding: 18px 20px;
-      border-radius: 22px;
-      color: var(--on-surface-variant);
-      background: var(--surface-container);
-      border: 1px solid rgba(116, 121, 110, .2);
-      line-height: 1.65;
-    }
-
-    code {
-      padding: 2px 6px;
-      border-radius: 8px;
-      color: var(--on-primary-container);
-      background: var(--primary-container);
-      font-family: Consolas, "Courier New", monospace;
-      font-size: .95em;
-    }
-
-    footer {
-      padding: 28px 0 46px;
-      color: var(--on-surface-variant);
-      text-align: center;
-    }
-
-    @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; min-height: auto; }
-      .preview { min-height: 360px; }
-      .preview-body { height: 306px; }
-      .work-grid { grid-template-columns: 1fr; }
-      .section-head { align-items: start; flex-direction: column; }
-    }
-
-    @media (max-width: 560px) {
-      .topbar-inner,
-      .page { width: min(100% - 24px, 1120px); }
-      .page { padding-top: 34px; }
-      h1 { font-size: clamp(2.45rem, 16vw, 4.2rem); }
-      .lead { font-size: 1rem; }
-      .button { width: 100%; }
-      .preview-body { padding: 22px; }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700;800;900&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500..700,0..1,0&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <script src="../assets/js/projects.js" defer></script>
 </head>
 <body>
   <header class="topbar">
@@ -420,139 +17,104 @@
         <span class="brand-icon material-symbols-rounded" aria-hidden="true">dashboard</span>
         <span>Mis trabajos web</span>
       </a>
-      <a class="icon-button" href="#trabajos" aria-label="Ver trabajos" title="Ver trabajos">
-        <span class="material-symbols-rounded" aria-hidden="true">apps</span>
-      </a>
+      <nav class="topnav" aria-label="Navegación principal">
+        <a href="#trabajos">Trabajos</a>
+        <a href="#organizacion">Organización</a>
+      </nav>
     </div>
   </header>
 
   <main class="page">
     <section class="hero" aria-labelledby="titulo">
-      <div>
+      <div class="hero-copy">
         <span class="eyebrow">
           <span class="material-symbols-rounded" aria-hidden="true">school</span>
           Menú principal
         </span>
-        <h1 id="titulo">Mis trabajos y diapositivas estan aqui!</h1>
+        <h1 id="titulo">Trabajos y diapositivas</h1>
         <p class="lead">
-          Aca podras encontrar todos mis trabajos o diapositivas que realizo para exponer o yo que se,
-          trabajos son trabajos y que paja seguir creando muchos XD, espero les guste y puedan aprender de estas diapositivas.
+          Un hub simple para entrar rápido a mis exposiciones, proyectos y trabajos web,
+          organizados por semestre y tipo. Cada trabajo mantiene su propio diseño, porque
+          cada exposición tiene su flow, como debe ser.
         </p>
+        <div class="actions">
+          <a class="button filled" href="#trabajos">
+            <span class="material-symbols-rounded" aria-hidden="true">apps</span>
+            Ver trabajos
+          </a>
+          <a class="button tonal" href="#organizacion">
+            <span class="material-symbols-rounded" aria-hidden="true">account_tree</span>
+            Ver estructura
+          </a>
+        </div>
       </div>
 
-      <div class="preview" aria-label="Vista decorativa del menú de trabajos">
-        <div class="preview-top">
+      <aside class="summary-panel" aria-label="Resumen del sitio">
+        <div class="summary-top">
           <span class="dot"></span>
           <span class="dot green"></span>
           <span class="dot blue"></span>
         </div>
-        <div class="preview-body">
-          <div class="preview-panel">
-            <span class="material-symbols-rounded" aria-hidden="true">info_i</span>
-            <h2>Info</h2>
-            <p>Se agregaran mas cosas en el futuro.</p>
-          </div>
+        <div class="summary-body">
+          <span class="summary-icon material-symbols-rounded" aria-hidden="true">folder_open</span>
+          <h2>Panel general</h2>
+          <p>Todo queda ordenado desde una lista de proyectos. Menos copiar y pegar, más avanzar.</p>
+          <div class="stats" id="stats" aria-label="Estadísticas del sitio"></div>
         </div>
-      </div>
+      </aside>
     </section>
 
-    <section id="trabajos" aria-labelledby="trabajos-titulo">
+    <section id="trabajos" class="projects-section" aria-labelledby="trabajos-titulo">
       <div class="section-head">
         <div>
+          <span class="section-kicker">Biblioteca</span>
           <h2 id="trabajos-titulo">Trabajos disponibles</h2>
         </div>
-        <p>Haz clic en una tarjeta para entrar. Cuando agregues más proyectos, aparecerán aquí.</p>
+        <p>Busca, filtra y abre el trabajo que necesites. El contenido sale desde el mini backend en JavaScript.</p>
       </div>
 
-      <div class="work-grid">
-        <!-- NUEVOS TRABAJOS:
-          Copia una tarjeta <a class="work-card"> completa, cambia el href,
-          el titulo, la descripcion y los chips. Pegala dentro de este .work-grid.
-        -->
-        <a class="work-card" href="../works/semestre-1/expo-fisica/">
-          <span class="work-icon material-symbols-rounded" aria-hidden="true">science</span>
-          <h3>Expo Física</h3>
-          <p>Presentación sobre mol, masa molecular, rendimiento y pureza, con ejercicios y calculadora rápida.</p>
-          <span class="chips">
-            <span class="chip"><span class="material-symbols-rounded" aria-hidden="true">folder</span>Semestre 1</span>
-            <span class="chip"><span class="material-symbols-rounded" aria-hidden="true">open_in_new</span>Abrir</span>
-          </span>
-        </a>
-
-        <a class="work-card" href="../works/semestre-1/trabajofinal-cdi/">
-          <span class="work-icon material-symbols-rounded" aria-hidden="true">factory</span>
-          <h3>Trabajo Final CDI</h3>
-          <p>Presentación sobre INDUTECH de la asignatura de Competencia Digital para la Industria.</p>
-          <span class="chips">
-            <span class="chip"><span class="material-symbols-rounded" aria-hidden="true">folder</span>Semestre 1</span>
-            <span class="chip"><span class="material-symbols-rounded" aria-hidden="true">open_in_new</span>Abrir</span>
-          </span>
-        </a>
-
-        <a class="work-card" href="../works/semestre-1/trabajofinal-iti/">
-          <span class="work-icon material-symbols-rounded" aria-hidden="true">potted_plant</span>
-          <h3>Trabajo Final ITI</h3>
-          <p>Presentación sobre AgroVerde de la asignatura de Introducción a las Tecnologias de Información.</p>
-          <span class="chips">
-            <span class="chip"><span class="material-symbols-rounded" aria-hidden="true">folder</span>Semestre 1</span>
-            <span class="chip"><span class="material-symbols-rounded" aria-hidden="true">open_in_new</span>Abrir</span>
-          </span>
-        </a>
-
-        <a class="work-card" href="../works/semestre-1/pro-vida/">
-          <span class="work-icon material-symbols-rounded" aria-hidden="true">school</span>
-          <h3>Template de Proyecto de Vida</h3>
-          <p>Presentación de un template sobre el proyecto de vida de la asignatura de Desarrollo Personal.</p>
-          <span class="chips">
-            <span class="chip"><span class="material-symbols-rounded" aria-hidden="true">folder</span>Semestre 1</span>
-            <span class="chip"><span class="material-symbols-rounded" aria-hidden="true">open_in_new</span>Abrir</span>
-          </span>
-        </a>
-
-        <a class="work-card" href="../works/semestre-1/expo-lidera/">
-          <span class="work-icon material-symbols-rounded" aria-hidden="true">groups_3</span>
-          <h3>Liderazgo y Toma de Decisiones</h3>
-          <p>Presentación de un template sobre Liderazgo y Toma de Decisiones de la asignatura de Desarrollo Personal.</p>
-          <span class="chips">
-            <span class="chip"><span class="material-symbols-rounded" aria-hidden="true">folder</span>Semestre 1</span>
-            <span class="chip"><span class="material-symbols-rounded" aria-hidden="true">open_in_new</span>Abrir</span>
-          </span>
-        </a>
-
-        <a class="work-card" href="../works/semestre-2/expo-com/comunicacion/">
-          <span class="work-icon material-symbols-rounded" aria-hidden="true">message</span>
-          <h3>Comunicacion</h3>
-          <p>Presentación sobre la comunicacion de la asignatura de Comunicacion.</p>
-          <span class="chips">
-            <span class="chip"><span class="material-symbols-rounded" aria-hidden="true">folder</span>Semestre 2</span>
-            <span class="chip"><span class="material-symbols-rounded" aria-hidden="true">open_in_new</span>Abrir</span>
-          </span>
-        </a>
+      <div class="toolbar" aria-label="Herramientas para filtrar trabajos">
+        <label class="search-box">
+          <span class="material-symbols-rounded" aria-hidden="true">search</span>
+          <input id="searchInput" type="search" placeholder="Buscar trabajo..." autocomplete="off" />
+        </label>
+        <div class="filter-tabs" id="filterTabs" role="tablist" aria-label="Filtros de trabajos"></div>
       </div>
 
+      <div id="projectGroups" class="project-groups" aria-live="polite"></div>
+    </section>
+
+    <section id="organizacion" class="info-section" aria-labelledby="organizacion-titulo">
       <div class="section-head">
         <div>
-          <h2 id="trabajos-titulo">Otros Trabajos</h2>
+          <span class="section-kicker">Orden interno</span>
+          <h2 id="organizacion-titulo">Estructura recomendada</h2>
         </div>
-        <p>Aqui se encuentra los trabajos diferentes que fueron hechos para otras personas.</p>
+        <p>El sitio general solo organiza; cada HTML de trabajo puede tener su propio diseño sin pelearse con los demás.</p>
       </div>
 
-      <div class="work-grid">
-        <a class="work-card" href="../works/others/milenka/">
-          <span class="work-icon material-symbols-rounded" aria-hidden="true">self_improvement</span>
-          <h3>Plan Personal de Motivación Académica</h3>
-          <p>Presentación de un plan personal de motivación académica para mejorar el desempeño estudiantil.</p>
-          <span class="chips">
-            <span class="chip"><span class="material-symbols-rounded" aria-hidden="true">folder</span>Otros/Milenka</span>
-            <span class="chip"><span class="material-symbols-rounded" aria-hidden="true">open_in_new</span>Abrir</span>
-          </span>
-        </a>
+      <div class="structure-grid">
+        <article class="structure-card">
+          <span class="material-symbols-rounded" aria-hidden="true">home</span>
+          <h3>main/</h3>
+          <p>Menú principal, filtros y acceso a todos los trabajos.</p>
+        </article>
+        <article class="structure-card">
+          <span class="material-symbols-rounded" aria-hidden="true">folder</span>
+          <h3>works/</h3>
+          <p>Carpetas por semestre o grupo. Aquí vive cada exposición con su diseño propio.</p>
+        </article>
+        <article class="structure-card">
+          <span class="material-symbols-rounded" aria-hidden="true">palette</span>
+          <h3>assets/</h3>
+          <p>CSS y JS del hub general. Este no invade los diseños individuales.</p>
+        </article>
       </div>
     </section>
   </main>
 
-  <footer>
-    Hecho para abrir tus trabajos rápido, bonito y sin sufrir con carpetas escondidas.
+  <footer class="footer">
+    <span>Hecho para abrir trabajos rápido, bonito y sin sufrir con carpetas escondidas.</span>
   </footer>
 </body>
 </html>
