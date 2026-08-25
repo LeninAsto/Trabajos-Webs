@@ -86,18 +86,39 @@
       border-radius: 16px;
     }
 
-    .badge {
-      display: inline-flex;
+    .github-card {
+      display: grid;
+      grid-template-columns: 34px 1fr;
       align-items: center;
-      gap: 8px;
-      padding: 9px 14px;
-      border-radius: 999px;
-      background: var(--secondary-container);
-      color: #18332f;
+      gap: 10px;
+      color: var(--text);
       font-family: "Google Sans", sans-serif;
-      font-size: 13px;
-      font-weight: 850;
-      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    .github-card img {
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+    }
+
+    .github-card strong,
+    .github-card span {
+      display: block;
+      line-height: 1.15;
+    }
+
+    .github-card strong {
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .github-card span {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      word-break: break-word;
     }
 
     .deck {
@@ -359,6 +380,13 @@
       filter: brightness(.98);
     }
 
+    button:disabled {
+      cursor: progress;
+      filter: grayscale(.2);
+      opacity: .72;
+      transform: none;
+    }
+
     .progress {
       flex: 1;
       max-width: 420px;
@@ -382,6 +410,83 @@
       font-family: "Google Sans", sans-serif;
       font-weight: 850;
       text-align: right;
+    }
+
+    .pdf-export-frame {
+      position: fixed;
+      left: -99999px;
+      top: 0;
+      width: 1180px;
+      padding: 18px 24px 24px;
+      background: var(--surface);
+    }
+
+    .pdf-export-frame .panel {
+      position: relative;
+      width: 1132px;
+      height: 660px;
+      overflow: hidden;
+    }
+
+    .pdf-footer {
+      display: flex;
+      justify-content: center;
+      margin-top: 12px;
+    }
+
+    @media print {
+      @page {
+        size: landscape;
+        margin: 0;
+      }
+
+      html,
+      body {
+        height: auto;
+        overflow: visible;
+        background: #ffffff;
+      }
+
+      body {
+        display: block;
+      }
+
+      .topbar,
+      .footer {
+        display: none;
+      }
+
+      .deck {
+        height: auto;
+      }
+
+      .slide {
+        position: relative;
+        inset: auto;
+        display: flex;
+        width: 100vw;
+        min-height: 100vh;
+        padding: 0;
+        break-after: page;
+        page-break-after: always;
+        animation: none;
+      }
+
+      .panel {
+        width: 100vw;
+        height: 100vh;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      body.print-current .slide {
+        display: none;
+      }
+
+      body.print-current .slide.active {
+        display: flex;
+      }
     }
 
     @media (max-width: 980px) {
@@ -476,7 +581,13 @@
       <span class="brand-mark"><span class="material-symbols-rounded">assignment</span></span>
       <span>Ejercicios de comunicación</span>
     </a>
-    <div class="badge"><span class="material-symbols-rounded">view_carousel</span>3 diapositivas</div>
+    <a class="github-card" href="https://github.com/LeninAsto" target="_blank" rel="noopener noreferrer" aria-label="GitHub de Lenin Asto">
+      <img src="../../../../assets/images-global/github.png" alt="" />
+      <span>
+        <strong>Lenin Asto</strong>
+        <span>github.com/LeninAsto</span>
+      </span>
+    </a>
   </header>
 
   <main class="deck" id="deck">
@@ -583,15 +694,21 @@
       <button id="prev" title="Anterior"><span class="material-symbols-rounded">chevron_left</span></button>
       <button class="primary" id="next" title="Siguiente"><span class="material-symbols-rounded">chevron_right</span></button>
       <button id="last" title="Ir al final"><span class="material-symbols-rounded">last_page</span></button>
+      <button id="printCurrent" title="Guardar diapositiva actual en PDF"><span class="material-symbols-rounded">picture_as_pdf</span></button>
+      <button id="printAll" title="Guardar todas las diapositivas en PDF"><span class="material-symbols-rounded">print</span></button>
+      <button id="downloadPdf" title="Descargar PDF completo"><span class="material-symbols-rounded">download</span></button>
     </div>
     <div class="progress" aria-label="Progreso de diapositivas"><div id="bar"></div></div>
     <div class="counter" id="counter">1 / 3</div>
   </footer>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
     const slides = [...document.querySelectorAll(".slide")];
     const counter = document.getElementById("counter");
     const bar = document.getElementById("bar");
+    const downloadPdfButton = document.getElementById("downloadPdf");
     let index = 0;
 
     function showSlide(target) {
@@ -607,6 +724,9 @@
     document.getElementById("prev").addEventListener("click", () => showSlide(index - 1));
     document.getElementById("next").addEventListener("click", () => showSlide(index + 1));
     document.getElementById("last").addEventListener("click", () => showSlide(slides.length - 1));
+    document.getElementById("printCurrent").addEventListener("click", () => printSlides("current"));
+    document.getElementById("printAll").addEventListener("click", () => printSlides("all"));
+    downloadPdfButton.addEventListener("click", downloadFullPdf);
 
     document.addEventListener("keydown", (event) => {
       if (["ArrowRight", "PageDown", " "].includes(event.key)) showSlide(index + 1);
@@ -614,6 +734,91 @@
       if (event.key === "Home") showSlide(0);
       if (event.key === "End") showSlide(slides.length - 1);
     });
+
+    function printSlides(mode) {
+      document.body.classList.toggle("print-current", mode === "current");
+      window.print();
+    }
+
+    window.addEventListener("afterprint", () => {
+      document.body.classList.remove("print-current");
+    });
+
+    async function waitForSlidePaint() {
+      if (document.fonts && document.fonts.ready) await document.fonts.ready;
+      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    }
+
+    async function downloadFullPdf() {
+      if (!window.html2canvas || !window.jspdf) {
+        alert("No se pudo cargar el generador PDF. Revisa tu conexión a internet e intenta otra vez.");
+        return;
+      }
+
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({ orientation: "landscape", unit: "pt", format: "a4" });
+
+      downloadPdfButton.disabled = true;
+      downloadPdfButton.title = "Generando PDF...";
+
+      try {
+        for (let position = 0; position < slides.length; position += 1) {
+          const frame = createPdfFrame(slides[position]);
+          document.body.appendChild(frame);
+          await waitForSlidePaint();
+
+          const canvas = await html2canvas(frame, {
+            backgroundColor: "#fafdf9",
+            scale: 1.15,
+            useCORS: true
+          });
+          frame.remove();
+
+          const pageWidth = pdf.internal.pageSize.getWidth();
+          const pageHeight = pdf.internal.pageSize.getHeight();
+          const imageRatio = canvas.width / canvas.height;
+          const pageRatio = pageWidth / pageHeight;
+          let imageWidth = pageWidth;
+          let imageHeight = pageHeight;
+          let imageX = 0;
+          let imageY = 0;
+
+          if (imageRatio > pageRatio) {
+            imageHeight = pageWidth / imageRatio;
+            imageY = (pageHeight - imageHeight) / 2;
+          } else {
+            imageWidth = pageHeight * imageRatio;
+            imageX = (pageWidth - imageWidth) / 2;
+          }
+
+          if (position > 0) pdf.addPage();
+          pdf.addImage(canvas.toDataURL("image/jpeg", .9), "JPEG", imageX, imageY, imageWidth, imageHeight);
+          await new Promise((resolve) => setTimeout(resolve, 60));
+        }
+
+        pdf.save("ejercicios-comunicacion.pdf");
+      } finally {
+        downloadPdfButton.disabled = false;
+        downloadPdfButton.title = "Descargar PDF completo";
+      }
+    }
+
+    function createPdfFrame(slide) {
+      const frame = document.createElement("div");
+      const panel = slide.querySelector(".panel").cloneNode(true);
+      const footer = document.createElement("div");
+      const githubCard = document.querySelector(".github-card").cloneNode(true);
+
+      frame.className = "pdf-export-frame";
+      footer.className = "pdf-footer";
+      githubCard.removeAttribute("target");
+      githubCard.removeAttribute("rel");
+      footer.appendChild(githubCard);
+      frame.appendChild(panel);
+      frame.appendChild(footer);
+
+      return frame;
+    }
 
     showSlide(0);
   </script>
