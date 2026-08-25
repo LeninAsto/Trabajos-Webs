@@ -54,6 +54,15 @@ const projects = [
     owner: "Personal"
   },
   {
+    title: "Ejercicios de Comunicación",
+    description: "Tres diapositivas con oraciones, iconos y elementos del proceso comunicativo.",
+    href: "../works/semestre-2/expo-com/ejerci/",
+    icon: "assignment",
+    semester: "Semestre 2",
+    type: "Exposición",
+    owner: "Personal"
+  },
+  {
     title: "Plan Personal de Motivación Académica",
     description: "Presentación de un plan personal para mejorar el desempeño estudiantil.",
     href: "../works/others/milenka/",

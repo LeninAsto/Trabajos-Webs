@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ejercicios de comunicación</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700;800;900&family=Roboto:wght@400;500;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24..48,500..700,0..1,0&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #006b5f;
+      --on-primary: #ffffff;
+      --primary-container: #75f7df;
+      --on-primary-container: #00201c;
+      --secondary-container: #cce8e1;
+      --tertiary-container: #e8def8;
+      --surface: #fafdf9;
+      --surface-container: #edf3ef;
+      --surface-high: #e2e9e5;
+      --surface-glass: rgba(250, 253, 249, .86);
+      --outline: rgba(111, 121, 118, .22);
+      --text: #171d1b;
+      --muted: #3f4946;
+      --shadow: 0 24px 58px rgba(0, 50, 44, .18);
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      font-family: "Roboto", system-ui, sans-serif;
+      color: var(--text);
+      background:
+        linear-gradient(125deg, rgba(117, 247, 223, .25), transparent 36%),
+        linear-gradient(315deg, rgba(232, 222, 248, .7), transparent 34%),
+        var(--surface);
+    }
+
+    body {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .topbar,
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 24px;
+      background: var(--surface-glass);
+      border-color: var(--outline);
+      backdrop-filter: blur(18px);
+      z-index: 10;
+    }
+
+    .topbar { border-bottom: 1px solid var(--outline); }
+    .footer { border-top: 1px solid var(--outline); }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: inherit;
+      font-family: "Google Sans", sans-serif;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .brand-mark,
+    .mini-icon {
+      display: grid;
+      place-items: center;
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+    }
+
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: var(--secondary-container);
+      color: #18332f;
+      font-family: "Google Sans", sans-serif;
+      font-size: 13px;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .deck {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      animation: appear .24s ease;
+    }
+
+    .slide.active { display: flex; }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(8px) scale(.996); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .panel {
+      position: relative;
+      width: min(1180px, 94vw);
+      height: min(690px, 79vh);
+      padding: 34px;
+      overflow: auto;
+      border: 1px solid rgba(111, 121, 118, .16);
+      border-radius: 32px;
+      background: rgba(250, 253, 249, .96);
+      box-shadow: var(--shadow);
+    }
+
+    .panel::after {
+      content: attr(data-symbol);
+      position: absolute;
+      right: 26px;
+      bottom: 8px;
+      z-index: 0;
+      font-family: "Material Symbols Rounded";
+      font-size: 148px;
+      line-height: 1;
+      color: rgba(0, 107, 95, .07);
+      pointer-events: none;
+      font-variation-settings: "FILL" 1, "wght" 700, "GRAD" 0, "opsz" 48;
+    }
+
+    .panel > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      color: var(--primary);
+      font-family: "Google Sans", sans-serif;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1,
+    h3 {
+      font-family: "Google Sans", sans-serif;
+      line-height: 1.06;
+    }
+
+    h1 {
+      margin-bottom: 14px;
+      font-size: clamp(34px, 4.8vw, 58px);
+      font-weight: 900;
+    }
+
+    h3 {
+      margin-bottom: 8px;
+      font-size: 20px;
+      font-weight: 850;
+    }
+
+    p {
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    .exercise-layout {
+      display: grid;
+      grid-template-columns: minmax(280px, .9fr) minmax(0, 1.1fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .prompt-card {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      min-height: 100%;
+      padding: 24px;
+      border: 1px solid rgba(111, 121, 118, .16);
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at 90% 16%, rgba(255, 220, 193, .9), transparent 34%),
+        var(--surface-container);
+    }
+
+    .sentence {
+      padding: 18px;
+      border-radius: 16px;
+      background: #ffffff;
+      color: var(--on-primary-container);
+      font-family: "Google Sans", sans-serif;
+      font-size: clamp(21px, 2.4vw, 30px);
+      font-weight: 850;
+      line-height: 1.25;
+      box-shadow: 0 12px 28px rgba(0, 50, 44, .08);
+    }
+
+    .reference-icons {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(72px, 1fr));
+      gap: 12px;
+    }
+
+    .reference-item {
+      min-height: 96px;
+      display: grid;
+      place-items: center;
+      gap: 5px;
+      padding: 12px 8px;
+      border-radius: 16px;
+      background: #ffffff;
+      color: var(--muted);
+      text-align: center;
+      font-family: "Google Sans", sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      border: 1px solid rgba(111, 121, 118, .14);
+    }
+
+    .reference-item .material-symbols-rounded {
+      color: var(--primary);
+      font-size: 34px;
+    }
+
+    .type-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: auto;
+    }
+
+    .type-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 13px;
+      border-radius: 999px;
+      background: var(--tertiary-container);
+      color: #332d41;
+      font-family: "Google Sans", sans-serif;
+      font-size: 14px;
+      font-weight: 850;
+    }
+
+    .type-chip.strong {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .element-card {
+      display: grid;
+      grid-template-columns: 46px 1fr;
+      gap: 12px;
+      align-items: start;
+      min-height: 108px;
+      padding: 14px;
+      border: 1px solid rgba(111, 121, 118, .16);
+      border-radius: 16px;
+      background: #ffffff;
+    }
+
+    .element-card.wide {
+      grid-column: 1 / -1;
+    }
+
+    .mini-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 15px;
+      background: var(--secondary-container);
+      color: #18332f;
+    }
+
+    .element-card strong {
+      display: block;
+      margin-bottom: 4px;
+      font-family: "Google Sans", sans-serif;
+      font-size: 17px;
+      font-weight: 850;
+    }
+
+    .element-card p {
+      font-size: 15px;
+      line-height: 1.42;
+    }
+
+    .material-symbols-rounded {
+      font-size: 27px;
+      font-variation-settings: "FILL" 1, "wght" 650, "GRAD" 0, "opsz" 32;
+    }
+
+    .footer .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    button {
+      min-width: 46px;
+      min-height: 44px;
+      border: 0;
+      border-radius: 16px;
+      padding: 10px 14px;
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      font-family: "Google Sans", sans-serif;
+      font-weight: 850;
+      cursor: pointer;
+      transition: transform .18s ease, filter .18s ease;
+    }
+
+    button.primary {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      filter: brightness(.98);
+    }
+
+    .progress {
+      flex: 1;
+      max-width: 420px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--surface-high);
+      overflow: hidden;
+    }
+
+    .progress > div {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--primary);
+      transition: width .25s ease;
+    }
+
+    .counter {
+      min-width: 78px;
+      color: var(--muted);
+      font-family: "Google Sans", sans-serif;
+      font-weight: 850;
+      text-align: right;
+    }
+
+    @media (max-width: 980px) {
+      .exercise-layout,
+      .analysis-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .element-card.wide {
+        grid-column: auto;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .topbar,
+      .footer {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 12px 14px;
+      }
+
+      .brand-mark {
+        width: 42px;
+        height: 42px;
+        border-radius: 15px;
+      }
+
+      .slide {
+        align-items: stretch;
+        padding: 12px;
+      }
+
+      .panel {
+        width: 100%;
+        height: 100%;
+        max-height: calc(100vh - 154px);
+        padding: 20px;
+        border-radius: 24px;
+      }
+
+      .panel::after {
+        font-size: 112px;
+      }
+
+      .reference-icons {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .reference-item {
+        min-height: 82px;
+      }
+
+      .sentence {
+        font-size: 22px;
+      }
+
+      .progress {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .counter {
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .panel {
+        padding: 16px;
+      }
+
+      .prompt-card {
+        padding: 16px;
+      }
+
+      .element-card {
+        grid-template-columns: 40px 1fr;
+        padding: 12px;
+      }
+
+      .mini-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../../../../main/" aria-label="Volver al menú principal">
+      <span class="brand-mark"><span class="material-symbols-rounded">assignment</span></span>
+      <span>Ejercicios de comunicación</span>
+    </a>
+    <div class="badge"><span class="material-symbols-rounded">view_carousel</span>3 diapositivas</div>
+  </header>
+
+  <main class="deck" id="deck">
+    <section class="slide active">
+      <article class="panel" data-symbol="forum">
+        <div class="eyebrow"><span class="material-symbols-rounded">looks_one</span>Ejercicio 1</div>
+        <h1>Verbal y bidireccional</h1>
+        <div class="exercise-layout">
+          <div class="prompt-card">
+            <h3>Oración</h3>
+            <div class="sentence">"Profesora, no entendí la tarea. ¿Puede explicarla otra vez?"</div>
+            <div class="reference-icons" aria-label="Iconos de referencia">
+              <div class="reference-item"><span class="material-symbols-rounded">school</span>Clase</div>
+              <div class="reference-item"><span class="material-symbols-rounded">record_voice_over</span>Pregunta</div>
+              <div class="reference-item"><span class="material-symbols-rounded">forum</span>Respuesta</div>
+            </div>
+            <div class="type-row">
+              <span class="type-chip strong"><span class="material-symbols-rounded">sync</span>Bidireccional</span>
+              <span class="type-chip"><span class="material-symbols-rounded">chat</span>Verbal</span>
+              <span class="type-chip"><span class="material-symbols-rounded">groups</span>Interpersonal</span>
+            </div>
+          </div>
+
+          <div class="analysis-grid">
+            <div class="element-card"><span class="mini-icon"><span class="material-symbols-rounded">person</span></span><div><strong>Emisor</strong><p>El estudiante que hace la pregunta.</p></div></div>
+            <div class="element-card"><span class="mini-icon"><span class="material-symbols-rounded">co_present</span></span><div><strong>Receptor</strong><p>La profesora que escucha y responde.</p></div></div>
+            <div class="element-card wide"><span class="mini-icon"><span class="material-symbols-rounded">mail</span></span><div><strong>Mensaje</strong><p>El estudiante no entendió la tarea y pide una nueva explicación.</p></div></div>
+            <div class="element-card"><span class="mini-icon"><span class="material-symbols-rounded">translate</span></span><div><strong>Código</strong><p>Idioma español hablado.</p></div></div>
+            <div class="element-card"><span class="mini-icon"><span class="material-symbols-rounded">graphic_eq</span></span><div><strong>Canal</strong><p>La voz dentro del aula.</p></div></div>
+            <div class="element-card wide"><span class="mini-icon"><span class="material-symbols-rounded">location_on</span></span><div><strong>Contexto</strong><p>Una clase donde el estudiante necesita aclarar una actividad académica.</p></div></div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="slide">
+      <article class="panel" data-symbol="pan_tool">
+        <div class="eyebrow"><span class="material-symbols-rounded">looks_two</span>Ejercicio 2</div>
+        <h1>Verbal y unidireccional</h1>
+        <div class="exercise-layout">
+          <div class="prompt-card">
+            <h3>Oración</h3>
+            <div class="sentence">"La directora anuncia por altavoz: mañana no habrá clases."</div>
+            <div class="reference-icons" aria-label="Iconos de referencia">
+              <div class="reference-item"><span class="material-symbols-rounded">campaign</span>Anuncio</div>
+              <div class="reference-item"><span class="material-symbols-rounded">volume_up</span>Altavoz</div>
+              <div class="reference-item"><span class="material-symbols-rounded">school</span>Colegio</div>
+            </div>
+            <div class="type-row">
+              <span class="type-chip strong"><span class="material-symbols-rounded">trending_flat</span>Unidireccional</span>
+              <span class="type-chip"><span class="material-symbols-rounded">chat</span>Verbal</span>
+              <span class="type-chip"><span class="material-symbols-rounded">public</span>Masiva</span>
+            </div>
+          </div>
+
+          <div class="analysis-grid">
+            <div class="element-card"><span class="mini-icon"><span class="material-symbols-rounded">record_voice_over</span></span><div><strong>Emisor</strong><p>La directora que comunica el aviso.</p></div></div>
+            <div class="element-card"><span class="mini-icon"><span class="material-symbols-rounded">groups</span></span><div><strong>Receptor</strong><p>Los estudiantes y docentes del colegio.</p></div></div>
+            <div class="element-card wide"><span class="mini-icon"><span class="material-symbols-rounded">mail</span></span><div><strong>Mensaje</strong><p>Mañana no habrá clases.</p></div></div>
+            <div class="element-card"><span class="mini-icon"><span class="material-symbols-rounded">translate</span></span><div><strong>Código</strong><p>Idioma español hablado.</p></div></div>
+            <div class="element-card"><span class="mini-icon"><span class="material-symbols-rounded">volume_up</span></span><div><strong>Canal</strong><p>Altavoz del colegio.</p></div></div>
+            <div class="element-card wide"><span class="mini-icon"><span class="material-symbols-rounded">location_on</span></span><div><strong>Contexto</strong><p>Un anuncio institucional durante la jornada escolar.</p></div></div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="slide">
+      <article class="panel" data-symbol="video_call">
+        <div class="eyebrow"><span class="material-symbols-rounded">looks_3</span>Ejercicio 3</div>
+        <h1>Verbal y bidireccional</h1>
+        <div class="exercise-layout">
+          <div class="prompt-card">
+            <h3>Oración</h3>
+            <div class="sentence">"En una videollamada, Ana dice: 'estoy de acuerdo', y Luis responde: 'yo también'."</div>
+            <div class="reference-icons" aria-label="Iconos de referencia">
+              <div class="reference-item"><span class="material-symbols-rounded">video_call</span>Videollamada</div>
+              <div class="reference-item"><span class="material-symbols-rounded">forum</span>Diálogo</div>
+              <div class="reference-item"><span class="material-symbols-rounded">mic</span>Voz</div>
+            </div>
+            <div class="type-row">
+              <span class="type-chip strong"><span class="material-symbols-rounded">sync</span>Bidireccional</span>
+              <span class="type-chip"><span class="material-symbols-rounded">chat</span>Verbal</span>
+              <span class="type-chip"><span class="material-symbols-rounded">groups</span>Grupal</span>
+            </div>
+          </div>
+
+          <div class="analysis-grid">
+            <div class="element-card"><span class="mini-icon"><span class="material-symbols-rounded">person</span></span><div><strong>Emisor</strong><p>Ana inicia el mensaje; luego Luis también emite respuesta.</p></div></div>
+            <div class="element-card"><span class="mini-icon"><span class="material-symbols-rounded">groups</span></span><div><strong>Receptor</strong><p>Sus compañeros de la videollamada.</p></div></div>
+            <div class="element-card wide"><span class="mini-icon"><span class="material-symbols-rounded">mail</span></span><div><strong>Mensaje</strong><p>Ana expresa aprobación y Luis confirma que también está de acuerdo.</p></div></div>
+            <div class="element-card"><span class="mini-icon"><span class="material-symbols-rounded">translate</span></span><div><strong>Código</strong><p>Idioma español hablado.</p></div></div>
+            <div class="element-card"><span class="mini-icon"><span class="material-symbols-rounded">wifi</span></span><div><strong>Canal</strong><p>Internet, cámara, micrófono y pantalla.</p></div></div>
+            <div class="element-card wide"><span class="mini-icon"><span class="material-symbols-rounded">business_center</span></span><div><strong>Contexto</strong><p>Una reunión virtual donde el grupo decide si acepta una propuesta.</p></div></div>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="controls">
+      <button id="first" title="Ir al inicio"><span class="material-symbols-rounded">first_page</span></button>
+      <button id="prev" title="Anterior"><span class="material-symbols-rounded">chevron_left</span></button>
+      <button class="primary" id="next" title="Siguiente"><span class="material-symbols-rounded">chevron_right</span></button>
+      <button id="last" title="Ir al final"><span class="material-symbols-rounded">last_page</span></button>
+    </div>
+    <div class="progress" aria-label="Progreso de diapositivas"><div id="bar"></div></div>
+    <div class="counter" id="counter">1 / 3</div>
+  </footer>
+
+  <script>
+    const slides = [...document.querySelectorAll(".slide")];
+    const counter = document.getElementById("counter");
+    const bar = document.getElementById("bar");
+    let index = 0;
+
+    function showSlide(target) {
+      index = Math.max(0, Math.min(target, slides.length - 1));
+      slides.forEach((slide, position) => {
+        slide.classList.toggle("active", position === index);
+      });
+      counter.textContent = `${index + 1} / ${slides.length}`;
+      bar.style.width = `${((index + 1) / slides.length) * 100}%`;
+    }
+
+    document.getElementById("first").addEventListener("click", () => showSlide(0));
+    document.getElementById("prev").addEventListener("click", () => showSlide(index - 1));
+    document.getElementById("next").addEventListener("click", () => showSlide(index + 1));
+    document.getElementById("last").addEventListener("click", () => showSlide(slides.length - 1));
+
+    document.addEventListener("keydown", (event) => {
+      if (["ArrowRight", "PageDown", " "].includes(event.key)) showSlide(index + 1);
+      if (["ArrowLeft", "PageUp"].includes(event.key)) showSlide(index - 1);
+      if (event.key === "Home") showSlide(0);
+      if (event.key === "End") showSlide(slides.length - 1);
+    });
+
+    showSlide(0);
+  </script>
+</body>
+</html>
