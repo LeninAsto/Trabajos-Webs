@@ -114,6 +114,12 @@ body {
   gap: 6px;
 }
 
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
 .topnav a {
   min-height: 40px;
   display: inline-flex;
@@ -128,6 +134,41 @@ body {
 .topnav a:hover {
   color: var(--on-primary-container);
   background: var(--primary-container);
+}
+
+.github-card {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  color: var(--on-surface);
+  text-decoration: none;
+  font-family: "Google Sans", "Roboto", sans-serif;
+}
+
+.github-card img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
+.github-card strong,
+.github-card span {
+  display: block;
+  line-height: 1.15;
+}
+
+.github-card strong {
+  font-size: .9rem;
+  font-weight: 900;
+}
+
+.github-card span {
+  margin-top: 3px;
+  color: var(--on-surface-variant);
+  font-size: .72rem;
+  font-weight: 800;
+  word-break: break-word;
 }
 
 .page {
@@ -536,6 +577,11 @@ p {
     justify-content: flex-start;
   }
 
+  .topbar-actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
   .work-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -552,6 +598,16 @@ p {
     align-items: flex-start;
     flex-direction: column;
     padding: 12px 0;
+  }
+
+  .topbar-actions {
+    width: 100%;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .github-card {
+    max-width: 100%;
   }
 
   .page {

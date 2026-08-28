@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Unidad 2 · Identificación de peligros y evaluación de riesgos</title>
+<style>
+  :root{
+    --bg:#f7f8fc;
+    --surface:#ffffff;
+    --surface-2:#eef1f7;
+    --text:#1b1b1f;
+    --muted:#5f6368;
+    --primary:#365486;
+    --on-primary:#ffffff;
+    --primary-container:#d9e2ff;
+    --on-primary-container:#0b1b3a;
+    --secondary:#59647a;
+    --secondary-container:#dde3f2;
+    --tertiary:#745573;
+    --tertiary-container:#ffd7f7;
+    --danger:#8c1d18;
+    --danger-container:#ffdad6;
+    --success:#28643d;
+    --success-container:#b8f0c8;
+    --warn:#7a5900;
+    --warn-container:#ffe08a;
+    --outline:#c3c6cf;
+    --shadow:0 8px 28px rgba(30,42,70,.12);
+    --radius:28px;
+  }
+  [data-theme="dark"]{
+    --bg:#111318;
+    --surface:#1a1c22;
+    --surface-2:#24262d;
+    --text:#e4e6ee;
+    --muted:#b9beca;
+    --primary:#afc6ff;
+    --on-primary:#17305f;
+    --primary-container:#324b78;
+    --on-primary-container:#d9e2ff;
+    --secondary:#c1c8dc;
+    --secondary-container:#414858;
+    --tertiary:#dfbbdc;
+    --tertiary-container:#5a3f59;
+    --danger:#ffb4ab;
+    --danger-container:#690005;
+    --success:#9dd7ad;
+    --success-container:#0f4727;
+    --warn:#f1c75b;
+    --warn-container:#514000;
+    --outline:#444852;
+    --shadow:0 12px 34px rgba(0,0,0,.28);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:Inter,Roboto,Segoe UI,Arial,sans-serif}
+  body{transition:background .25s,color .25s}
+  .app{height:100vh;display:grid;grid-template-rows:1fr auto}
+  .deck{position:relative;overflow:hidden}
+  .slide{position:absolute;inset:0;padding:clamp(92px,9vw,118px) clamp(28px,5vw,86px) clamp(28px,4vw,66px);opacity:0;pointer-events:none;transform:translateX(40px) scale(.99);transition:opacity .32s ease,transform .32s ease;display:flex;flex-direction:column;gap:24px;overflow:auto}
+  .slide.active{opacity:1;pointer-events:auto;transform:none}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-weight:800;font-size:14px;letter-spacing:.09em;text-transform:uppercase;color:var(--primary)}
+  .dot{width:10px;height:10px;border-radius:50%;background:var(--primary)}
+  h1{font-size:clamp(40px,6vw,82px);line-height:.96;margin:0;letter-spacing:-.045em;max-width:1100px}
+  h2{font-size:clamp(30px,4vw,54px);line-height:1.02;margin:0;letter-spacing:-.035em}
+  h3{margin:0 0 6px;font-size:20px}
+  p{font-size:clamp(17px,1.6vw,23px);line-height:1.48;margin:0;color:var(--muted)}
+  .lead{font-size:clamp(20px,2vw,29px);max-width:980px;color:var(--text);line-height:1.38}
+  .grid{display:grid;gap:18px}
+  .g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .g5{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .card{background:var(--surface);border:1px solid var(--outline);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+  .flat{box-shadow:none}
+  .tint{background:var(--primary-container);color:var(--on-primary-container);border:none}
+  .card p{font-size:17px}
+  .icon{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;background:var(--surface-2);font-size:25px;margin-bottom:16px}
+  .big-icon{font-size:54px;line-height:1}
+  .flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:14px}
+  .flow .arrow{font-size:34px;color:var(--primary);font-weight:800}
+  .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:var(--surface-2);font-size:14px;font-weight:800}
+  .pill.primary{background:var(--primary-container);color:var(--on-primary-container)}
+  .pill.danger{background:var(--danger-container);color:var(--danger)}
+  .pill.success{background:var(--success-container);color:var(--success)}
+  .pill.warn{background:var(--warn-container);color:var(--warn)}
+  .mini{font-size:14px!important}
+  .compare{width:100%;border-collapse:separate;border-spacing:0 10px}
+  .compare th{font-size:13px;text-transform:uppercase;letter-spacing:.07em;text-align:left;color:var(--muted);padding:0 14px 4px}
+  .compare td{padding:15px 14px;background:var(--surface);border-top:1px solid var(--outline);border-bottom:1px solid var(--outline);font-size:15px;vertical-align:top}
+  .compare td:first-child{border-left:1px solid var(--outline);border-radius:18px 0 0 18px;font-weight:800}
+  .compare td:last-child{border-right:1px solid var(--outline);border-radius:0 18px 18px 0}
+  .diagram{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch}
+  .step{position:relative;background:var(--surface);border:1px solid var(--outline);border-radius:24px;padding:22px}
+  .num{position:absolute;top:14px;right:16px;font-size:13px;font-weight:900;color:var(--primary);background:var(--primary-container);padding:6px 9px;border-radius:12px}
+  .workshop{position:relative;min-height:360px;border:1px solid var(--outline);border-radius:30px;background:linear-gradient(180deg,var(--surface),var(--surface-2));overflow:hidden;box-shadow:var(--shadow)}
+  .floor{position:absolute;left:0;right:0;bottom:0;height:31%;background:linear-gradient(135deg,transparent 48%,rgba(100,100,100,.09) 50%,transparent 52%) 0 0/42px 42px}
+  .bench{position:absolute;left:9%;bottom:25%;width:32%;height:18%;border-radius:14px;background:#9d795d}
+  .bench:before{content:"";position:absolute;left:8%;top:-31px;width:78%;height:34px;border-radius:10px;background:#6e7787}
+  .machine{position:absolute;right:10%;bottom:28%;width:22%;height:34%;border-radius:20px 20px 8px 8px;background:#566274}
+  .machine:before{content:"⚙";position:absolute;inset:18px;display:grid;place-items:center;font-size:58px;color:#dce2ef}
+  .ext{position:absolute;right:38%;top:10%;width:56px;height:92px;border-radius:16px;background:#b3261e;color:white;display:grid;place-items:center;font-size:30px;font-weight:900}
+  .boxx{position:absolute;right:34%;top:23%;width:90px;height:64px;border-radius:8px;background:#b98a58;transform:rotate(-3deg)}
+  .cable{position:absolute;left:31%;right:7%;bottom:14%;height:8px;background:#3c4048;border-radius:999px;transform:rotate(4deg)}
+  .hazard{position:absolute;border:2px solid var(--danger);background:var(--danger-container);color:var(--danger);width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:900;box-shadow:0 4px 16px rgba(140,29,24,.22)}
+  .h1{left:28%;top:38%}.h2{right:6%;top:25%}.h3{left:56%;bottom:8%}.h4{right:33%;top:12%}.h5{left:10%;bottom:18%}
+  .legend{display:flex;flex-wrap:wrap;gap:10px}
+  .quote{border-left:5px solid var(--primary);padding:18px 22px;background:var(--primary-container);border-radius:0 24px 24px 0;font-size:22px;font-weight:700;color:var(--on-primary-container)}
+  .timeline{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;align-items:start}
+  .timeline .node{position:relative;text-align:center}
+  .timeline .circle{margin:auto;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:var(--primary);color:var(--on-primary);font-weight:900}
+  .timeline .node:not(:last-child):after{content:"";position:absolute;top:24px;left:62%;width:76%;height:3px;background:var(--primary-container)}
+  .timeline b{display:block;margin-top:10px;font-size:14px}
+  .timeline span{display:block;font-size:12px;color:var(--muted);margin-top:4px}
+  .footer-note{margin-top:auto;font-size:13px;color:var(--muted)}
+  .controls{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:10px 16px 14px;background:linear-gradient(180deg,transparent,var(--bg) 30%)}
+  .btn{border:1px solid var(--outline);background:var(--surface);color:var(--text);border-radius:18px;padding:11px 16px;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.06)}
+  .btn:hover{transform:translateY(-1px)}
+  .btn.primary{background:var(--primary);color:var(--on-primary);border-color:transparent}
+  .progress-wrap{height:9px;background:var(--surface-2);border-radius:999px;overflow:hidden}
+  .progress{height:100%;background:var(--primary);width:0;transition:width .3s}
+  .counter{font-size:13px;font-weight:800;color:var(--muted);min-width:65px;text-align:center}
+  .brand{display:inline-flex;align-items:center;gap:12px;color:var(--text);font-weight:900;text-decoration:none}
+  .brand-mark{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:var(--primary-container);color:var(--on-primary-container);font-size:22px}
+  .github-card{display:grid;grid-template-columns:34px minmax(0,1fr);align-items:center;gap:10px;color:var(--text);text-decoration:none;min-width:190px}
+  .github-card img{width:34px;height:34px;object-fit:contain}
+  .github-card strong,.github-card span{display:block;line-height:1.15}
+  .github-card strong{font-size:14px;font-weight:900}
+  .github-card span{margin-top:3px;color:var(--muted);font-size:11px;font-weight:700;word-break:break-word}
+  .toolbar{position:absolute;top:18px;left:22px;right:22px;display:flex;align-items:center;justify-content:space-between;gap:14px;z-index:20}
+  .toolbar-actions{display:flex;align-items:center;gap:8px}
+  .tool{width:42px;height:42px;border-radius:14px;border:1px solid var(--outline);background:color-mix(in srgb,var(--surface) 90%,transparent);color:var(--text);cursor:pointer;font-size:18px;backdrop-filter:blur(10px)}
+  .overview{position:absolute;inset:0;z-index:50;background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(12px);padding:28px;display:none;overflow:auto}
+  .overview.open{display:block}
+  .overview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:18px}
+  .thumb{background:var(--surface);border:1px solid var(--outline);border-radius:20px;padding:18px;cursor:pointer;min-height:120px}
+  .thumb:hover{border-color:var(--primary)}
+  .notes{position:absolute;right:24px;bottom:86px;width:min(520px,calc(100vw - 48px));max-height:45vh;overflow:auto;background:var(--surface);border:1px solid var(--outline);border-radius:22px;padding:18px;box-shadow:var(--shadow);z-index:40;display:none}
+  .notes.open{display:block}
+  .notes h4{margin:0 0 8px}.notes p{font-size:15px}
+  .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;padding:3px 7px;border-radius:7px;background:var(--surface-2);border:1px solid var(--outline)}
+  @media(max-width:900px){
+    .g2,.g3,.g5,.diagram{grid-template-columns:1fr}
+    .flow{grid-template-columns:1fr}.flow .arrow{transform:rotate(90deg);text-align:center}
+    .timeline{grid-template-columns:repeat(3,1fr)}
+    .timeline .node:after{display:none}
+    .slide{padding-top:132px}
+    .toolbar{align-items:flex-start;flex-direction:column;left:14px;right:14px;top:12px}
+    .toolbar-actions{width:100%;justify-content:space-between;flex-wrap:wrap;gap:6px}
+    .github-card{min-width:0;max-width:165px}
+    .compare{font-size:12px}.compare td{font-size:12px;padding:10px}
+  }
+  @media print{
+    html,body{overflow:visible;background:white}
+    .app{display:block}.deck{overflow:visible}.slide{position:relative;opacity:1!important;transform:none!important;pointer-events:auto;page-break-after:always;height:100vh;padding:clamp(28px,4vw,66px) clamp(28px,5vw,86px)!important}.controls,.toolbar,.overview,.notes{display:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <main class="deck" id="deck">
+    <div class="toolbar">
+      <a class="brand" href="../../../main/" aria-label="Volver al menú principal">
+        <span class="brand-mark" aria-hidden="true">⚠</span>
+        <span>Seguridad e Higiene Industrial</span>
+      </a>
+      <div class="toolbar-actions">
+        <a class="github-card" href="https://github.com/LeninAsto" target="_blank" rel="noopener noreferrer" aria-label="GitHub de Lenin Asto">
+          <img src="../../../assets/images-global/github.png" alt="" />
+          <span>
+            <strong>Lenin Asto</strong>
+            <span>github.com/LeninAsto</span>
+          </span>
+        </a>
+        <button class="tool" id="overviewBtn" title="Vista general">▦</button>
+        <button class="tool" id="notesBtn" title="Notas del expositor">☰</button>
+        <button class="tool" id="themeBtn" title="Tema claro/oscuro">◐</button>
+        <button class="tool" id="fullBtn" title="Pantalla completa">⛶</button>
+      </div>
+    </div>
+
+    <section class="slide active" data-title="Portada" data-note="Abre explicando que la Unidad 2 se enfoca en reconocer peligros antes de que ocurra un accidente. No memorices definiciones aisladas: usa la secuencia peligro → riesgo → daño → control.">
+      <div class="eyebrow"><span class="dot"></span> Seguridad e Higiene Industrial · Unidad 2</div>
+      <h1>Identificación de peligros y evaluación de riesgos</h1>
+      <p class="lead">Resumen visual para exponer: <b>peligro, riesgo y daño</b>; clasificación de peligros; y <b>observación del puesto de trabajo o entorno simulado</b>.</p>
+      <div class="grid g3" style="margin-top:14px">
+        <div class="card tint"><div class="big-icon">⚠</div><h3>Reconocer</h3><p>Detectar qué puede causar daño.</p></div>
+        <div class="card"><div class="big-icon">◉</div><h3>Evaluar</h3><p>Analizar probabilidad, exposición y severidad.</p></div>
+        <div class="card"><div class="big-icon">✓</div><h3>Controlar</h3><p>Aplicar medidas antes de iniciar la tarea.</p></div>
+      </div>
+      <div class="footer-note">Basado en el Material Técnico de Apoyo de Seguridad e Higiene Industrial, Unidad 2, pp. 56–67.</div>
+    </section>
+
+    <section class="slide" data-title="Ruta de la exposición" data-note="Presenta la ruta en menos de 30 segundos. Esto ayuda a que la exposición se sienta ordenada y formal.">
+      <div class="eyebrow"><span class="dot"></span> Ruta de la exposición</div>
+      <h2>¿Qué vamos a desarrollar?</h2>
+      <div class="diagram">
+        <div class="step"><span class="num">01</span><div class="icon">⚠</div><h3>Peligro, riesgo y daño</h3><p>Diferenciar los tres conceptos y entender cómo se relacionan.</p></div>
+        <div class="step"><span class="num">02</span><div class="icon">◇</div><h3>Tipos de peligros</h3><p>Físicos, químicos, mecánicos, eléctricos y ergonómicos.</p></div>
+        <div class="step"><span class="num">03</span><div class="icon">◎</div><h3>Observación del puesto</h3><p>Detectar condiciones y conductas inseguras en un entorno real o simulado.</p></div>
+      </div>
+      <div class="quote">Idea central: prevenir significa observar antes, identificar bien y actuar antes de que el peligro se convierta en daño.</div>
+    </section>
+
+    <section class="slide" data-title="Peligro, riesgo y daño" data-note="Usa un ejemplo simple: cable pelado. Peligro = cable expuesto; riesgo = posibilidad de contacto eléctrico; daño = quemadura o electrocución. Esa diferencia suele ser una pregunta de clase.">
+      <div class="eyebrow"><span class="dot"></span> Tema 1</div>
+      <h2>Peligro ≠ riesgo ≠ daño</h2>
+      <div class="flow">
+        <div class="card tint"><div class="big-icon">⚠</div><h3>Peligro</h3><p>Fuente, situación o acto con capacidad de causar daño.</p><span class="pill primary" style="margin-top:16px">Ej.: cable expuesto</span></div>
+        <div class="arrow">→</div>
+        <div class="card"><div class="big-icon">◌</div><h3>Riesgo</h3><p>Probabilidad de que el peligro produzca daño, considerando la severidad.</p><span class="pill warn" style="margin-top:16px">Ej.: contacto eléctrico</span></div>
+        <div class="arrow">→</div>
+        <div class="card"><div class="big-icon">✚</div><h3>Daño</h3><p>Lesión, enfermedad, pérdida o afectación cuando el peligro se materializa.</p><span class="pill danger" style="margin-top:16px">Ej.: electrocución</span></div>
+      </div>
+      <div class="grid g3">
+        <div class="card flat"><b>El peligro se identifica</b><p class="mini">¿Qué puede causar daño?</p></div>
+        <div class="card flat"><b>El riesgo se evalúa</b><p class="mini">¿Qué podría ocurrir y con qué probabilidad?</p></div>
+        <div class="card flat"><b>El daño se previene</b><p class="mini">¿Qué consecuencia debemos evitar?</p></div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Caso: amoladora" data-note="Aquí aterrizas la teoría. Señala que el EPP ayuda, pero no reemplaza corregir el equipo: primero se cambia el disco y se reinstala la guarda; luego se usa careta y lentes.">
+      <div class="eyebrow"><span class="dot"></span> Caso aplicado</div>
+      <h2>Corte con amoladora</h2>
+      <div class="grid g2">
+        <div class="card">
+          <h3>Situación observada</h3>
+          <p>Disco desgastado, guarda retirada, trabajador sin careta facial y virutas metálicas acumuladas.</p>
+          <div class="legend" style="margin-top:18px">
+            <span class="pill danger">Disco desgastado</span><span class="pill danger">Sin guarda</span><span class="pill warn">Sin careta</span><span class="pill">Desorden</span>
+          </div>
+        </div>
+        <div class="card tint">
+          <h3>Lectura preventiva</h3>
+          <p><b>Peligros:</b> equipo defectuoso y protección incompleta.<br><b>Riesgos:</b> rotura del disco, proyección, contacto con partes giratorias.<br><b>Daños:</b> lesión ocular, corte, amputación o incapacidad.</p>
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="node"><div class="circle">1</div><b>Detener</b><span>No iniciar</span></div>
+        <div class="node"><div class="circle">2</div><b>Cambiar</b><span>Disco</span></div>
+        <div class="node"><div class="circle">3</div><b>Reinstalar</b><span>Guarda</span></div>
+        <div class="node"><div class="circle">4</div><b>Proteger</b><span>Careta + lentes</span></div>
+        <div class="node"><div class="circle">5</div><b>Ordenar</b><span>Área limpia</span></div>
+        <div class="node"><div class="circle">6</div><b>Verificar</b><span>Antes de operar</span></div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Tipos de peligros" data-note="No intentes memorizar listas enormes. Explica cada tipo con un ejemplo del taller. El punto importante es que cada peligro necesita un control distinto.">
+      <div class="eyebrow"><span class="dot"></span> Tema 2</div>
+      <h2>Tipos de peligros más frecuentes</h2>
+      <div class="grid g5">
+        <div class="card"><div class="icon">〰</div><h3>Físico</h3><p>Ruido, vibración, calor, frío, radiación o mala iluminación.</p><span class="pill mini">Daño: pérdida auditiva</span></div>
+        <div class="card"><div class="icon">⚗</div><h3>Químico</h3><p>Gases, vapores, polvos, solventes, ácidos o combustibles.</p><span class="pill mini">Daño: intoxicación</span></div>
+        <div class="card"><div class="icon">⚙</div><h3>Mecánico</h3><p>Partes móviles, herramientas cortantes, prensas o esmeriles.</p><span class="pill mini">Daño: corte/amputación</span></div>
+        <div class="card"><div class="icon">ϟ</div><h3>Eléctrico</h3><p>Cables expuestos, tableros abiertos, sobrecargas o falta de puesta a tierra.</p><span class="pill mini">Daño: electrocución</span></div>
+        <div class="card"><div class="icon">⌁</div><h3>Ergonómico</h3><p>Posturas forzadas, cargas, movimientos repetitivos o esfuerzo excesivo.</p><span class="pill mini">Daño: lesión lumbar</span></div>
+      </div>
+      <div class="quote">Clasificar bien el peligro evita controles improvisados: no todos los riesgos se solucionan con el mismo EPP.</div>
+    </section>
+
+    <section class="slide" data-title="Matriz comparativa" data-note="Esta tabla funciona como organizador gráfico. Lee solo dos o tres filas, no toda la tabla. Puedes decir que el control debe atacar la fuente del problema y luego complementarse con EPP.">
+      <div class="eyebrow"><span class="dot"></span> Organizador gráfico</div>
+      <h2>Del peligro al control</h2>
+      <table class="compare">
+        <thead><tr><th>Situación</th><th>Tipo</th><th>Riesgo</th><th>Daño posible</th><th>Control preventivo</th></tr></thead>
+        <tbody>
+          <tr><td>Ruido por compresoras</td><td>Físico</td><td>Exposición a ruido</td><td>Pérdida auditiva / fatiga</td><td>Medición, mantenimiento y protección auditiva</td></tr>
+          <tr><td>Solvente sin ventilación</td><td>Químico</td><td>Inhalación de vapores</td><td>Irritación / intoxicación</td><td>Ventilación, HDS y respirador adecuado</td></tr>
+          <tr><td>Esmeriladora sin guarda</td><td>Mecánico</td><td>Contacto / proyección</td><td>Corte / lesión ocular</td><td>Instalar guarda y usar careta</td></tr>
+          <tr><td>Cables en zona de paso</td><td>Eléctrico</td><td>Contacto / daño del cable</td><td>Electrocución / incendio</td><td>Reubicar cables y usar canaletas</td></tr>
+          <tr><td>Levantamiento de cajas pesadas</td><td>Ergonómico</td><td>Sobreesfuerzo</td><td>Dolor o lesión lumbar</td><td>Ayuda mecánica y técnica de levantamiento</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="slide" data-title="Observación del puesto" data-note="Este es el tema que mencionaste específicamente. Resalta que observar no es mirar por encima: es examinar actividad, equipo, ambiente y conducta para encontrar peligros y proponer controles.">
+      <div class="eyebrow"><span class="dot"></span> Tema 3</div>
+      <h2>Observación del puesto de trabajo o entorno simulado</h2>
+      <p class="lead">Es una técnica preventiva para examinar directamente una <b>actividad, área, equipo, conducta o condición</b>, identificar peligros, evaluar riesgos y proponer medidas de control.</p>
+      <div class="grid g2">
+        <div class="card tint"><div class="icon">🏭</div><h3>Puesto de trabajo</h3><p>Lugar real donde el trabajador realiza la tarea con herramientas, equipos, materiales, ambiente y procedimientos.</p></div>
+        <div class="card"><div class="icon">🧪</div><h3>Entorno simulado</h3><p>Escenario preparado para practicar identificación de peligros y controles sin exponer al estudiante a un daño real.</p></div>
+      </div>
+      <div class="quote">La observación debe ser objetiva: se registra lo que realmente se evidencia, sin suponer ni exagerar.</div>
+    </section>
+
+    <section class="slide" data-title="Cómo observar" data-note="Puedes explicar esta diapositiva como una lista de comprobación. La secuencia antes-durante-después es más fácil de recordar que una lista larga.">
+      <div class="eyebrow"><span class="dot"></span> Método de observación</div>
+      <h2>¿Qué debo mirar?</h2>
+      <div class="grid g3">
+        <div class="card"><span class="pill primary">Antes</span><h3 style="margin-top:14px">Preparar y reconocer</h3><p>Actividad, área, equipos, herramientas, señalización, orden y condiciones iniciales.</p></div>
+        <div class="card"><span class="pill warn">Durante</span><h3 style="margin-top:14px">Observar la ejecución</h3><p>Uso de EPP, posturas, conductas, cumplimiento de procedimientos y cambios en el entorno.</p></div>
+        <div class="card"><span class="pill success">Después</span><h3 style="margin-top:14px">Registrar y corregir</h3><p>Hallazgos, controles aplicados, responsables, evidencia y verificación final.</p></div>
+      </div>
+      <div class="grid g2">
+        <div class="card flat"><h3>Tipos de observación</h3><p>Directa · Simulada · Programada · No programada · De condiciones · De conductas.</p></div>
+        <div class="card flat"><h3>Producto de la observación</h3><p>IPERC, reportes de condiciones inseguras, listas de verificación e informes de inspección.</p></div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Taller simulado" data-note="Señala los cinco marcadores rojos como hallazgos: herramientas desordenadas, cable en el piso, amoladora sin guarda, trabajador sin lentes y extintor bloqueado. Luego explica que cada hallazgo debe tener control, responsable y evidencia.">
+      <div class="eyebrow"><span class="dot"></span> Caso visual</div>
+      <h2>Inspección de un taller simulado</h2>
+      <div class="grid g2" style="align-items:stretch">
+        <div class="workshop" aria-label="Taller simulado con cinco peligros marcados">
+          <div class="floor"></div><div class="bench"></div><div class="machine"></div><div class="ext">E</div><div class="boxx"></div><div class="cable"></div>
+          <span class="hazard h1">1</span><span class="hazard h2">2</span><span class="hazard h3">3</span><span class="hazard h4">4</span><span class="hazard h5">5</span>
+        </div>
+        <div class="card">
+          <h3>Hallazgos a identificar</h3>
+          <p><b>1.</b> Herramientas desordenadas → cortes/golpes.<br><b>2.</b> Amoladora sin guarda → proyección/corte.<br><b>3.</b> Cable cruzando el piso → tropiezo/contacto eléctrico.<br><b>4.</b> Extintor bloqueado → respuesta tardía en incendio.<br><b>5.</b> Falta o mal uso de EPP → lesión ocular u otra exposición.</p>
+          <div class="legend" style="margin-top:18px"><span class="pill danger">Condición insegura</span><span class="pill warn">Conducta insegura</span><span class="pill success">Acción correctiva</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Secuencia preventiva" data-note="Esta es la diapositiva para cerrar el contenido. La cadena resume casi toda la unidad. Si te hacen una pregunta, vuelve mentalmente a esta secuencia.">
+      <div class="eyebrow"><span class="dot"></span> Síntesis</div>
+      <h2>La lógica preventiva de la Unidad 2</h2>
+      <div class="timeline" style="grid-template-columns:repeat(6,1fr);margin-top:20px">
+        <div class="node"><div class="circle">◎</div><b>Observar</b><span>Tarea y entorno</span></div>
+        <div class="node"><div class="circle">⚠</div><b>Identificar</b><span>Peligros</span></div>
+        <div class="node"><div class="circle">◇</div><b>Clasificar</b><span>Tipo de peligro</span></div>
+        <div class="node"><div class="circle">◌</div><b>Evaluar</b><span>Riesgo y daño</span></div>
+        <div class="node"><div class="circle">✓</div><b>Controlar</b><span>Medidas</span></div>
+        <div class="node"><div class="circle">▣</div><b>Registrar</b><span>Evidencia</span></div>
+      </div>
+      <div class="grid g2" style="margin-top:24px">
+        <div class="card tint"><h3>Objetivo</h3><p>Evitar que una condición o conducta peligrosa llegue a convertirse en accidente o enfermedad ocupacional.</p></div>
+        <div class="card"><h3>Regla práctica</h3><p>Si existe un riesgo crítico o no controlado, la tarea no debe iniciarse hasta aplicar y verificar los controles.</p></div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Preguntas para exponer" data-note="Úsala como práctica o como cierre con el salón. Las respuestas están implícitas en las diapositivas anteriores.">
+      <div class="eyebrow"><span class="dot"></span> Repaso rápido</div>
+      <h2>Preguntas que podrían hacerte</h2>
+      <div class="grid g2">
+        <div class="card"><h3>1. ¿Cuál es la diferencia entre peligro y riesgo?</h3><p>El peligro es la fuente capaz de causar daño; el riesgo es la posibilidad y gravedad de que ese daño ocurra.</p></div>
+        <div class="card"><h3>2. ¿Por qué observar el puesto?</h3><p>Porque muchos peligros reales solo aparecen al ver cómo se ejecuta la tarea y en qué condiciones.</p></div>
+        <div class="card"><h3>3. ¿Qué diferencia hay entre entorno real y simulado?</h3><p>El real corresponde al trabajo efectivo; el simulado reproduce situaciones de riesgo de forma controlada para aprender.</p></div>
+        <div class="card"><h3>4. ¿Qué se hace después de encontrar un peligro?</h3><p>Se clasifica, se evalúa el riesgo, se proponen controles, se asigna responsable y se registra evidencia.</p></div>
+      </div>
+    </section>
+
+    <section class="slide" data-title="Cierre" data-note="Cierra con una frase simple: un buen técnico no solo sabe ejecutar una tarea, también sabe detenerse, observar y corregir cuando algo no es seguro.">
+      <div class="eyebrow"><span class="dot"></span> Conclusión</div>
+      <h1 style="font-size:clamp(40px,5.5vw,72px)">Trabajar seguro empieza antes de comenzar la tarea.</h1>
+      <p class="lead">Observar, identificar, evaluar y controlar permite tomar decisiones preventivas con criterio técnico y evitar que los peligros terminen en accidentes.</p>
+      <div class="card tint" style="max-width:900px;margin-top:14px"><h3>Frase final para exposición</h3><p style="color:inherit">“Un buen técnico no solo ejecuta correctamente su trabajo; también reconoce cuándo una condición no es segura y actúa antes de que ocurra el daño.”</p></div>
+      <div class="footer-note">Fuente base: SENATI · Material Técnico de Apoyo · Seguridad e Higiene Industrial · Unidad 2.</div>
+    </section>
+
+    <aside class="notes" id="notes"><h4>Notas del expositor</h4><p id="notesText"></p></aside>
+    <div class="overview" id="overview"><div style="display:flex;justify-content:space-between;align-items:center"><div><div class="eyebrow"><span class="dot"></span> Vista general</div><h2 style="margin-top:6px">Diapositivas</h2></div><button class="btn" id="closeOverview">Cerrar</button></div><div class="overview-grid" id="overviewGrid"></div></div>
+  </main>
+
+  <footer class="controls">
+    <div style="display:flex;gap:8px"><button class="btn" id="prevBtn">← Anterior</button><button class="btn primary" id="nextBtn">Siguiente →</button></div>
+    <div class="progress-wrap"><div class="progress" id="progress"></div></div>
+    <div class="counter" id="counter">1 / 12</div>
+  </footer>
+</div>
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  let index=0;
+  const progress=document.getElementById('progress');
+  const counter=document.getElementById('counter');
+  const notes=document.getElementById('notes');
+  const notesText=document.getElementById('notesText');
+  const overview=document.getElementById('overview');
+  const overviewGrid=document.getElementById('overviewGrid');
+  function show(i){
+    index=(i+slides.length)%slides.length;
+    slides.forEach((s,n)=>s.classList.toggle('active',n===index));
+    progress.style.width=((index+1)/slides.length*100)+'%';
+    counter.textContent=(index+1)+' / '+slides.length;
+    notesText.textContent=slides[index].dataset.note||'Sin notas.';
+    location.hash='s'+(index+1);
+  }
+  document.getElementById('prevBtn').onclick=()=>show(index-1);
+  document.getElementById('nextBtn').onclick=()=>show(index+1);
+  document.getElementById('themeBtn').onclick=()=>{
+    const root=document.documentElement;
+    root.dataset.theme=root.dataset.theme==='dark'?'':'dark';
+  };
+  document.getElementById('fullBtn').onclick=()=>{
+    if(!document.fullscreenElement) document.documentElement.requestFullscreen?.(); else document.exitFullscreen?.();
+  };
+  document.getElementById('notesBtn').onclick=()=>notes.classList.toggle('open');
+  document.getElementById('overviewBtn').onclick=()=>overview.classList.add('open');
+  document.getElementById('closeOverview').onclick=()=>overview.classList.remove('open');
+  slides.forEach((s,n)=>{
+    const b=document.createElement('button');b.className='thumb';b.innerHTML='<div class="pill primary">'+String(n+1).padStart(2,'0')+'</div><h3 style="margin-top:12px">'+(s.dataset.title||'Diapositiva')+'</h3><p class="mini">Ir a esta diapositiva</p>';
+    b.onclick=()=>{overview.classList.remove('open');show(n)};overviewGrid.appendChild(b);
+  });
+  window.addEventListener('keydown',e=>{
+    if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();show(index+1)}
+    if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(index-1)}
+    if(e.key.toLowerCase()==='o') overview.classList.toggle('open');
+    if(e.key.toLowerCase()==='n') notes.classList.toggle('open');
+    if(e.key.toLowerCase()==='f') document.getElementById('fullBtn').click();
+    if(e.key==='Escape') overview.classList.remove('open');
+  });
+  const m=location.hash.match(/s(\d+)/); if(m) index=Math.min(slides.length-1,Math.max(0,+m[1]-1)); show(index);
+</script>
+</body>
+</html>

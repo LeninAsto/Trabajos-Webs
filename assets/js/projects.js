@@ -54,6 +54,15 @@ const projects = [
     owner: "Personal"
   },
   {
+    title: "Seguridad e Higiene Industrial",
+    description: "Presentación de la Unidad 2 sobre identificación de peligros y evaluación de riesgos.",
+    href: "../works/semestre-2/expo-shi/",
+    icon: "health_and_safety",
+    semester: "Semestre 2",
+    type: "Exposición",
+    owner: "Personal"
+  },
+  {
     title: "Ejercicios de Comunicación",
     description: "Tres diapositivas con oraciones, iconos y elementos del proceso comunicativo.",
     href: "../works/semestre-2/expo-com/ejerci/",
