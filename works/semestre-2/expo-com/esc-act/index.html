@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Escucha activa — Técnicas de la Comunicación</title>
+<style>
+  :root{
+    --primary:#1f6d4e;
+    --on-primary:#ffffff;
+    --primary-container:#a8f2ce;
+    --on-primary-container:#002115;
+    --secondary:#4e6358;
+    --secondary-container:#d1e8d9;
+    --surface:#f7fbf7;
+    --surface-container:#edf3ee;
+    --surface-container-high:#e7ede8;
+    --on-surface:#191c1a;
+    --on-surface-variant:#414942;
+    --outline:#717971;
+    --shadow:0 16px 44px rgba(20, 40, 28, .14);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--surface);color:var(--on-surface);overflow:hidden}
+  body{background:
+    radial-gradient(circle at 8% 12%, rgba(168,242,206,.55), transparent 26%),
+    radial-gradient(circle at 92% 88%, rgba(209,232,217,.7), transparent 24%),
+    var(--surface)}
+  .app{height:100%;display:grid;grid-template-rows:1fr auto;padding:20px;gap:14px}
+  .deck{position:relative;min-height:0;border-radius:32px;background:rgba(255,255,255,.76);backdrop-filter:blur(10px);box-shadow:var(--shadow);overflow:hidden;border:1px solid rgba(113,121,113,.16)}
+  .slide{position:absolute;inset:0;padding:clamp(28px,4vw,64px);display:grid;grid-template-rows:auto 1fr;gap:24px;opacity:0;transform:translateX(3%);pointer-events:none;transition:.38s cubic-bezier(.2,.8,.2,1)}
+  .slide.active{opacity:1;transform:none;pointer-events:auto}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;font-weight:800;color:var(--primary);letter-spacing:.08em;text-transform:uppercase;font-size:.82rem}
+  .num{width:34px;height:34px;border-radius:12px;background:var(--primary-container);display:grid;place-items:center;color:var(--on-primary-container);font-weight:900}
+  h1,h2{margin:0;line-height:1.03;letter-spacing:-.035em}
+  h1{font-size:clamp(2.6rem,6vw,5.8rem);max-width:1000px}
+  h2{font-size:clamp(2rem,4.2vw,4rem)}
+  .subtitle{font-size:clamp(1rem,1.5vw,1.28rem);color:var(--on-surface-variant);max-width:950px;line-height:1.55;margin-top:12px}
+  .content{min-height:0;align-self:stretch;display:grid;align-items:center;gap:18px}
+  .grid2{grid-template-columns:1.05fr .95fr}
+  .grid3{grid-template-columns:repeat(3,1fr)}
+  .card{background:var(--surface-container);border-radius:28px;padding:24px;border:1px solid rgba(113,121,113,.12)}
+  .card.strong{background:var(--primary-container);color:var(--on-primary-container)}
+  .card h3{margin:0 0 10px;font-size:1.15rem}
+  .card p{margin:0;line-height:1.5;color:inherit}
+  .tag{display:inline-flex;padding:7px 12px;border-radius:999px;background:#fff;color:var(--primary);font-weight:800;font-size:.84rem;margin-bottom:10px}
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .compare .card{min-height:190px}
+  .big-icon{font-size:2rem;margin-bottom:12px}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:stretch}
+  .step{position:relative;background:var(--surface-container);border-radius:26px;padding:22px 20px;min-height:210px}
+  .step:not(:last-child)::after{content:"→";position:absolute;right:-13px;top:50%;transform:translateY(-50%);z-index:2;width:28px;height:28px;border-radius:50%;background:var(--primary);color:white;display:grid;place-items:center;font-weight:900}
+  .step .n{font-size:2rem;font-weight:900;color:var(--primary)}
+  .step h3{margin:8px 0;font-size:1.08rem}
+  .step p{margin:0;line-height:1.43;color:var(--on-surface-variant)}
+  .techniques{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+  .tech{background:var(--surface-container);border-radius:24px;padding:18px;min-height:196px}
+  .tech .ico{font-size:1.7rem}
+  .tech h3{font-size:1rem;margin:10px 0 8px}
+  .tech p{font-size:.93rem;line-height:1.38;color:var(--on-surface-variant);margin:0}
+  .factors{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .factor{background:var(--surface-container);border-radius:26px;padding:22px;min-height:210px}
+  .factor h3{margin:10px 0 8px}.factor p{margin:0;color:var(--on-surface-variant);line-height:1.44}
+  .dialogue{display:grid;grid-template-columns:1fr;gap:12px;max-width:1000px;margin:auto;width:100%}
+  .bubble{max-width:78%;padding:16px 20px;border-radius:24px;line-height:1.46;box-shadow:0 6px 18px rgba(20,40,28,.06)}
+  .carlos{justify-self:start;background:var(--surface-container)}
+  .ana{justify-self:end;background:var(--primary-container);color:var(--on-primary-container)}
+  .who{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;font-weight:900;opacity:.72;display:block;margin-bottom:5px}
+  .note{font-size:.9rem;color:var(--on-surface-variant);text-align:center;margin-top:6px}
+  .source{position:absolute;left:clamp(28px,4vw,64px);bottom:18px;font-size:.76rem;color:#637069}
+  .controls{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:2px 2px}
+  .control-group{display:flex;gap:10px;align-items:center}
+  button{border:0;font:inherit;cursor:pointer}
+  .btn{height:48px;padding:0 18px;border-radius:18px;background:var(--surface-container-high);color:var(--on-surface);font-weight:800;display:flex;align-items:center;gap:8px}
+  .btn.primary{background:var(--primary);color:var(--on-primary)}
+  .btn:disabled{opacity:.35;cursor:not-allowed}
+  .dots{display:flex;gap:8px;align-items:center;justify-content:center;flex:1}
+  .dot{width:10px;height:10px;border-radius:999px;background:#bcc7bf;transition:.25s}.dot.active{width:34px;background:var(--primary)}
+  .counter{min-width:58px;text-align:center;font-weight:800;color:var(--on-surface-variant)}
+  .kbd{font-size:.76rem;color:var(--on-surface-variant)}
+  @media(max-width:1000px){
+    .grid2,.compare{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr}.step:not(:last-child)::after{display:none}.techniques{grid-template-columns:repeat(2,1fr)}.tech:last-child{grid-column:1/-1}.factors{grid-template-columns:1fr 1fr}.slide{overflow:auto;padding-bottom:64px}.source{display:none}
+  }
+  @media(max-width:620px){.app{padding:8px}.deck{border-radius:22px}.slide{padding:24px}.steps,.techniques,.factors{grid-template-columns:1fr}.tech:last-child{grid-column:auto}.controls .kbd{display:none}.btn span.label{display:none}.bubble{max-width:94%}}
+</style>
+</head>
+<body>
+<div class="app">
+  <main class="deck" id="deck" aria-live="polite">
+    <section class="slide active">
+      <header>
+        <div class="eyebrow"><span class="num">1</span> Escucha activa</div>
+        <h1>Escuchar no es solo oír.</h1>
+        <p class="subtitle">La escucha activa exige atención total, comprensión del mensaje y una respuesta adecuada. También considera el tono de voz, el lenguaje corporal y el contexto emocional.</p>
+      </header>
+      <div class="content grid2">
+        <div class="card strong">
+          <span class="tag">Escucha activa</span>
+          <div class="big-icon">👂💬</div>
+          <h3>Atención + comprensión + respuesta</h3>
+          <p>Supone un esfuerzo físico y mental para entender completamente lo que la otra persona comunica y demostrarle que ha sido comprendida.</p>
+        </div>
+        <div class="compare">
+          <div class="card">
+            <div class="big-icon">🔊</div>
+            <h3>Oír</h3>
+            <p>Es recibir sonidos o palabras. Puede ocurrir sin prestar atención suficiente al significado.</p>
+          </div>
+          <div class="card">
+            <div class="big-icon">🧠</div>
+            <h3>Escuchar activamente</h3>
+            <p>Implica comprender ideas, emociones, tono y señales no verbales, mostrando interés genuino por el interlocutor.</p>
+          </div>
+        </div>
+      </div>
+      <div class="source">Base: Material Técnico de Apoyo, Unidad 1, pp. 3–5.</div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <div class="eyebrow"><span class="num">2</span> Proceso</div>
+        <h2>Pasos que determinan una escucha activa</h2>
+        <p class="subtitle">Organizado como una secuencia didáctica coherente con el proceso comunicativo descrito en el material: recibir, comprender, valorar y retroalimentar.</p>
+      </header>
+      <div class="content">
+        <div class="steps">
+          <article class="step"><div class="n">01</div><h3>Recepción</h3><p>Prestar atención al mensaje completo, sin interrumpir, considerando palabras, tono de voz y lenguaje corporal.</p></article>
+          <article class="step"><div class="n">02</div><h3>Interpretación</h3><p>Comprender qué quiere comunicar la otra persona y reconocer el contexto, sus ideas y su componente emocional.</p></article>
+          <article class="step"><div class="n">03</div><h3>Evaluación</h3><p>Reflexionar sobre el sentido del mensaje antes de responder, evitando conclusiones apresuradas o una lectura parcial.</p></article>
+          <article class="step"><div class="n">04</div><h3>Respuesta / feedback</h3><p>Responder de manera clara, respetuosa y constructiva para confirmar la comprensión y mantener el diálogo.</p></article>
+        </div>
+      </div>
+      <div class="source">Base: Material Técnico de Apoyo, pp. 3–5, 11–13.</div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <div class="eyebrow"><span class="num">3</span> Técnicas</div>
+        <h2>Herramientas prácticas para escuchar mejor</h2>
+        <p class="subtitle">El material ejemplifica estas acciones mediante comprensión del mensaje, preguntas para aclarar, empatía, apoyo emocional y retroalimentación respetuosa.</p>
+      </header>
+      <div class="content">
+        <div class="techniques">
+          <article class="tech"><div class="ico">🔁</div><h3>Parafraseo</h3><p>Decir con tus propias palabras lo entendido: “O sea, sientes que vamos atrasados”.</p></article>
+          <article class="tech"><div class="ico">🧩</div><h3>Reformulación</h3><p>Ordenar o aclarar la idea del interlocutor sin cambiar su sentido, para verificar comprensión.</p></article>
+          <article class="tech"><div class="ico">❤️</div><h3>Reflejo emocional</h3><p>Reconocer la emoción presente en el mensaje y mostrar que también se comprende su contexto emocional.</p></article>
+          <article class="tech"><div class="ico">❓</div><h3>Preguntas abiertas</h3><p>Invitar a ampliar la información: “¿Qué parte te preocupa más?”. Ayudan a aclarar y profundizar.</p></article>
+          <article class="tech"><div class="ico">✅</div><h3>Validación</h3><p>Reconocer y validar las emociones del otro, generando un espacio seguro y respetuoso para expresarse.</p></article>
+        </div>
+      </div>
+      <div class="source">Base: Material Técnico de Apoyo, pp. 4–5 y 8.</div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <div class="eyebrow"><span class="num">4</span> Factores</div>
+        <h2>Condiciones para una mejor escucha activa</h2>
+        <p class="subtitle">Una escucha eficaz depende tanto de lo que hacemos como de la actitud con la que participamos en la conversación.</p>
+      </header>
+      <div class="content">
+        <div class="factors">
+          <article class="factor"><div class="big-icon">🤝</div><h3>Empatía</h3><p>Comprender los sentimientos y perspectivas de la otra persona para fortalecer la confianza y las relaciones.</p></article>
+          <article class="factor"><div class="big-icon">🎯</div><h3>Atención sin distracciones</h3><p>Mantener plena atención en la interacción, escuchar sin interrumpir y evitar una escucha selectiva o superficial.</p></article>
+          <article class="factor"><div class="big-icon">👀</div><h3>Lenguaje no verbal</h3><p>Observar gestos, expresiones faciales, postura y tono de voz; el material los considera parte del mensaje.</p></article>
+          <article class="factor"><div class="big-icon">⚖️</div><h3>Control de sesgos y juicios</h3><p>Recordar que cada persona interpreta desde sus experiencias y percepciones; conviene comprender antes de juzgar.</p></article>
+        </div>
+      </div>
+      <div class="source">Base: Material Técnico de Apoyo, pp. 2–5 y 59.</div>
+    </section>
+
+    <section class="slide">
+      <header>
+        <div class="eyebrow"><span class="num">5</span> Ejemplo práctico</div>
+        <h2>Carlos y Ana: escucha activa en el trabajo</h2>
+        <p class="subtitle">Diálogo recreado a partir de los ejemplos y principios del material técnico.</p>
+      </header>
+      <div class="content">
+        <div class="dialogue">
+          <div class="bubble carlos"><span class="who">Carlos</span>“Ana, siento que no estamos avanzando con el informe y me preocupa no llegar a tiempo.”</div>
+          <div class="bubble ana"><span class="who">Ana</span>“Entiendo: sientes que vamos atrasados y eso te preocupa.” <strong>— parafraseo + reflejo emocional</strong></div>
+          <div class="bubble ana"><span class="who">Ana</span>“¿Qué parte del informe te está costando más terminar?” <strong>— pregunta abierta</strong></div>
+          <div class="bubble carlos"><span class="who">Carlos</span>“La parte de conclusiones. Tengo las ideas, pero aún no logro ordenarlas.”</div>
+          <div class="bubble ana"><span class="who">Ana</span>“Tiene sentido. Podemos reorganizarnos: yo reviso las conclusiones contigo y luego tú completas los ejemplos. Así avanzamos los dos.” <strong>— validación + respuesta constructiva</strong></div>
+          <div class="note">Resultado: se reduce la tensión y mejora la coordinación mediante una comunicación clara, respetuosa y empática.</div>
+        </div>
+      </div>
+      <div class="source">Base: Material Técnico de Apoyo, ejemplos de pp. 4–5 y 11–12.</div>
+    </section>
+  </main>
+
+  <nav class="controls" aria-label="Controles de presentación">
+    <div class="control-group">
+      <button class="btn" id="prev" aria-label="Anterior">← <span class="label">Anterior</span></button>
+      <button class="btn primary" id="next" aria-label="Siguiente"><span class="label">Siguiente</span> →</button>
+    </div>
+    <div class="dots" id="dots"></div>
+    <div class="control-group">
+      <span class="counter" id="counter">1 / 5</span>
+      <button class="btn" id="fs" aria-label="Pantalla completa">⛶ <span class="label">Pantalla completa</span></button>
+      <span class="kbd">← → para navegar</span>
+    </div>
+  </nav>
+</div>
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const dots=document.getElementById('dots');
+  let index=0;
+  slides.forEach((_,i)=>{const d=document.createElement('span');d.className='dot'+(i===0?' active':'');dots.appendChild(d)});
+  const dotEls=[...dots.children];
+  const counter=document.getElementById('counter');
+  const prev=document.getElementById('prev');
+  const next=document.getElementById('next');
+  function render(){
+    slides.forEach((s,i)=>s.classList.toggle('active',i===index));
+    dotEls.forEach((d,i)=>d.classList.toggle('active',i===index));
+    counter.textContent=`${index+1} / ${slides.length}`;
+    prev.disabled=index===0; next.disabled=index===slides.length-1;
+  }
+  function go(n){index=Math.max(0,Math.min(slides.length-1,n));render()}
+  prev.onclick=()=>go(index-1); next.onclick=()=>go(index+1);
+  document.addEventListener('keydown',e=>{
+    if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(index+1)}
+    if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(index-1)}
+    if(e.key==='Home')go(0); if(e.key==='End')go(slides.length-1);
+  });
+  document.getElementById('fs').onclick=()=>{
+    if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+    else document.exitFullscreen?.();
+  };
+  let touchX=null;
+  document.getElementById('deck').addEventListener('touchstart',e=>touchX=e.changedTouches[0].clientX,{passive:true});
+  document.getElementById('deck').addEventListener('touchend',e=>{if(touchX===null)return;const dx=e.changedTouches[0].clientX-touchX;if(Math.abs(dx)>55)go(index+(dx<0?1:-1));touchX=null},{passive:true});
+  render();
+</script>
+</body>
+</html>
