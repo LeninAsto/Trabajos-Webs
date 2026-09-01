@@ -64,10 +64,15 @@
   .dialogue{display:grid;grid-template-columns:1fr;gap:12px;max-width:1000px;margin:auto;width:100%}
   .bubble{max-width:78%;padding:16px 20px;border-radius:24px;line-height:1.46;box-shadow:0 6px 18px rgba(20,40,28,.06)}
   .carlos{justify-self:start;background:var(--surface-container)}
-  .ana{justify-self:end;background:var(--primary-container);color:var(--on-primary-container)}
+  .diego{justify-self:end;background:var(--primary-container);color:var(--on-primary-container)}
   .who{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;font-weight:900;opacity:.72;display:block;margin-bottom:5px}
   .note{font-size:.9rem;color:var(--on-surface-variant);text-align:center;margin-top:6px}
   .source{position:absolute;left:clamp(28px,4vw,64px);bottom:18px;font-size:.76rem;color:#637069}
+  .github-watermark{position:absolute;right:clamp(18px,3vw,34px);top:clamp(18px,3vw,34px);z-index:6;display:grid;grid-template-columns:34px minmax(0,1fr);align-items:center;gap:10px;padding:10px 13px;border-radius:18px;background:rgba(255,255,255,.72);color:var(--on-surface);text-decoration:none;border:1px solid rgba(113,121,113,.18);box-shadow:0 10px 28px rgba(20,40,28,.1);backdrop-filter:blur(12px)}
+  .github-watermark img{width:34px;height:34px;object-fit:contain}
+  .github-watermark strong,.github-watermark span{display:block;line-height:1.15}
+  .github-watermark strong{font-size:14px;font-weight:900}
+  .github-watermark span{margin-top:3px;color:var(--on-surface-variant);font-size:11px;font-weight:800;word-break:break-word}
   .controls{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:2px 2px}
   .control-group{display:flex;gap:10px;align-items:center}
   button{border:0;font:inherit;cursor:pointer}
@@ -81,12 +86,20 @@
   @media(max-width:1000px){
     .grid2,.compare{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr}.step:not(:last-child)::after{display:none}.techniques{grid-template-columns:repeat(2,1fr)}.tech:last-child{grid-column:1/-1}.factors{grid-template-columns:1fr 1fr}.slide{overflow:auto;padding-bottom:64px}.source{display:none}
   }
-  @media(max-width:620px){.app{padding:8px}.deck{border-radius:22px}.slide{padding:24px}.steps,.techniques,.factors{grid-template-columns:1fr}.tech:last-child{grid-column:auto}.controls .kbd{display:none}.btn span.label{display:none}.bubble{max-width:94%}}
+  @media(max-width:620px){.app{padding:8px}.deck{border-radius:22px}.slide{padding:24px}.steps,.techniques,.factors{grid-template-columns:1fr}.tech:last-child{grid-column:auto}.controls .kbd{display:none}.btn span.label{display:none}.bubble{max-width:94%}.github-watermark{grid-template-columns:28px 1fr;max-width:168px;padding:8px 10px}.github-watermark img{width:28px;height:28px}.github-watermark strong{font-size:12px}.github-watermark span{font-size:10px}}
 </style>
 </head>
 <body>
 <div class="app">
   <main class="deck" id="deck" aria-live="polite">
+    <a class="github-watermark" href="https://github.com/LeninAsto" target="_blank" rel="noopener noreferrer" aria-label="GitHub de Lenin Asto">
+      <img src="../../../../assets/images-global/github.png" alt="" />
+      <span>
+        <strong>Lenin Asto</strong>
+        <span>github.com/LeninAsto</span>
+      </span>
+    </a>
+
     <section class="slide active">
       <header>
         <div class="eyebrow"><span class="num">1</span> Escucha activa</div>
@@ -171,16 +184,16 @@
     <section class="slide">
       <header>
         <div class="eyebrow"><span class="num">5</span> Ejemplo práctico</div>
-        <h2>Carlos y Ana: escucha activa en el trabajo</h2>
+        <h2>Carlos y Diego: escucha activa en el trabajo</h2>
         <p class="subtitle">Diálogo recreado a partir de los ejemplos y principios del material técnico.</p>
       </header>
       <div class="content">
         <div class="dialogue">
-          <div class="bubble carlos"><span class="who">Carlos</span>“Ana, siento que no estamos avanzando con el informe y me preocupa no llegar a tiempo.”</div>
-          <div class="bubble ana"><span class="who">Ana</span>“Entiendo: sientes que vamos atrasados y eso te preocupa.” <strong>— parafraseo + reflejo emocional</strong></div>
-          <div class="bubble ana"><span class="who">Ana</span>“¿Qué parte del informe te está costando más terminar?” <strong>— pregunta abierta</strong></div>
+          <div class="bubble carlos"><span class="who">Carlos</span>“Diego, siento que no estamos avanzando con el informe y me preocupa no llegar a tiempo.”</div>
+          <div class="bubble diego"><span class="who">Diego</span>“Entiendo: sientes que vamos atrasados y eso te preocupa.” <strong>— parafraseo + reflejo emocional</strong></div>
+          <div class="bubble diego"><span class="who">Diego</span>“¿Qué parte del informe te está costando más terminar?” <strong>— pregunta abierta</strong></div>
           <div class="bubble carlos"><span class="who">Carlos</span>“La parte de conclusiones. Tengo las ideas, pero aún no logro ordenarlas.”</div>
-          <div class="bubble ana"><span class="who">Ana</span>“Tiene sentido. Podemos reorganizarnos: yo reviso las conclusiones contigo y luego tú completas los ejemplos. Así avanzamos los dos.” <strong>— validación + respuesta constructiva</strong></div>
+          <div class="bubble diego"><span class="who">Diego</span>“Tiene sentido. Podemos reorganizarnos: yo reviso las conclusiones contigo y luego tú completas los ejemplos. Así avanzamos los dos.” <strong>— validación + respuesta constructiva</strong></div>
           <div class="note">Resultado: se reduce la tensión y mejora la coordinación mediante una comunicación clara, respetuosa y empática.</div>
         </div>
       </div>

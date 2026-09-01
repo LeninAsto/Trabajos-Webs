@@ -72,6 +72,15 @@ const projects = [
     owner: "Personal"
   },
   {
+    title: "Escucha activa",
+    description: "Presentación sobre técnicas, factores y ejemplo práctico de escucha activa.",
+    href: "../works/semestre-2/expo-com/esc-act/",
+    icon: "hearing",
+    semester: "Semestre 2",
+    type: "Exposición",
+    owner: "Personal"
+  },
+  {
     title: "Plan Personal de Motivación Académica",
     description: "Presentación de un plan personal para mejorar el desempeño estudiantil.",
     href: "../works/others/milenka/",
