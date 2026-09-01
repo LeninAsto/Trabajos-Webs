@@ -73,6 +73,9 @@
   .github-watermark strong,.github-watermark span{display:block;line-height:1.15}
   .github-watermark strong{font-size:14px;font-weight:900}
   .github-watermark span{margin-top:3px;color:var(--on-surface-variant);font-size:11px;font-weight:800;word-break:break-word}
+  .pdf-export-frame{position:fixed;left:-99999px;top:0;width:1280px;height:720px;overflow:hidden;background:var(--surface);pointer-events:none}
+  .pdf-export-frame .slide{display:grid;position:absolute;inset:0;width:1280px;height:720px;opacity:1;transform:none;pointer-events:auto;transition:none;padding:52px}
+  .pdf-export-frame .github-watermark{top:20px;right:24px}
   .controls{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:2px 2px}
   .control-group{display:flex;gap:10px;align-items:center}
   button{border:0;font:inherit;cursor:pointer}
@@ -209,11 +212,14 @@
     <div class="dots" id="dots"></div>
     <div class="control-group">
       <span class="counter" id="counter">1 / 5</span>
+      <button class="btn" id="downloadPdf" aria-label="Descargar PDF completo">↓ <span class="label">PDF completo</span></button>
       <button class="btn" id="fs" aria-label="Pantalla completa">⛶ <span class="label">Pantalla completa</span></button>
       <span class="kbd">← → para navegar</span>
     </div>
   </nav>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
   const slides=[...document.querySelectorAll('.slide')];
   const dots=document.getElementById('dots');
@@ -223,6 +229,7 @@
   const counter=document.getElementById('counter');
   const prev=document.getElementById('prev');
   const next=document.getElementById('next');
+  const downloadPdfButton=document.getElementById('downloadPdf');
   function render(){
     slides.forEach((s,i)=>s.classList.toggle('active',i===index));
     dotEls.forEach((d,i)=>d.classList.toggle('active',i===index));
@@ -243,6 +250,87 @@
   let touchX=null;
   document.getElementById('deck').addEventListener('touchstart',e=>touchX=e.changedTouches[0].clientX,{passive:true});
   document.getElementById('deck').addEventListener('touchend',e=>{if(touchX===null)return;const dx=e.changedTouches[0].clientX-touchX;if(Math.abs(dx)>55)go(index+(dx<0?1:-1));touchX=null},{passive:true});
+
+  async function waitForSlidePaint(){
+    if(document.fonts&&document.fonts.ready) await document.fonts.ready;
+    await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+  }
+
+  function createPdfFrame(slide){
+    const frame=document.createElement('div');
+    const slideCopy=slide.cloneNode(true);
+    const watermark=document.querySelector('.github-watermark').cloneNode(true);
+
+    frame.className='pdf-export-frame';
+    slideCopy.classList.add('active');
+    watermark.removeAttribute('target');
+    watermark.removeAttribute('rel');
+    frame.appendChild(slideCopy);
+    frame.appendChild(watermark);
+
+    return frame;
+  }
+
+  async function downloadFullPdf(){
+    if(!window.html2canvas||!window.jspdf){
+      alert('No se pudo cargar el generador PDF. Revisa tu conexión a internet e intenta otra vez.');
+      return;
+    }
+
+    const {jsPDF}=window.jspdf;
+    const pdf=new jsPDF({orientation:'landscape',unit:'pt',format:'a4'});
+    const originalText=downloadPdfButton.innerHTML;
+
+    downloadPdfButton.disabled=true;
+    downloadPdfButton.innerHTML='Generando...';
+
+    try{
+      for(let position=0;position<slides.length;position+=1){
+        const frame=createPdfFrame(slides[position]);
+        document.body.appendChild(frame);
+        await waitForSlidePaint();
+
+        let canvas;
+        try{
+          canvas=await html2canvas(frame,{
+            backgroundColor:'#f7fbf7',
+            scale:1.15,
+            useCORS:true
+          });
+        }finally{
+          frame.remove();
+        }
+
+        const pageWidth=pdf.internal.pageSize.getWidth();
+        const pageHeight=pdf.internal.pageSize.getHeight();
+        const imageRatio=canvas.width/canvas.height;
+        const pageRatio=pageWidth/pageHeight;
+        let imageWidth=pageWidth;
+        let imageHeight=pageHeight;
+        let imageX=0;
+        let imageY=0;
+
+        if(imageRatio>pageRatio){
+          imageHeight=pageWidth/imageRatio;
+          imageY=(pageHeight-imageHeight)/2;
+        }else{
+          imageWidth=pageHeight*imageRatio;
+          imageX=(pageWidth-imageWidth)/2;
+        }
+
+        if(position>0) pdf.addPage();
+        pdf.addImage(canvas.toDataURL('image/jpeg',.9),'JPEG',imageX,imageY,imageWidth,imageHeight);
+        await new Promise(resolve=>setTimeout(resolve,60));
+      }
+
+      pdf.save('escucha-activa.pdf');
+    }finally{
+      downloadPdfButton.disabled=false;
+      downloadPdfButton.innerHTML=originalText;
+    }
+  }
+
+  downloadPdfButton.onclick=downloadFullPdf;
   render();
 </script>
 </body>
