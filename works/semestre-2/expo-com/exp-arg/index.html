@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Regulación global de la IA de frontera</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+<style>
+:root{
+  --md-sys-color-primary:#415f91;
+  --md-sys-color-on-primary:#fff;
+  --md-sys-color-primary-container:#d6e3ff;
+  --md-sys-color-on-primary-container:#001b3e;
+  --md-sys-color-secondary:#565f71;
+  --md-sys-color-secondary-container:#dae2f9;
+  --md-sys-color-tertiary:#705575;
+  --md-sys-color-tertiary-container:#fad8fd;
+  --md-sys-color-error:#ba1a1a;
+  --md-sys-color-error-container:#ffdad6;
+  --md-sys-color-surface:#f9f9ff;
+  --md-sys-color-surface-container:#ededf4;
+  --md-sys-color-surface-container-high:#e7e8ee;
+  --md-sys-color-on-surface:#1a1b20;
+  --md-sys-color-on-surface-variant:#44474f;
+  --md-sys-color-outline:#74777f;
+  --md-sys-color-outline-variant:#c4c6d0;
+  --shadow:0 14px 40px rgba(25, 31, 45, .14);
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;overflow:hidden;background:var(--md-sys-color-surface);font-family:"Google Sans",system-ui,sans-serif;color:var(--md-sys-color-on-surface)}
+body::before{content:"";position:fixed;inset:-20%;background:radial-gradient(circle at 15% 15%,#d6e3ff 0,transparent 27%),radial-gradient(circle at 90% 80%,#fad8fd 0,transparent 25%);opacity:.65;pointer-events:none}
+.deck{height:100%;position:relative}
+.slide{position:absolute;inset:0;padding:56px 72px 86px;opacity:0;transform:translateX(70px) scale(.985);pointer-events:none;transition:opacity .35s ease,transform .45s cubic-bezier(.2,.8,.2,1);overflow:auto}
+.slide.active{opacity:1;transform:none;pointer-events:auto}
+.slide.prev{transform:translateX(-70px) scale(.985)}
+.topline{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:26px}
+.badge{display:inline-flex;align-items:center;gap:9px;border-radius:999px;padding:9px 14px;background:var(--md-sys-color-primary-container);color:var(--md-sys-color-on-primary-container);font-size:14px;font-weight:700;letter-spacing:.02em}
+.icon{font-family:"Material Symbols Rounded";font-size:22px;line-height:1;font-weight:400;font-style:normal}
+.kicker{color:var(--md-sys-color-primary);font-weight:700;text-transform:uppercase;letter-spacing:.11em;font-size:13px}
+h1{font-size:clamp(44px,5.3vw,78px);line-height:1.02;letter-spacing:-.04em;margin:6px 0 18px;max-width:1050px}
+h2{font-size:clamp(34px,4.2vw,58px);line-height:1.05;letter-spacing:-.035em;margin:0 0 14px}
+h3{margin:0 0 8px;font-size:20px;letter-spacing:-.015em}
+p{font-size:19px;line-height:1.55;color:var(--md-sys-color-on-surface-variant);margin:0}
+.lead{font-size:clamp(20px,2vw,28px);line-height:1.45;max-width:1050px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:30px}
+.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{background:rgba(255,255,255,.74);border:1px solid var(--md-sys-color-outline-variant);border-radius:28px;padding:24px;box-shadow:0 6px 22px rgba(25,31,45,.06);backdrop-filter:blur(16px)}
+.card.tinted{background:var(--md-sys-color-primary-container);border-color:transparent}
+.card.tertiary{background:var(--md-sys-color-tertiary-container);border-color:transparent}
+.card.error{background:var(--md-sys-color-error-container);border-color:transparent}
+.card .bigicon{width:50px;height:50px;border-radius:17px;display:grid;place-items:center;background:var(--md-sys-color-surface);color:var(--md-sys-color-primary);margin-bottom:18px}
+.card p{font-size:16px;line-height:1.5}
+.stat{font-size:52px;font-weight:700;letter-spacing:-.045em;color:var(--md-sys-color-primary);line-height:1}
+.stat small{font-size:16px;letter-spacing:0;color:var(--md-sys-color-on-surface-variant)}
+.columns{display:grid;grid-template-columns:1.18fr .82fr;gap:26px;align-items:stretch;margin-top:28px}
+.argument{display:grid;grid-template-columns:44px 1fr;gap:13px;margin:14px 0}
+.argument .dot{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:var(--md-sys-color-primary-container);color:var(--md-sys-color-primary)}
+.argument b{display:block;margin-bottom:4px;font-size:17px}
+.argument span{color:var(--md-sys-color-on-surface-variant);font-size:16px;line-height:1.45}
+.quote{border-left:5px solid var(--md-sys-color-primary);padding:10px 0 10px 20px;font-size:21px;line-height:1.45;color:var(--md-sys-color-on-surface)}
+.source{font-size:12px;color:var(--md-sys-color-outline);margin-top:12px;line-height:1.35}
+.metric-row{display:flex;gap:18px;margin-top:22px;flex-wrap:wrap}.metric{flex:1;min-width:180px;background:var(--md-sys-color-surface-container);border-radius:24px;padding:20px}
+.pill-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.pill{padding:9px 13px;border-radius:999px;background:var(--md-sys-color-secondary-container);font-size:14px;font-weight:600}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:28px}.flow .step{position:relative;background:white;border:1px solid var(--md-sys-color-outline-variant);border-radius:24px;padding:22px}.flow .step:not(:last-child)::after{content:"→";position:absolute;right:-20px;top:50%;transform:translateY(-50%);font-weight:700;color:var(--md-sys-color-primary);z-index:2}
+.nav{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);display:flex;align-items:center;gap:12px;background:rgba(249,249,255,.86);border:1px solid var(--md-sys-color-outline-variant);box-shadow:var(--shadow);padding:8px 10px;border-radius:999px;backdrop-filter:blur(18px);z-index:20}
+button{border:0;background:transparent;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;cursor:pointer;color:var(--md-sys-color-on-surface);transition:.2s}button:hover{background:var(--md-sys-color-secondary-container)}button:active{transform:scale(.94)}
+.counter{font-size:14px;font-weight:700;min-width:54px;text-align:center;color:var(--md-sys-color-on-surface-variant)}
+.progress{position:fixed;left:0;right:0;bottom:0;height:4px;background:transparent;z-index:21}.progress>div{height:100%;background:var(--md-sys-color-primary);width:0;transition:width .35s}
+.corner{position:fixed;right:22px;top:20px;font-size:12px;color:var(--md-sys-color-outline);z-index:20;background:rgba(249,249,255,.7);padding:7px 10px;border-radius:999px;backdrop-filter:blur(12px)}
+ul.clean{padding:0;margin:18px 0 0;list-style:none}ul.clean li{display:flex;gap:11px;margin:12px 0;font-size:17px;line-height:1.45;color:var(--md-sys-color-on-surface-variant)}ul.clean li .icon{color:var(--md-sys-color-primary);font-size:21px;flex:0 0 auto;margin-top:2px}
+.timeline{margin-top:26px;display:grid;grid-template-columns:repeat(5,1fr);gap:13px}.timeline .item{background:white;border-radius:22px;padding:18px;border:1px solid var(--md-sys-color-outline-variant)}.timeline strong{display:block;margin:9px 0 5px}.timeline small{color:var(--md-sys-color-on-surface-variant);line-height:1.35;display:block}
+.footer-note{position:absolute;left:72px;bottom:66px;font-size:12px;color:var(--md-sys-color-outline);max-width:74%}
+@media(max-width:900px){.slide{padding:42px 26px 88px}.grid,.grid.three,.columns,.flow,.timeline{grid-template-columns:1fr}.flow .step:not(:last-child)::after{content:"↓";right:auto;left:50%;top:auto;bottom:-22px}.footer-note{left:26px;bottom:70px}.corner{display:none}h1{font-size:42px}h2{font-size:35px}}
+@media print{html,body{overflow:visible}.slide{position:relative;opacity:1!important;transform:none!important;pointer-events:auto;page-break-after:always;height:100vh}.nav,.progress,.corner{display:none}}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+<section class="slide active">
+  <div class="topline"><span class="badge"><span class="icon">policy</span> Debate sobre gobernanza de IA</span><span class="kicker">Resumen ejecutivo</span></div>
+  <h1>Regulación global estricta sobre la <span style="color:var(--md-sys-color-primary)">IA de frontera</span></h1>
+  <p class="lead"><b>Tesis propuesta:</b> establecer un marco internacional vinculante para supervisar modelos de IA avanzada y reducir riesgos económicos, sociales, de seguridad y de derechos.</p>
+  <div class="grid three">
+    <div class="card"><div class="bigicon"><span class="icon">work_history</span></div><h3>Trabajo y desigualdad</h3><p>Gestionar la transición laboral y evitar que los beneficios de productividad se concentren de forma desproporcionada.</p></div>
+    <div class="card"><div class="bigicon"><span class="icon">fact_check</span></div><h3>Integridad informativa</h3><p>Mejorar trazabilidad, autenticidad y responsabilidad frente a deepfakes y contenido sintético engañoso.</p></div>
+    <div class="card"><div class="bigicon"><span class="icon">balance</span></div><h3>Equidad algorítmica</h3><p>Auditar sistemas utilizados en contratación, crédito u otras decisiones de alto impacto.</p></div>
+    <div class="card"><div class="bigicon"><span class="icon">security</span></div><h3>Seguridad</h3><p>Exigir evaluaciones antes del despliegue de modelos con capacidades avanzadas o de doble uso.</p></div>
+    <div class="card"><div class="bigicon"><span class="icon">copyright</span></div><h3>Propiedad intelectual</h3><p>Dar mayor transparencia sobre contenido de entrenamiento y mecanismos para ejercer derechos.</p></div>
+    <div class="card tinted"><div class="bigicon"><span class="icon">public</span></div><h3>Idea central</h3><p>El desafío es global: reglas incompatibles entre países pueden dejar vacíos regulatorios y dificultar la supervisión.</p></div>
+  </div>
+  <div class="footer-note">Presentación basada en la tesis proporcionada; las cifras y referencias fueron depuradas con fuentes públicas verificables.</div>
+</section>
+
+<section class="slide">
+  <div class="topline"><span class="badge"><span class="icon">neurology</span> Contexto</span><span class="kicker">01 · ¿Qué se intenta regular?</span></div>
+  <h2>IA de frontera: capacidad alta, impacto alto</h2>
+  <p class="lead">El término suele referirse a modelos de propósito general situados en la frontera de capacidades actuales, cuyo mal uso o fallo podría producir impactos de gran escala.</p>
+  <div class="columns">
+    <div class="card">
+      <h3>¿Por qué no basta con regular solo las aplicaciones?</h3>
+      <div class="argument"><div class="dot"><span class="icon">hub</span></div><div><b>Un modelo, miles de usos</b><span>Una misma base puede alimentar asistentes, agentes, sistemas de análisis, código o automatización.</span></div></div>
+      <div class="argument"><div class="dot"><span class="icon">speed</span></div><div><b>Escala y velocidad</b><span>Una capacidad nueva puede distribuirse internacionalmente mucho más rápido que una norma local.</span></div></div>
+      <div class="argument"><div class="dot"><span class="icon">science</span></div><div><b>Evaluación previa</b><span>Las pruebas de seguridad antes del despliegue permiten detectar riesgos antes de que lleguen a millones de usuarios.</span></div></div>
+    </div>
+    <div class="card tinted">
+      <h3>Objetivo regulatorio</h3>
+      <p class="quote">Supervisar los modelos de mayor capacidad sin tratar toda la IA como si tuviera el mismo nivel de riesgo.</p>
+      <div class="pill-row"><span class="pill">Riesgo proporcional</span><span class="pill">Auditoría</span><span class="pill">Transparencia</span><span class="pill">Cooperación internacional</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><span class="badge"><span class="icon">work</span> Argumento 1</span><span class="kicker">Trabajo y brecha socioeconómica</span></div>
+  <h2>La transición laboral puede ser mucho más rápida que la adaptación social</h2>
+  <p class="lead">La IA afecta tareas cognitivas y profesionales, no únicamente trabajo manual. La cuestión regulatoria es cómo distribuir beneficios y amortiguar desplazamientos.</p>
+  <div class="metric-row">
+    <div class="metric"><div class="stat">≈40%</div><p>del empleo mundial está expuesto a la IA, según el análisis del FMI.</p></div>
+    <div class="metric"><div class="stat">≈60%</div><p>del empleo en economías avanzadas está expuesto; una parte podría beneficiarse y otra enfrentar menor demanda.</p></div>
+  </div>
+  <div class="grid">
+    <div class="card"><h3><span class="icon">warning</span> Riesgo</h3><p>Automatización acelerada, reducción de contratación en ciertas tareas y presión sobre salarios o puestos si la reconversión no acompaña el ritmo tecnológico.</p></div>
+    <div class="card tinted"><h3><span class="icon">construction</span> Respuesta posible</h3><p>Capacitación, redes de protección social, seguimiento de impacto laboral y adopción gradual en sectores donde el costo social pueda ser elevado.</p></div>
+  </div>
+  <div class="source">Fuente: FMI, “Gen-AI: Artificial Intelligence and the Future of Work” (2024) y World Economic Outlook (2024).</div>
+</section>
+
+<section class="slide">
+  <div class="topline"><span class="badge"><span class="icon">verified_user</span> Argumento 2</span><span class="kicker">Desinformación y confianza pública</span></div>
+  <h2>Cuando fabricar evidencia falsa cuesta casi cero, verificarla se vuelve más caro</h2>
+  <p class="lead">Voz clonada, video sintético y sitios falsos pueden escalar campañas de engaño. El problema no es solo un deepfake aislado: es la erosión de confianza en lo auténtico.</p>
+  <div class="columns">
+    <div class="card error">
+      <h3><span class="icon">campaign</span> Riesgos</h3>
+      <ul class="clean"><li><span class="icon">check_circle</span>Suplantación de candidatos, autoridades o empresas.</li><li><span class="icon">check_circle</span>Manipulación de conversaciones públicas y procesos electorales.</li><li><span class="icon">check_circle</span>Pánico financiero o daño reputacional mediante material sintético.</li><li><span class="icon">check_circle</span>“Dividendo del mentiroso”: negar como falso contenido que sí es real.</li></ul>
+    </div>
+    <div class="card">
+      <h3>Dato verificable</h3>
+      <p class="quote">El Global Risks Report 2024 situó la desinformación y la información errónea como el riesgo global más severo a corto plazo, en un ciclo con miles de millones de votantes.</p>
+      <div class="pill-row"><span class="pill">Provenance</span><span class="pill">Watermarking</span><span class="pill">Etiquetado</span><span class="pill">Trazabilidad</span></div>
+      <p class="source">Fuente: World Economic Forum, Global Risks Report 2024; UNESCO, AI and Elections (2024).</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><span class="badge"><span class="icon">balance</span> Argumento 3</span><span class="kicker">Sesgos e injusticias algorítmicas</span></div>
+  <h2>Un algoritmo puede escalar un sesgo a miles de decisiones</h2>
+  <p class="lead">Cuando sistemas automatizados filtran candidatos, evalúan crédito o apoyan decisiones de alto impacto, la opacidad dificulta detectar discriminación y apelar resultados.</p>
+  <div class="columns">
+    <div class="card">
+      <h3>Estudio de Stanford — 2026</h3>
+      <p>Investigadores analizaron aproximadamente <b>4 millones de solicitudes</b> procesadas por una herramienta algorítmica de selección. Detectaron disparidades raciales en determinados puestos.</p>
+      <div class="metric-row"><div class="metric"><div class="stat">15%</div><p>de solicitudes de candidatos asiáticos fueron a puestos donde el sistema mostró impacto adverso para ese grupo.</p></div><div class="metric"><div class="stat">26%</div><p>en el caso de solicitudes de candidatos negros.</p></div></div>
+      <p class="source">Stanford Report / Stanford Digital Economy Lab, 2026. El estudio no afirma que todos los sistemas de contratación produzcan esos porcentajes.</p>
+    </div>
+    <div class="card tinted">
+      <h3>Medidas regulatorias discutidas</h3>
+      <ul class="clean"><li><span class="icon">analytics</span>Auditorías de impacto y pruebas de sesgo.</li><li><span class="icon">visibility</span>Explicaciones suficientes para decisiones de alto impacto.</li><li><span class="icon">person_check</span>Revisión humana y mecanismos de apelación.</li><li><span class="icon">dataset</span>Documentación de datos, límites y desempeño.</li></ul>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><span class="badge"><span class="icon">security</span> Argumento 4</span><span class="kicker">Seguridad y riesgos de uso dual</span></div>
+  <h2>Capacidades potentes también pueden amplificar capacidades ofensivas</h2>
+  <p class="lead">La preocupación incluye asistencia para ciberataques, automatización ofensiva y otros usos de doble propósito. La respuesta propuesta es elevar las pruebas según capacidad y riesgo.</p>
+  <div class="flow">
+    <div class="step"><span class="icon">model_training</span><h3>1. Entrenamiento</h3><p>Documentar capacidades, límites y controles.</p></div>
+    <div class="step"><span class="icon">fact_check</span><h3>2. Evaluación</h3><p>Red teaming y pruebas independientes.</p></div>
+    <div class="step"><span class="icon">shield_lock</span><h3>3. Mitigación</h3><p>Reducir riesgos antes del lanzamiento.</p></div>
+    <div class="step"><span class="icon">monitor_heart</span><h3>4. Seguimiento</h3><p>Monitorear incidentes y nuevas capacidades.</p></div>
+  </div>
+  <div class="card tertiary" style="margin-top:25px">
+    <h3>Bletchley Declaration</h3>
+    <p>En noviembre de 2023, <b>28 países y la Unión Europea</b> acordaron que la IA de frontera puede presentar riesgos serios y potencialmente catastróficos, y reconocieron la necesidad de cooperación internacional para comprenderlos y gestionarlos.</p>
+    <p class="source">Fuente: Gobierno del Reino Unido, Bletchley Declaration, 1 de noviembre de 2023.</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><span class="badge"><span class="icon">copyright</span> Argumento 5</span><span class="kicker">Propiedad intelectual</span></div>
+  <h2>Innovación y derechos de autor necesitan reglas de convivencia</h2>
+  <p class="lead">El entrenamiento de modelos de propósito general puede incluir grandes volúmenes de texto, imágenes, audio y otros materiales. La controversia se centra en licencias, excepciones legales, atribución y transparencia.</p>
+  <div class="columns">
+    <div class="card">
+      <h3>Qué exige la UE a proveedores de GPAI</h3>
+      <ul class="clean"><li><span class="icon">description</span>Una política para cumplir la legislación de copyright de la Unión.</li><li><span class="icon">summarize</span>Un resumen suficientemente detallado del contenido utilizado para entrenar el modelo.</li><li><span class="icon">manage_search</span>Información que ayude a titulares de derechos a ejercer sus derechos.</li></ul>
+      <p class="source">AI Act de la UE, art. 53 y recitales relacionados; plantilla de transparencia de la Comisión Europea.</p>
+    </div>
+    <div class="card tinted">
+      <h3>Importante matiz</h3>
+      <p class="quote">La obligación europea es de transparencia y cumplimiento de la ley aplicable; no significa que toda obra protegida necesite siempre autorización individual para cualquier entrenamiento.</p>
+      <p class="source">El marco interactúa con las reglas europeas de minería de textos y datos y con los derechos reservados por titulares.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="topline"><span class="badge"><span class="icon">account_balance</span> Propuesta</span><span class="kicker">Marco internacional basado en riesgo</span></div>
+  <h2>¿Cómo podría verse una regulación global?</h2>
+  <div class="grid three">
+    <div class="card"><div class="bigicon"><span class="icon">speed</span></div><h3>Umbrales de riesgo</h3><p>Obligaciones mayores para modelos de mayor capacidad o con indicios de riesgo sistémico.</p></div>
+    <div class="card"><div class="bigicon"><span class="icon">science</span></div><h3>Evaluaciones</h3><p>Pruebas de seguridad, robustez y uso indebido antes y después del despliegue.</p></div>
+    <div class="card"><div class="bigicon"><span class="icon">visibility</span></div><h3>Transparencia</h3><p>Documentar datos, limitaciones, incidentes y contenido sintético cuando corresponda.</p></div>
+    <div class="card"><div class="bigicon"><span class="icon">gavel</span></div><h3>Responsabilidad</h3><p>Definir obligaciones claras para desarrolladores, proveedores y desplegadores.</p></div>
+    <div class="card"><div class="bigicon"><span class="icon">public</span></div><h3>Cooperación global</h3><p>Estándares compatibles y canales de reporte entre jurisdicciones.</p></div>
+    <div class="card tertiary"><div class="bigicon"><span class="icon">tune</span></div><h3>Proporcionalidad</h3><p>Evitar imponer las mismas cargas a una app pequeña y a un modelo de frontera.</p></div>
+  </div>
+  <div class="footer-note">Una alternativa al “todo o nada” es una regulación proporcional a capacidad, contexto y daño potencial.</div>
+</section>
+
+<section class="slide">
+  <div class="topline"><span class="badge"><span class="icon">forum</span> Cierre</span><span class="kicker">Conclusión y debate</span></div>
+  <h2>El verdadero debate no es “regular o no”, sino <span style="color:var(--md-sys-color-primary)">qué regular, cuánto y quién supervisa</span></h2>
+  <div class="columns">
+    <div class="card tinted">
+      <h3>Síntesis de la tesis</h3>
+      <p class="quote">La propuesta defiende coordinación internacional, evaluaciones independientes, transparencia y obligaciones especiales para los modelos de mayor riesgo.</p>
+      <div class="pill-row"><span class="pill">Trabajo</span><span class="pill">Confianza</span><span class="pill">Equidad</span><span class="pill">Seguridad</span><span class="pill">Copyright</span></div>
+    </div>
+    <div class="card">
+      <h3>Preguntas que también deben resolverse</h3>
+      <ul class="clean"><li><span class="icon">help</span>¿Cómo evitar frenar innovación útil o favorecer solo a empresas gigantes?</li><li><span class="icon">help</span>¿Quién fija los umbrales técnicos de “IA de frontera”?</li><li><span class="icon">help</span>¿Cómo se audita sin revelar secretos industriales sensibles?</li><li><span class="icon">help</span>¿Cómo coordinar países con leyes y prioridades distintas?</li></ul>
+    </div>
+  </div>
+  <div class="footer-note">Fuentes principales: FMI (2024); World Economic Forum, Global Risks Report 2024; Stanford Digital Economy Lab / Stanford Report (2026); Bletchley Declaration (2023); Reglamento (UE) 2024/1689 y Comisión Europea.</div>
+</section>
+
+</div>
+<div class="corner">← → / Space · navegación</div>
+<div class="nav"><button id="prev" aria-label="Anterior"><span class="icon">arrow_back</span></button><span class="counter" id="counter">1 / 8</span><button id="next" aria-label="Siguiente"><span class="icon">arrow_forward</span></button></div>
+<div class="progress"><div id="bar"></div></div>
+<script>
+const slides=[...document.querySelectorAll('.slide')];let index=0;
+const counter=document.getElementById('counter'),bar=document.getElementById('bar');
+function show(n){const old=index;index=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,i)=>{s.classList.toggle('active',i===index);s.classList.toggle('prev',i<index)});counter.textContent=`${index+1} / ${slides.length}`;bar.style.width=`${((index+1)/slides.length)*100}%`;location.hash=`slide-${index+1}`}
+document.getElementById('prev').onclick=()=>show(index-1);document.getElementById('next').onclick=()=>show(index+1);
+document.addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();show(index+1)}if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();show(index-1)}if(e.key==='Home')show(0);if(e.key==='End')show(slides.length-1)});
+let x0=null;document.addEventListener('touchstart',e=>x0=e.touches[0].clientX,{passive:true});document.addEventListener('touchend',e=>{if(x0===null)return;const dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>55)show(index+(dx<0?1:-1));x0=null},{passive:true});
+const hash=location.hash.match(/slide-(\d+)/);if(hash)index=Math.min(slides.length-1,Math.max(0,+hash[1]-1));show(index);
+</script>
+</body>
+</html>
