@@ -3,13 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Semana 13 Â· Extintores y emergencias</title>
+    <title>Semana 13 · Extintores y emergencias</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700;800;900&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500..700,0..1,0&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700;800;900&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500..700,0..1,0&display=swap" rel="stylesheet" />
     <style>
       :root {
         --bg: #f7f8f4;
@@ -41,680 +38,112 @@
         --bc: #163e55;
         --sh: 0 14px 38px rgba(0, 0, 0, 0.28);
       }
-      * {
-        box-sizing: border-box;
-      }
-      html,
-      body {
-        margin: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        background: var(--bg);
-        color: var(--t);
+
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0; width: 100%; height: 100%;
+        background: var(--bg); color: var(--t);
         font-family: "Google Sans", Roboto, Arial, sans-serif;
       }
-      .app {
-        height: 100vh;
-        display: grid;
-        grid-template-rows: 1fr auto;
-      }
-      .deck {
-        position: relative;
-        overflow: hidden;
-      }
+      body { overflow: hidden; }
+      .app { height: 100vh; display: grid; grid-template-rows: 1fr auto; }
+      .deck { position: relative; overflow: hidden; }
       .slide {
-        position: absolute;
-        inset: 0;
+        position: absolute; inset: 0;
         padding: 92px 68px 40px;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        overflow: auto;
-        opacity: 0;
-        pointer-events: none;
-        transform: translateX(34px);
-        transition: 0.28s;
+        display: flex; flex-direction: column; gap: 20px;
+        overflow: auto; opacity: 0; pointer-events: none;
+        transform: translateX(34px); transition: 0.28s ease;
       }
-      .slide.active {
-        opacity: 1;
-        pointer-events: auto;
-        transform: none;
-      }
+      .slide.active { opacity: 1; pointer-events: auto; transform: none; }
       .toolbar {
-        position: absolute;
-        z-index: 20;
-        top: 18px;
-        left: 24px;
-        right: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 14px;
+        position: absolute; z-index: 20; top: 18px; left: 24px; right: 24px;
+        display: flex; align-items: center; justify-content: space-between; gap: 14px;
       }
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-weight: 900;
-      }
+      .brand { display: flex; align-items: center; gap: 12px; font-weight: 900; }
       .brandmark {
-        width: 44px;
-        height: 44px;
-        border-radius: 16px;
-        display: grid;
-        place-items: center;
-        background: var(--pc);
-        color: var(--opc);
+        width: 44px; height: 44px; border-radius: 16px;
+        display: grid; place-items: center; background: var(--pc); color: var(--opc);
       }
-      .actions {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
+      .actions { display: flex; align-items: center; gap: 8px; }
       .wm {
-        display: grid;
-        grid-template-columns: 34px 1fr;
-        align-items: center;
-        gap: 10px;
-        padding: 9px 12px;
-        border-radius: 18px;
-        background: var(--s);
-        border: 1px solid var(--o);
-        box-shadow: var(--sh);
-        color: var(--t);
-        text-decoration: none;
+        display: grid; grid-template-columns: 34px 1fr; align-items: center; gap: 10px;
+        padding: 9px 12px; border-radius: 18px; background: var(--s);
+        border: 1px solid var(--o); box-shadow: var(--sh); color: var(--t); text-decoration: none;
       }
-      .gh {
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        background: #111;
-        color: #fff;
-        display: grid;
-        place-items: center;
-        font-weight: 900;
-        font-size: 12px;
+      .gh-logo {
+        width: 34px; height: 34px; border-radius: 50%; background: #111; color: #fff;
+        display: grid; place-items: center;
       }
-      .wm strong,
-      .wm span {
-        display: block;
-        line-height: 1.12;
-      }
-      .wm strong {
-        font-size: 14px;
-      }
-      .wm span span {
-        font-size: 11px;
-        color: var(--m);
-        margin-top: 3px;
-      }
+      .wm strong, .wm span { display: block; line-height: 1.12; }
+      .wm strong { font-size: 14px; }
+      .wm span span { font-size: 11px; color: var(--m); margin-top: 3px; }
       .tool {
-        width: 42px;
-        height: 42px;
-        border-radius: 14px;
-        border: 1px solid var(--o);
-        background: var(--s);
-        color: var(--t);
-        cursor: pointer;
+        width: 42px; height: 42px; border-radius: 14px; border: 1px solid var(--o);
+        background: var(--s); color: var(--t); cursor: pointer;
       }
       .ey {
-        display: inline-flex;
-        align-items: center;
-        gap: 9px;
-        color: var(--p);
-        font-size: 14px;
-        font-weight: 900;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
+        display: inline-flex; align-items: center; gap: 9px;
+        color: var(--p); font-size: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em;
       }
-      .dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: var(--p);
-      }
-      h2,
-      h3,
-      p {
-        margin: 0;
-      }
+      .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--p); }
+      h2, h3, p { margin: 0; }
       h2 {
-        font-size: clamp(34px, 4.2vw, 56px);
-        line-height: 1;
-        letter-spacing: -0.04em;
+        font-size: clamp(34px, 4.2vw, 56px); line-height: 1; letter-spacing: -0.04em;
       }
-      h3 {
-        font-size: 20px;
-        margin-bottom: 6px;
-      }
-      p {
-        color: var(--m);
-        font-size: 17px;
-        line-height: 1.45;
-      }
-      .lead {
-        font-size: clamp(20px, 2vw, 27px);
-        color: var(--t);
-        max-width: 1100px;
-      }
-      .grid {
-        display: grid;
-        gap: 18px;
-      }
-      .g2 {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-      .g3 {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
+      h3 { font-size: 20px; margin-bottom: 6px; }
+      p { color: var(--m); font-size: 17px; line-height: 1.45; }
+      .lead { font-size: clamp(20px, 2vw, 27px); color: var(--t); max-width: 1100px; }
+      .grid { display: grid; gap: 18px; }
+      .g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .g3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       .card {
-        background: var(--s);
-        border: 1px solid var(--o);
-        border-radius: 28px;
-        padding: 22px;
-        box-shadow: var(--sh);
+        background: var(--s); border: 1px solid var(--o); border-radius: 28px; padding: 22px; box-shadow: var(--sh);
       }
-      .tonal {
-        background: var(--pc);
-        color: var(--opc);
-        border: none;
-      }
-      .tonal p {
-        color: inherit;
-      }
-      .danger {
-        background: var(--dc);
-        border: none;
-      }
+      .tonal { background: var(--pc); color: var(--opc); border: none; }
+      .tonal p { color: inherit; }
+      .danger { background: var(--dc); border: none; }
       .icon {
-        width: 50px;
-        height: 50px;
-        border-radius: 17px;
-        display: grid;
-        place-items: center;
-        background: var(--s2);
-        color: var(--p);
-        margin-bottom: 14px;
+        width: 50px; height: 50px; border-radius: 17px; display: grid; place-items: center;
+        background: var(--s2); color: var(--p); margin-bottom: 14px;
       }
-      .icon span {
-        font-size: 30px;
-      }
-      .list {
-        display: grid;
-        gap: 10px;
-      }
-      .item {
-        display: grid;
-        grid-template-columns: 32px 1fr;
-        gap: 10px;
-        align-items: start;
-      }
-      .item > span {
-        color: var(--p);
-        font-size: 22px;
-      }
-      .steps {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 12px;
-      }
+      .icon span { font-size: 30px; }
+      .list { display: grid; gap: 10px; }
+      .item { display: grid; grid-template-columns: 32px 1fr; gap: 10px; align-items: start; }
+      .item > span { color: var(--p); font-size: 22px; }
+      .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
       .step {
-        background: var(--s);
-        border: 1px solid var(--o);
-        border-radius: 22px;
-        padding: 16px;
-        text-align: center;
+        background: var(--s); border: 1px solid var(--o); border-radius: 22px; padding: 16px; text-align: center;
       }
-      .step > span {
-        font-size: 28px;
-        color: var(--p);
-      }
-      .step b {
-        display: block;
-        margin-top: 6px;
-      }
-      .step p {
-        font-size: 14px;
-        margin-top: 4px;
-      }
+      .step > span { font-size: 28px; color: var(--p); }
+      .step b { display: block; margin-top: 6px; }
+      .step p { font-size: 14px; margin-top: 4px; }
       .quote {
-        border-left: 5px solid var(--p);
-        background: var(--pc);
-        color: var(--opc);
-        border-radius: 0 22px 22px 0;
-        padding: 16px 20px;
-        font-size: 20px;
-        font-weight: 800;
+        border-left: 5px solid var(--p); background: var(--pc); color: var(--opc);
+        border-radius: 0 22px 22px 0; padding: 16px 20px; font-size: 20px; font-weight: 800;
       }
-      .pills {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-      .pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        padding: 8px 12px;
-        border-radius: 999px;
-        background: var(--s2);
-        font-size: 14px;
-        font-weight: 800;
-      }
-      .source {
-        margin-top: auto;
-        padding-top: 10px;
-        border-top: 1px solid var(--o);
-        color: var(--m);
-        font-size: 13px;
-      }
-      .speaker {
-        font-size: 13px;
-        color: var(--m);
-        font-weight: 800;
-      }
+      .source { margin-top: auto; padding-top: 10px; border-top: 1px solid var(--o); color: var(--m); font-size: 13px; }
+      .speaker { font-size: 13px; color: var(--m); font-weight: 800; }
       .controls {
-        display: grid;
-        grid-template-columns: auto 1fr auto;
-        align-items: center;
-        gap: 14px;
-        padding: 10px 16px 14px;
-        background: linear-gradient(180deg, transparent, var(--bg) 32%);
+        display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 14px;
+        padding: 10px 16px 14px; background: linear-gradient(180deg, transparent, var(--bg) 32%);
       }
       .btn {
-        border: 1px solid var(--o);
-        background: var(--s);
-        color: var(--t);
-        padding: 11px 16px;
-        border-radius: 16px;
-        font-weight: 800;
-        cursor: pointer;
+        border: 1px solid var(--o); background: var(--s); color: var(--t); padding: 11px 16px;
+        border-radius: 16px; font-weight: 800; cursor: pointer;
       }
-      .btn.primary {
-        background: var(--p);
-        color: #fff;
-        border-color: transparent;
-      }
-      .progwrap {
-        height: 9px;
-        background: var(--s2);
-        border-radius: 999px;
-        overflow: hidden;
-      }
-      .prog {
-        height: 100%;
-        background: var(--p);
-        width: 0;
-        transition: 0.3s;
-      }
-      .count {
-        min-width: 65px;
-        text-align: center;
-        color: var(--m);
-        font-size: 13px;
-        font-weight: 900;
-      }
-      @media (max-width: 950px) {
-        .g2,
-        .g3,
-        .steps {
-          grid-template-columns: 1fr;
-        }
-        .slide {
-          padding: 138px 24px 34px;
-        }
-        .toolbar {
-          align-items: flex-start;
-          flex-direction: column;
-          left: 14px;
-          right: 14px;
-        }
-        .actions {
-          width: 100%;
-          justify-content: space-between;
-        }
-        .wm {
-          max-width: 190px;
-        }
-      }
-
-      /* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-         MD3 motion + interacciÃ³n
-         Mantiene el tema visual original, pero
-         hace la presentaciÃ³n mÃ¡s intuitiva.
-      â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-      :root {
-        --md-motion-emphasized: cubic-bezier(.2,0,0,1);
-        --md-motion-standard: cubic-bezier(.2,0,0,1);
-        --md-motion-exit: cubic-bezier(.4,0,1,1);
-      }
-
-      body::before,
-      body::after {
-        content: "";
-        position: fixed;
-        pointer-events: none;
-        z-index: 0;
-        border-radius: 999px;
-        filter: blur(2px);
-        opacity: .45;
-      }
-
-      body::before {
-        width: 420px;
-        height: 420px;
-        right: -190px;
-        top: -180px;
-        background: radial-gradient(circle, var(--pc) 0 48%, transparent 70%);
-        animation: ambientFloat 12s ease-in-out infinite alternate;
-      }
-
-      body::after {
-        width: 360px;
-        height: 360px;
-        left: -180px;
-        bottom: -180px;
-        background: radial-gradient(circle, var(--bc) 0 42%, transparent 70%);
-        animation: ambientFloat 14s ease-in-out infinite alternate-reverse;
-      }
-
-      @keyframes ambientFloat {
-        from { transform: translate3d(0,0,0) scale(1); }
-        to   { transform: translate3d(24px,-18px,0) scale(1.06); }
-      }
-
-      .app { position: relative; z-index: 1; }
-      .deck { isolation: isolate; }
-
-      .slide {
-        transform: translate3d(7vw,0,0) scale(.985);
-        filter: blur(4px);
-        transition:
-          opacity .42s var(--md-motion-standard),
-          transform .52s var(--md-motion-emphasized),
-          filter .35s ease;
-        will-change: transform, opacity, filter;
-      }
-
-      .slide.active {
-        opacity: 1;
-        pointer-events: auto;
-        transform: translate3d(0,0,0) scale(1);
-        filter: none;
-      }
-
-      .slide.exit-left {
-        opacity: 0;
-        transform: translate3d(-6vw,0,0) scale(.985);
-        filter: blur(4px);
-      }
-
-      .slide.enter-left {
-        transform: translate3d(-7vw,0,0) scale(.985);
-      }
-
-      /* Entrada escalonada de contenido */
-      .slide.active > *:not(.source) {
-        animation: riseIn .55s var(--md-motion-emphasized) both;
-      }
-      .slide.active > *:nth-child(2) { animation-delay: .04s; }
-      .slide.active > *:nth-child(3) { animation-delay: .08s; }
-      .slide.active > *:nth-child(4) { animation-delay: .12s; }
-      .slide.active > *:nth-child(5) { animation-delay: .16s; }
-      .slide.active > *:nth-child(6) { animation-delay: .20s; }
-
-      @keyframes riseIn {
-        from { opacity: 0; transform: translateY(18px) scale(.985); }
-        to   { opacity: 1; transform: none; }
-      }
-
-      .card,
-      .step,
-      .pill,
-      .quote {
-        transition:
-          transform .22s var(--md-motion-standard),
-          box-shadow .22s ease,
-          border-color .22s ease,
-          background-color .22s ease;
-      }
-
-      .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 20px 44px rgba(31,55,39,.16);
-        border-color: color-mix(in srgb, var(--p) 38%, var(--o));
-      }
-
-      .step:hover {
-        transform: translateY(-4px) scale(1.015);
-        box-shadow: 0 12px 26px rgba(31,55,39,.12);
-      }
-
-      .pill:hover { transform: translateY(-2px); }
-
-      .icon,
-      .brandmark {
-        transition: transform .25s var(--md-motion-emphasized), background-color .25s;
-      }
-
-      .card:hover .icon { transform: rotate(-4deg) scale(1.08); }
-      .brand:hover .brandmark { transform: rotate(-5deg) scale(1.06); }
-
-      .tool,
-      .btn {
-        position: relative;
-        overflow: hidden;
-        transition:
-          transform .18s var(--md-motion-standard),
-          box-shadow .18s ease,
-          background-color .18s ease;
-      }
-
-      .tool:hover,
-      .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(31,55,39,.12);
-      }
-
-      .tool:active,
-      .btn:active {
-        transform: scale(.96);
-      }
-
-      .tool::after,
-      .btn::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: currentColor;
-        opacity: 0;
-        transition: opacity .15s;
-      }
-
-      .tool:active::after,
-      .btn:active::after { opacity: .08; }
-
-      .gh-logo {
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        background: #111;
-        color: #fff;
-        display: grid;
-        place-items: center;
-      }
-
-      .wm {
-        transition:
-          transform .2s var(--md-motion-standard),
-          box-shadow .2s ease,
-          border-color .2s ease;
-      }
-
-      .wm:hover {
-        transform: translateY(-2px);
-        border-color: color-mix(in srgb, var(--p) 45%, var(--o));
-        box-shadow: 0 14px 34px rgba(31,55,39,.14);
-      }
-
-      /* NavegaciÃ³n por puntos */
-      .slide-nav {
-        position: absolute;
-        z-index: 18;
-        right: 28px;
-        top: 50%;
-        transform: translateY(-50%);
-        display: grid;
-        gap: 9px;
-        padding: 10px 8px;
-        border-radius: 999px;
-        background: color-mix(in srgb, var(--s) 86%, transparent);
-        border: 1px solid color-mix(in srgb, var(--o) 72%, transparent);
-        box-shadow: 0 10px 28px rgba(31,55,39,.09);
-        backdrop-filter: blur(12px);
-      }
-
-      .nav-dot {
-        width: 10px;
-        height: 10px;
-        border: 0;
-        padding: 0;
-        border-radius: 999px;
-        background: var(--o);
-        cursor: pointer;
-        transition: .22s var(--md-motion-emphasized);
-      }
-
-      .nav-dot:hover { transform: scale(1.35); background: var(--p); }
-      .nav-dot.active {
-        height: 28px;
-        background: var(--p);
-      }
-
-      /* Indicador flotante del expositor actual */
-      .presenter-chip {
-        position: absolute;
-        z-index: 18;
-        left: 50%;
-        bottom: 18px;
-        transform: translateX(-50%);
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 13px;
-        border-radius: 999px;
-        background: color-mix(in srgb, var(--s) 88%, transparent);
-        border: 1px solid var(--o);
-        box-shadow: 0 8px 24px rgba(31,55,39,.10);
-        backdrop-filter: blur(12px);
-        font-size: 12px;
-        font-weight: 850;
-        color: var(--m);
-      }
-
-      .presenter-chip .material-symbols-rounded {
-        font-size: 17px;
-        color: var(--p);
-      }
-
-      /* Feedback visual al cambiar de slide */
-      .deck.flash::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        background:
-          linear-gradient(90deg,
-            transparent,
-            color-mix(in srgb, var(--pc) 60%, transparent),
-            transparent);
-        animation: slideFlash .45s ease-out both;
-        z-index: 15;
-      }
-
-      @keyframes slideFlash {
-        from { opacity: .65; transform: translateX(-60%); }
-        to   { opacity: 0; transform: translateX(60%); }
-      }
-
-      /* Mejor lectura de los pasos */
-      .steps { counter-reset: step; }
-      .step { position: relative; overflow: hidden; }
-      .step::before {
-        counter-increment: step;
-        content: counter(step);
-        position: absolute;
-        top: 10px;
-        right: 12px;
-        width: 24px;
-        height: 24px;
-        display: grid;
-        place-items: center;
-        border-radius: 50%;
-        background: var(--pc);
-        color: var(--opc);
-        font-size: 11px;
-        font-weight: 900;
-      }
-
-      /* Acciones comunes: icono + texto quedan mÃ¡s claras */
-      .item > span,
-      .icon span,
-      .step > span {
-        font-variation-settings: "FILL" 1, "wght" 600, "GRAD" 0, "opsz" 24;
-      }
-
-      /* Barra de progreso un poco mÃ¡s "viva" */
-      .prog {
-        position: relative;
-        overflow: hidden;
-        transition: width .48s var(--md-motion-emphasized);
-      }
-
-      .prog::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);
-        transform: translateX(-100%);
-        animation: shimmer 2.2s infinite;
-      }
-
-      @keyframes shimmer {
-        60%,100% { transform: translateX(100%); }
-      }
-
-      /* Swipe hint solo en pantallas tÃ¡ctiles */
-      .swipe-hint {
-        display: none;
-        align-items: center;
-        gap: 6px;
-        color: var(--m);
-        font-size: 11px;
-        font-weight: 800;
-      }
-
-      @media (pointer: coarse) {
-        .swipe-hint { display: inline-flex; }
-      }
+      .btn.primary { background: var(--p); color: #fff; border-color: transparent; }
+      .progwrap { height: 9px; background: var(--s2); border-radius: 999px; overflow: hidden; }
+      .prog { height: 100%; background: var(--p); width: 0; transition: 0.3s; }
+      .count { min-width: 65px; text-align: center; color: var(--m); font-size: 13px; font-weight: 900; }
 
       @media (max-width: 950px) {
-        .slide-nav { right: 9px; }
-        .presenter-chip { bottom: 10px; }
+        .g2, .g3, .steps { grid-template-columns: 1fr; }
+        .slide { padding: 138px 24px 34px; }
+        .toolbar { align-items: flex-start; flex-direction: column; left: 14px; right: 14px; }
+        .actions { width: 100%; justify-content: space-between; }
+        .wm { max-width: 190px; }
       }
-
-      @media (prefers-reduced-motion: reduce) {
-        *,
-        *::before,
-        *::after {
-          animation-duration: .001ms !important;
-          animation-iteration-count: 1 !important;
-          transition-duration: .001ms !important;
-          scroll-behavior: auto !important;
-        }
-      }
-
     </style>
   </head>
   <body>
@@ -722,66 +151,46 @@
       <main class="deck">
         <div class="toolbar">
           <div class="brand">
-            <span class="brandmark material-symbols-rounded">crisis_alert</span
-            ><span>Semana 13 Â· Seguridad e Higiene Industrial</span>
+            <span class="brandmark material-symbols-rounded">crisis_alert</span>
+            <span>Semana 13 · Seguridad e Higiene Industrial</span>
           </div>
           <div class="actions">
-            <a class="wm" href="https://github.com/LeninAsto" target="_blank"
-              >
+            <a class="wm" href="https://github.com/LeninAsto" target="_blank">
               <span class="gh-logo" aria-hidden="true">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
-        <path d="M12 .7a11.3 11.3 0 0 0-3.57 22c.57.1.78-.25.78-.55v-2.15c-3.18.69-3.85-1.35-3.85-1.35-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.24 3.34.95.1-.74.4-1.24.73-1.53-2.54-.29-5.21-1.27-5.21-5.65 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.12 1.17A10.9 10.9 0 0 1 12 6.02c.96 0 1.93.13 2.83.38 2.16-1.48 3.11-1.17 3.11-1.17.63 1.57.24 2.73.12 3.02.74.8 1.18 1.82 1.18 3.07 0 4.39-2.68 5.35-5.23 5.63.41.35.78 1.05.78 2.12v3.08c0 .3.21.66.79.55A11.3 11.3 0 0 0 12 .7Z"/>
-      </svg>
-    </span>
-              <span
-                ><strong>Lenin Asto</strong
-                ><span>github.com/LeninAsto</span></span
-              ></a
-            ><button class="tool material-symbols-rounded" id="theme" aria-label="Cambiar tema" title="Cambiar tema">
-              dark_mode</button
-            ><button class="tool material-symbols-rounded" id="full" aria-label="Pantalla completa" title="Pantalla completa">
-              fullscreen
-            </button>
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+                  <path d="M12 .7a11.3 11.3 0 0 0-3.57 22c.57.1.78-.25.78-.55v-2.15c-3.18.69-3.85-1.35-3.85-1.35-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.68 1.24 3.37.95.1-.75.4-1.25.72-1.54-2.54-.29-5.21-1.27-5.21-5.65 0-1.25.45-2.28 1.18-3.08-.12-.29-.5-1.46.11-3.04 0 0 .96-.31 3.14 1.18a10.86 10.86 0 0 1 5.72 0c2.17-1.49 3.12-1.18 3.12-1.18.62 1.58.24 2.75.12 3.04.73.8 1.17 1.83 1.17 3.08 0 4.39-2.68 5.36-5.24 5.64.41.36.78 1.07.78 2.17v3.22c0 .3.21.66.79.55A11.3 11.3 0 0 0 12 .7Z"/>
+                </svg>
+              </span>
+              <span>
+                <strong>Lenin Asto</strong>
+                <span>github.com/LeninAsto</span>
+              </span>
+            </a>
+            <button class="tool material-symbols-rounded" id="theme" aria-label="Cambiar tema" title="Cambiar tema">dark_mode</button>
+            <button class="tool material-symbols-rounded" id="full" aria-label="Pantalla completa" title="Pantalla completa">fullscreen</button>
           </div>
         </div>
 
         <section class="slide active">
-          <div class="ey">
-            <span class="dot"></span>Participante 1 Â· Tipos y uso de extintores
-          </div>
-          <h2>Â¿QuÃ© es un extintor y cuÃ¡ndo se utiliza?</h2>
+          <div class="ey"><span class="dot"></span>Participante 1 · Tipos y uso de extintores</div>
+          <h2>¿Qué es un extintor y cuándo se utiliza?</h2>
           <div class="grid g2">
             <div class="card tonal">
-              <div class="icon">
-                <span class="material-symbols-rounded">fire_extinguisher</span>
-              </div>
+              <div class="icon"><span class="material-symbols-rounded">fire_extinguisher</span></div>
               <h3>Extintor</h3>
-              <p>
-                Equipo portÃ¡til o rodante que contiene un agente extintor para
-                controlar o apagar un fuego inicial.
-              </p>
+              <p>Equipo portátil o rodante que contiene un agente extintor para controlar o apagar un fuego inicial.</p>
             </div>
             <div class="card">
-              <div class="icon">
-                <span class="material-symbols-rounded"
-                  >local_fire_department</span
-                >
-              </div>
+              <div class="icon"><span class="material-symbols-rounded">local_fire_department</span></div>
               <h3>Uso correcto</h3>
-              <p>
-                EstÃ¡ pensado para <b>amagos de incendio</b>, no para incendios
-                grandes o fuera de control.
-              </p>
+              <p>Está pensado para <b>apagones de incendio</b>, no para incendios grandes o fuera de control.</p>
             </div>
           </div>
           <div class="grid g3">
             <div class="card">
               <div class="icon"><span class="material-symbols-rounded">verified</span></div>
               <h3>Debe estar</h3>
-              <p>
-                Visible, seÃ±alizado, libre de obstÃ¡culos y con mantenimiento
-                vigente.
-              </p>
+              <p>Visible, señalizado, libre de obstáculos y con mantenimiento vigente.</p>
             </div>
             <div class="card">
               <div class="icon"><span class="material-symbols-rounded">checklist</span></div>
@@ -791,452 +200,194 @@
             <div class="card danger">
               <div class="icon"><span class="material-symbols-rounded">running_with_errors</span></div>
               <h3>Se debe evacuar si...</h3>
-              <p>
-                El fuego crece, hay humo intenso, riesgo de explosiÃ³n o no se
-                estÃ¡ capacitado.
-              </p>
+              <p>El fuego crece, hay humo intenso, riesgo de explosión o no se está capacitado.</p>
             </div>
           </div>
-          <div class="speaker">
-            Idea para exponer: â€œEl extintor es una respuesta inicial; la
-            prioridad sigue siendo la vida.â€
-          </div>
-          <div class="source">
-            Fuente: Material TÃ©cnico de Apoyo Â· pp. 214â€“215.
-          </div>
+          <div class="speaker">Idea para exponer: “El extintor es una respuesta inicial; la prioridad sigue siendo la vida.”</div>
+          <div class="source">Fuente: Material Técnico de Apoyo · pp. 214–215.</div>
         </section>
 
         <section class="slide">
-          <div class="ey">
-            <span class="dot"></span>Participante 2 Â· SelecciÃ³n y uso correcto
-          </div>
+          <div class="ey"><span class="dot"></span>Participante 2 · Selección y uso correcto</div>
           <h2>Elegir el extintor correcto y aplicarlo bien</h2>
           <div class="grid g2">
             <div class="card">
-              <div class="icon">
-                <span class="material-symbols-rounded">fact_check</span>
-              </div>
+              <div class="icon"><span class="material-symbols-rounded">fact_check</span></div>
               <h3>Antes de actuar</h3>
               <div class="list">
-                <div class="item">
-                  <span class="material-symbols-rounded">check_circle</span>
-                  <p>Identificar el material que arde y la clase de fuego.</p>
-                </div>
-                <div class="item">
-                  <span class="material-symbols-rounded">check_circle</span>
-                  <p>Verificar manÃ³metro, mantenimiento y acceso libre.</p>
-                </div>
-                <div class="item">
-                  <span class="material-symbols-rounded">check_circle</span>
-                  <p>Mantener siempre una ruta de escape.</p>
-                </div>
+                <div class="item"><span class="material-symbols-rounded">check_circle</span><p>Identificar el material que arde y la clase de fuego.</p></div>
+                <div class="item"><span class="material-symbols-rounded">check_circle</span><p>Verificar manómetro, mantenimiento y acceso libre.</p></div>
+                <div class="item"><span class="material-symbols-rounded">check_circle</span><p>Mantener siempre una ruta de escape.</p></div>
               </div>
             </div>
             <div class="card tonal">
-              <div class="icon">
-                <span class="material-symbols-rounded">warning</span>
-              </div>
+              <div class="icon"><span class="material-symbols-rounded">warning</span></div>
               <h3>Importante</h3>
-              <p>
-                No usar agua en fuegos elÃ©ctricos energizados ni en lÃ­quidos
-                inflamables, porque puede agravar la emergencia.
-              </p>
+              <p>No usar agua en fuegos eléctricos energizados ni en líquidos inflamables, porque puede agravar la emergencia.</p>
             </div>
           </div>
           <div class="steps">
-            <div class="step">
-              <span class="material-symbols-rounded">lock_open</span
-              ><b>1. Retirar</b>
-              <p>Quitar el seguro.</p>
-            </div>
-            <div class="step">
-              <span class="material-symbols-rounded">target</span
-              ><b>2. Apuntar</b>
-              <p>A la base del fuego.</p>
-            </div>
-            <div class="step">
-              <span class="material-symbols-rounded">touch_app</span
-              ><b>3. Presionar</b>
-              <p>Accionar la manija.</p>
-            </div>
-            <div class="step">
-              <span class="material-symbols-rounded">swap_horiz</span
-              ><b>4. Barrer</b>
-              <p>Mover de lado a lado.</p>
-            </div>
+            <div class="step"><span class="material-symbols-rounded">lock_open</span><b>1. Retirar</b><p>Quitar el seguro.</p></div>
+            <div class="step"><span class="material-symbols-rounded">target</span><b>2. Apuntar</b><p>A la base del fuego.</p></div>
+            <div class="step"><span class="material-symbols-rounded">touch_app</span><b>3. Presionar</b><p>Accionar la manija.</p></div>
+            <div class="step"><span class="material-symbols-rounded">swap_horiz</span><b>4. Barrer</b><p>Mover de lado a lado.</p></div>
           </div>
-          <div class="quote">
-            Caso del material: para trapos con aceite y thinner, se plantea PQS
-            o COâ‚‚, siempre que el fuego sea pequeÃ±o y sea seguro actuar.
-          </div>
-          <div class="source">
-            Fuente: Material TÃ©cnico de Apoyo Â· pp. 215â€“219.
-          </div>
+          <div class="quote">Caso del material: para trapos con aceite y thinner, se plantea PQS o CO₂, siempre que el fuego sea pequeño y sea seguro actuar.</div>
+          <div class="source">Fuente: Material Técnico de Apoyo · pp. 215–219.</div>
         </section>
 
         <section class="slide">
-          <div class="ey">
-            <span class="dot"></span>Participante 3 Â· ActuaciÃ³n general ante
-            emergencias
-          </div>
-          <h2>Â¿CÃ³mo actuar de forma segura ante una emergencia?</h2>
-          <p class="lead">
-            La respuesta debe ser organizada, rÃ¡pida y preventiva. No se
-            improvisa ni se busca hacer â€œheroÃ­smoâ€.
-          </p>
+          <div class="ey"><span class="dot"></span>Participante 3 · Actuación general ante emergencias</div>
+          <h2>¿Cómo actuar de forma segura ante una emergencia?</h2>
+          <p class="lead">La respuesta debe ser organizada, rápida y preventiva. No se improvisa ni se busca hacer “heroísmo”.</p>
           <div class="grid g3">
             <div class="card tonal">
-              <div class="icon">
-                <span class="material-symbols-rounded">self_improvement</span>
-              </div>
+              <div class="icon"><span class="material-symbols-rounded">self_improvement</span></div>
               <h3>Mantener la calma</h3>
-              <p>
-                Identificar quÃ© estÃ¡ ocurriendo y evitar decisiones impulsivas.
-              </p>
+              <p>Identificar qué está ocurriendo y evitar decisiones impulsivas.</p>
             </div>
             <div class="card">
-              <div class="icon">
-                <span class="material-symbols-rounded">campaign</span>
-              </div>
+              <div class="icon"><span class="material-symbols-rounded">campaign</span></div>
               <h3>Alertar</h3>
               <p>Comunicar al instructor, supervisor, brigada o responsable.</p>
             </div>
             <div class="card">
-              <div class="icon">
-                <span class="material-symbols-rounded">emergency_exit</span>
-              </div>
+              <div class="icon"><span class="material-symbols-rounded">emergency_exit</span></div>
               <h3>Alejarse o evacuar</h3>
-              <p>
-                Si el peligro supera la respuesta inicial, salir por rutas
-                seÃ±alizadas.
-              </p>
+              <p>Si el peligro supera la respuesta inicial, salir por rutas señalizadas.</p>
             </div>
           </div>
           <div class="list">
-            <div class="item">
-              <span class="material-symbols-rounded">do_not_disturb_on</span>
-              <p>No actuar si no se estÃ¡ capacitado.</p>
-            </div>
-            <div class="item">
-              <span class="material-symbols-rounded">group</span>
-              <p>
-                Ayudar a otros solo si no se compromete la propia seguridad.
-              </p>
-            </div>
-            <div class="item">
-              <span class="material-symbols-rounded">description</span>
-              <p>
-                Reportar lo ocurrido para investigar y evitar que se repita.
-              </p>
-            </div>
+            <div class="item"><span class="material-symbols-rounded">do_not_disturb_on</span><p>No actuar si no se está capacitado.</p></div>
+            <div class="item"><span class="material-symbols-rounded">group</span><p>Ayudar a otros solo si no se compromete la propia seguridad.</p></div>
+            <div class="item"><span class="material-symbols-rounded">description</span><p>Reportar lo ocurrido para investigar y evitar que se repita.</p></div>
           </div>
-          <div class="quote">
-            Prioridad: proteger primero a las personas; despuÃ©s controlar la
-            emergencia, solo si es seguro hacerlo.
-          </div>
-          <div class="source">
-            Fuente: Material TÃ©cnico de Apoyo Â· pp. 219â€“220.
-          </div>
+          <div class="quote">Prioridad: proteger primero a las personas; después controlar la emergencia, solo si es seguro hacerlo.</div>
+          <div class="source">Fuente: Material Técnico de Apoyo · pp. 219–220.</div>
         </section>
 
         <section class="slide">
-          <div class="ey">
-            <span class="dot"></span>Participante 4 Â· Emergencias comunes
-          </div>
-          <h2>QuÃ© hacer segÃºn el tipo de emergencia</h2>
+          <div class="ey"><span class="dot"></span>Participante 4 · Emergencias comunes</div>
+          <h2>Qué hacer según el tipo de emergencia</h2>
           <div class="grid g3">
             <div class="card">
-              <div class="icon">
-                <span class="material-symbols-rounded"
-                  >local_fire_department</span
-                >
-              </div>
+              <div class="icon"><span class="material-symbols-rounded">local_fire_department</span></div>
               <h3>Incendio</h3>
-              <p>
-                Alertar. Usar extintor solo si el fuego es pequeÃ±o y se estÃ¡
-                capacitado; si crece, evacuar.
-              </p>
+              <p>Alertar. Usar extintor solo si el fuego es pequeño y se está capacitado; si crece, evacuar.</p>
             </div>
             <div class="card">
-              <div class="icon">
-                <span class="material-symbols-rounded">vibration</span>
-              </div>
+              <div class="icon"><span class="material-symbols-rounded">vibration</span></div>
               <h3>Sismo</h3>
-              <p>
-                Alejarse de objetos que puedan caer y evacuar despuÃ©s del
-                movimiento al punto de reuniÃ³n.
-              </p>
+              <p>Alejarse de objetos que puedan caer y evacuar después del movimiento al punto de reunión.</p>
             </div>
             <div class="card">
-              <div class="icon">
-                <span class="material-symbols-rounded">bolt</span>
-              </div>
-              <h3>Descarga elÃ©ctrica</h3>
-              <p>
-                No tocar a la vÃ­ctima energizada. Cortar la energÃ­a y solicitar
-                primeros auxilios.
-              </p>
+              <div class="icon"><span class="material-symbols-rounded">bolt</span></div>
+              <h3>Descarga eléctrica</h3>
+              <p>No tocar a la víctima energizada. Cortar la energía y solicitar primeros auxilios.</p>
             </div>
             <div class="card">
-              <div class="icon">
-                <span class="material-symbols-rounded">science</span>
-              </div>
-              <h3>Derrame quÃ­mico</h3>
-              <p>
-                Aislar el Ã¡rea, evitar contacto e inhalaciÃ³n y revisar la ficha
-                de seguridad.
-              </p>
+              <div class="icon"><span class="material-symbols-rounded">science</span></div>
+              <h3>Derrame químico</h3>
+              <p>Aislar el área, evitar contacto e inhalación y revisar la ficha de seguridad.</p>
             </div>
             <div class="card">
-              <div class="icon">
-                <span class="material-symbols-rounded">medical_services</span>
-              </div>
-              <h3>LesiÃ³n o caÃ­da</h3>
-              <p>
-                No mover al lesionado salvo peligro mayor. Avisar y controlar el
-                Ã¡rea.
-              </p>
+              <div class="icon"><span class="material-symbols-rounded">medical_services</span></div>
+              <h3>Lesión o caída</h3>
+              <p>No mover al lesionado salvo peligro mayor. Avisar y controlar el área.</p>
             </div>
             <div class="card tonal">
-              <div class="icon">
-                <span class="material-symbols-rounded">emergency_exit</span>
-              </div>
-              <h3>EvacuaciÃ³n</h3>
-              <p>
-                Seguir rutas seÃ±alizadas, no correr, no empujar y dirigirse al
-                punto de reuniÃ³n.
-              </p>
+              <div class="icon"><span class="material-symbols-rounded">emergency_exit</span></div>
+              <h3>Evacuación</h3>
+              <p>Seguir rutas señalizadas, no correr, no empujar y dirigirnos al punto de reunión.</p>
             </div>
           </div>
-          <div class="source">
-            Fuente: Material TÃ©cnico de Apoyo Â· pp. 220â€“221.
-          </div>
+          <div class="source">Fuente: Material Técnico de Apoyo · pp. 220–221.</div>
         </section>
 
         <section class="slide">
-          <div class="ey">
-            <span class="dot"></span>Participante 5 Â· EvacuaciÃ³n y caso prÃ¡ctico
-          </div>
-          <h2>Del amago de incendio a una respuesta segura</h2>
+          <div class="ey"><span class="dot"></span>Participante 5 · Evacuación y caso práctico</div>
+          <h2>Del ataque del fuego a una respuesta segura</h2>
           <div class="grid g2">
             <div class="card tonal">
-              <div class="icon">
-                <span class="material-symbols-rounded">warning</span>
-              </div>
+              <div class="icon"><span class="material-symbols-rounded">warning</span></div>
               <h3>Caso del taller</h3>
-              <p>
-                Una chispa del esmeril enciende un trapo con aceite. Un
-                estudiante intenta retirarlo con la mano, otro corre empujando y
-                el extintor estÃ¡ parcialmente bloqueado.
-              </p>
+              <p>Una chispa del esmeril enciende un trapo con aceite. Un estudiante intenta retirarlo con la mano, otro corre y el extintor está parcialmente bloqueado.</p>
             </div>
             <div class="card">
-              <div class="icon">
-                <span class="material-symbols-rounded">route</span>
-              </div>
+              <div class="icon"><span class="material-symbols-rounded">route</span></div>
               <h3>Respuesta correcta</h3>
               <div class="list">
-                <div class="item">
-                  <span class="material-symbols-rounded">counter_1</span>
-                  <p>Alertar y avisar al responsable.</p>
-                </div>
-                <div class="item">
-                  <span class="material-symbols-rounded">counter_2</span>
-                  <p>Detener la actividad y cortar energÃ­a si es seguro.</p>
-                </div>
-                <div class="item">
-                  <span class="material-symbols-rounded">counter_3</span>
-                  <p>Alejar a las personas.</p>
-                </div>
-                <div class="item">
-                  <span class="material-symbols-rounded">counter_4</span>
-                  <p>Usar el extintor solo si se estÃ¡ capacitado.</p>
-                </div>
-                <div class="item">
-                  <span class="material-symbols-rounded">counter_5</span>
-                  <p>Evacuar si el fuego no se controla.</p>
-                </div>
+                <div class="item"><span class="material-symbols-rounded">counter_1</span><p>Alertar y avisar al responsable.</p></div>
+                <div class="item"><span class="material-symbols-rounded">counter_2</span><p>Detener la actividad y cortar energía si es seguro.</p></div>
+                <div class="item"><span class="material-symbols-rounded">counter_3</span><p>Alejar a las personas.</p></div>
+                <div class="item"><span class="material-symbols-rounded">counter_4</span><p>Usar el extintor solo si se está capacitado.</p></div>
+                <div class="item"><span class="material-symbols-rounded">counter_5</span><p>Evacuar si el fuego no se controla.</p></div>
               </div>
             </div>
           </div>
           <div class="pills">
-            <span class="pill"
-              ><span class="material-symbols-rounded">do_not_touch</span>No
-              tocar material encendido</span
-            ><span class="pill"
-              ><span class="material-symbols-rounded">directions_walk</span>No
-              correr ni empujar</span
-            ><span class="pill"
-              ><span class="material-symbols-rounded">fire_extinguisher</span
-              >Extintor siempre libre</span
-            ><span class="pill"
-              ><span class="material-symbols-rounded">flag</span>Punto de
-              reuniÃ³n</span
-            >
+            <span class="pill"><span class="material-symbols-rounded">do_not_touch</span>No tocar material encendido</span>
+            <span class="pill"><span class="material-symbols-rounded">directions_walk</span>No correr ni empujar</span>
+            <span class="pill"><span class="material-symbols-rounded">fire_extinguisher</span>Extintor siempre libre</span>
+            <span class="pill"><span class="material-symbols-rounded">flag</span>Punto de reunión</span>
           </div>
-          <div class="quote">
-            Cierre: una emergencia se enfrenta con calma, comunicaciÃ³n, equipos
-            operativos y decisiones seguras. Si no es seguro actuar, se evacÃºa.
-          </div>
-          <div class="source">
-            Fuente: Material TÃ©cnico de Apoyo Â· pp. 222â€“224.
-          </div>
+          <div class="quote">Cierre: una emergencia se enfrenta con calma, comunicación, equipos operativos y decisiones seguras. Si no es seguro actuar, se evacúa.</div>
+          <div class="source">Fuente: Material Técnico de Apoyo · pp. 222–224.</div>
         </section>
-
-        <nav class="slide-nav" id="slideNav" aria-label="Ir a diapositiva"></nav>
-        <div class="presenter-chip" id="presenterChip">
-          <span class="material-symbols-rounded">co_present</span>
-          <span id="presenterText">Participante 1</span>
-          <span class="swipe-hint"><span class="material-symbols-rounded">swipe</span> desliza</span>
-        </div>
-
       </main>
+
       <footer class="controls">
-        <div style="display: flex; gap: 8px">
-          <button class="btn" id="prev">â† Anterior</button
-          ><button class="btn primary" id="next">Siguiente â†’</button>
+        <div style="display:flex; gap:8px;">
+          <button class="btn" id="prev">◀ Anterior</button>
+          <button class="btn primary" id="next">Siguiente ▶</button>
         </div>
         <div class="progwrap"><div class="prog" id="prog"></div></div>
         <div class="count" id="count">1 / 5</div>
       </footer>
     </div>
+
     <script>
-      const slides = [...document.querySelectorAll(".slide")];
-      const deck = document.querySelector(".deck");
-      const prog = document.getElementById("prog");
-      const count = document.getElementById("count");
-      const slideNav = document.getElementById("slideNav");
-      const presenterText = document.getElementById("presenterText");
+      const slides = [...document.querySelectorAll('.slide')];
+      const prog = document.getElementById('prog');
+      const count = document.getElementById('count');
       let i = 0;
-      let touchStartX = null;
-      let touchStartY = null;
-      let wheelLocked = false;
 
-      // NavegaciÃ³n por puntos
-      slides.forEach((_, n) => {
-        const dot = document.createElement("button");
-        dot.className = "nav-dot";
-        dot.type = "button";
-        dot.title = `Ir a diapositiva ${n + 1}`;
-        dot.setAttribute("aria-label", `Ir a diapositiva ${n + 1}`);
-        dot.addEventListener("click", () => show(n));
-        slideNav.appendChild(dot);
-      });
-
-      const dots = [...document.querySelectorAll(".nav-dot")];
-
-      function getPresenter(slide, idx) {
-        const text = slide.querySelector(".ey")?.textContent?.trim() || "";
-        const match = text.match(/Participante\s+\d+/i);
-        return match ? match[0] : `Diapositiva ${idx + 1}`;
-      }
-
-      function pulseDeck() {
-        deck.classList.remove("flash");
-        void deck.offsetWidth;
-        deck.classList.add("flash");
-        setTimeout(() => deck.classList.remove("flash"), 480);
-      }
-
-      function show(n) {
-        const next = (n + slides.length) % slides.length;
-        const direction = next === i ? 0 :
-          ((next > i && !(i === slides.length - 1 && next === 0)) ||
-           (i === 0 && next === slides.length - 1)) ? 1 : -1;
-
+      function show(nextIndex) {
         const current = slides[i];
-        const incoming = slides[next];
-
-        if (next !== i) {
-          current.classList.remove("active", "enter-left");
-          current.classList.toggle("exit-left", direction > 0);
-
-          incoming.classList.remove("exit-left");
-          incoming.classList.toggle("enter-left", direction < 0);
-
-          requestAnimationFrame(() => {
-            incoming.classList.add("active");
-            incoming.classList.remove("enter-left");
-          });
-
-          setTimeout(() => current.classList.remove("exit-left"), 560);
-          pulseDeck();
-        } else {
-          incoming.classList.add("active");
-        }
-
-        i = next;
-        prog.style.width = ((i + 1) / slides.length) * 100 + "%";
+        const incoming = slides[nextIndex];
+        if (!incoming || current === incoming) return;
+        current.classList.remove('active');
+        incoming.classList.add('active');
+        i = nextIndex;
+        prog.style.width = ((i + 1) / slides.length) * 100 + '%';
         count.textContent = `${i + 1} / ${slides.length}`;
-        dots.forEach((d, n) => d.classList.toggle("active", n === i));
-        presenterText.textContent = getPresenter(slides[i], i);
-        location.hash = "s" + (i + 1);
       }
 
-      document.getElementById("prev").onclick = () => show(i - 1);
-      document.getElementById("next").onclick = () => show(i + 1);
-
-      document.getElementById("theme").onclick = () => {
-        const root = document.documentElement;
-        const nextTheme = root.dataset.theme === "dark" ? "" : "dark";
-        root.dataset.theme = nextTheme;
-        document.getElementById("theme").textContent =
-          nextTheme === "dark" ? "light_mode" : "dark_mode";
-      };
-
-      document.getElementById("full").onclick = () =>
-        !document.fullscreenElement
-          ? document.documentElement.requestFullscreen?.()
-          : document.exitFullscreen?.();
-
-      addEventListener("keydown", (e) => {
-        if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key)) {
-          e.preventDefault();
-          show(i + 1);
-        }
-        if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) {
-          e.preventDefault();
-          show(i - 1);
-        }
-        if (e.key === "Home") show(0);
-        if (e.key === "End") show(slides.length - 1);
-        if (e.key.toLowerCase() === "f") document.getElementById("full").click();
-        if (e.key.toLowerCase() === "d") document.getElementById("theme").click();
+      document.getElementById('prev').addEventListener('click', () => {
+        if (i > 0) show(i - 1);
       });
 
-      // Swipe mÃ³vil
-      deck.addEventListener("touchstart", (e) => {
-        const t = e.changedTouches[0];
-        touchStartX = t.clientX;
-        touchStartY = t.clientY;
-      }, { passive: true });
+      document.getElementById('next').addEventListener('click', () => {
+        if (i < slides.length - 1) show(i + 1);
+      });
 
-      deck.addEventListener("touchend", (e) => {
-        if (touchStartX == null || touchStartY == null) return;
-        const t = e.changedTouches[0];
-        const dx = t.clientX - touchStartX;
-        const dy = t.clientY - touchStartY;
+      document.getElementById('theme').addEventListener('click', () => {
+        const root = document.documentElement;
+        const dark = root.dataset.theme === 'dark';
+        root.dataset.theme = dark ? '' : 'dark';
+        document.getElementById('theme').textContent = dark ? 'dark_mode' : 'light_mode';
+      });
 
-        if (Math.abs(dx) > 52 && Math.abs(dx) > Math.abs(dy) * 1.25) {
-          show(dx < 0 ? i + 1 : i - 1);
+      document.getElementById('full').addEventListener('click', async () => {
+        if (!document.fullscreenElement) {
+          await document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+          await document.exitFullscreen().catch(() => {});
         }
-        touchStartX = touchStartY = null;
-      }, { passive: true });
+      });
 
-      // Trackpad / rueda horizontal o vertical suave
-      deck.addEventListener("wheel", (e) => {
-        if (wheelLocked) return;
-        const dominant = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-        if (Math.abs(dominant) < 45) return;
-        wheelLocked = true;
-        show(dominant > 0 ? i + 1 : i - 1);
-        setTimeout(() => wheelLocked = false, 650);
-      }, { passive: true });
-
-      const m = location.hash.match(/s(\d+)/);
-      if (m) i = Math.max(0, Math.min(slides.length - 1, +m[1] - 1));
-      slides.forEach((s, n) => s.classList.toggle("active", n === i));
-      show(i);
+      prog.style.width = '20%';
+      count.textContent = '1 / 5';
     </script>
   </body>
-                </html>
+</html>
